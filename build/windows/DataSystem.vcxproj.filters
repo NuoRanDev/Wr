@@ -28,10 +28,10 @@
     <ClCompile Include="..\..\src\data_system\file\image\libjpegAddons.cpp">
       <Filter>data_system\file\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_system\file\xeMemoryFile.cpp">
+    <ClCompile Include="..\..\src\data_system\file\wrMemoryFile.cpp">
       <Filter>data_system\file</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_system\image\xeImage.cpp">
+    <ClCompile Include="..\..\src\data_system\image\wrImage.cpp">
       <Filter>data_system\image</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\data_system\file\image\liblvglDecBmp.cpp">
@@ -43,30 +43,30 @@
     <ClCompile Include="..\..\src\data_system\file\image\libppm.cpp">
       <Filter>data_system\file\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_system\audio\xeAudio.cpp">
+    <ClCompile Include="..\..\src\data_system\audio\wrAudio.cpp">
       <Filter>data_system\audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\data_system\file\xeMemoryFile.hpp">
+    <ClInclude Include="..\..\inc\data_system\file\wrMemoryFile.hpp">
       <Filter>data_system\file</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\file\image\xeImgaeFile.hpp">
+    <ClInclude Include="..\..\inc\data_system\file\image\wrImgaeFile.hpp">
       <Filter>data_system\file\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\file\image\xeReadImage.hpp">
+    <ClInclude Include="..\..\inc\data_system\file\image\wrReadImage.hpp">
       <Filter>data_system\file\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\image\xeImage.hpp">
+    <ClInclude Include="..\..\inc\data_system\image\wrImage.hpp">
       <Filter>data_system\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\file\audio\xeReadAudioFile.hpp">
+    <ClInclude Include="..\..\inc\data_system\file\audio\wrReadAudioFile.hpp">
       <Filter>data_system\file\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\audio\xeAudio.hpp">
+    <ClInclude Include="..\..\inc\data_system\audio\wrAudio.hpp">
       <Filter>data_system\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\data_system\file\audio\xeAudioFile.hpp">
+    <ClInclude Include="..\..\inc\data_system\file\audio\wrAudioFile.hpp">
       <Filter>data_system\file\audio</Filter>
     </ClInclude>
   </ItemGroup>

@@ -73,12 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\rust\inc\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\rust\inc\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>

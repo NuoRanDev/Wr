@@ -1,7 +1,7 @@
-﻿#include "file/image/xeReadImage.hpp"
+﻿#include "file/image/wrReadImage.hpp"
 
-#include "log/xeLogOutput.hpp"
-#include "type/xeOrdinals.hpp"
+#include "log/wrLogOutput.hpp"
+#include "type/wrOrdinals.hpp"
 
 #include <cstdint>
 #include <format>
@@ -25,7 +25,7 @@ void my_error_exit(j_common_ptr cinfo)
 	longjmp(myerr->setjmp_buffer, 1);
 }
 
-namespace xe
+namespace wr
 {
 	bool read_memory_jpg_image(const ImageFile& file, Image& img_out) noexcept
 	{
@@ -44,7 +44,7 @@ namespace xe
 
 		if (setjmp(jerr.setjmp_buffer))
 		{
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libjpeg", std::format("File:{0} reed jpeg failed!",file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libjpeg", std::format("File:{0} reed jpeg failed!",file.c_file_name()).c_str());
 			return false;
 		}
 
@@ -63,7 +63,7 @@ namespace xe
 		switch (cinfo.out_color_space)
 		{
 		case JCS_UNKNOWN:
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
 			return false;
 
 		case JCS_GRAYSCALE:
@@ -75,11 +75,11 @@ namespace xe
 			break;
 
 		default:
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
 			return false;
 		}
 
-		// get pixel lines
+		// get piwrl lines
 		image_data = img_out.unsafe_data();
 		while (cinfo.output_scanline < cinfo.output_height)
 		{
@@ -94,5 +94,5 @@ namespace xe
 		return true;
 
 	}
-} // namespace xe is end
+} // namespace wr is end
 #endif // USE_JPEG

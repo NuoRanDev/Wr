@@ -19,14 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\sound\audio_steam\xePcmStream.hpp" />
-    <ClInclude Include="..\..\inc\sound\xeSoundSource.hpp" />
+    <ClInclude Include="..\..\inc\sound\audio_steam\wrPcmStream.hpp" />
+    <ClInclude Include="..\..\inc\sound\wrSoundSource.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\inc\sound\xeAudioPlayerInstance.hpp" />
-    <ClCompile Include="..\..\src\sound\audio_steam\xePcmStream.cpp" />
-    <ClCompile Include="..\..\src\sound\xeAudioPlayerInstance.cpp" />
-    <ClCompile Include="..\..\src\sound\xeSoundSource.cpp" />
+    <ClCompile Include="..\..\inc\sound\wrAudioPlayerInstance.hpp" />
+    <ClCompile Include="..\..\src\sound\audio_steam\wrPcmStream.cpp" />
+    <ClCompile Include="..\..\src\sound\wrAudioPlayerInstance.cpp" />
+    <ClCompile Include="..\..\src\sound\wrSoundSource.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

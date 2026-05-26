@@ -4,12 +4,6 @@
     <ClCompile Include="..\..\src\graphics\testure\xeTesture.cpp">
       <Filter>graphics\testure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\graphics\window\xeWindowManager.cpp">
-      <Filter>graphics\window</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\graphics\window\xeWindow.cpp">
-      <Filter>graphics\window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\test\game_main.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
@@ -24,9 +18,6 @@
     <Filter Include="graphics\testure">
       <UniqueIdentifier>{cd872d8f-321d-4c1a-bb17-dffda3a37468}</UniqueIdentifier>
     </Filter>
-    <Filter Include="graphics\window">
-      <UniqueIdentifier>{5d5cd53e-ddff-4bc8-be4b-f33836037ae0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="graphics\shader">
       <UniqueIdentifier>{cee5b882-7122-4864-98b4-34b764c7fc10}</UniqueIdentifier>
     </Filter>
@@ -40,12 +31,6 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\graphics\testure\xeTesture.hpp">
       <Filter>graphics\testure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\graphics\window\xeWindowManager.hpp">
-      <Filter>graphics\window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\graphics\window\xeWindow.hpp">
-      <Filter>graphics\window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\graphics\vulkan\xeVulkan.hpp">
       <Filter>graphics\vulkan</Filter>

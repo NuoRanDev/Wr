@@ -1,4 +1,33 @@
-E:\cmake\bin\cmake.exe -B build -G Ninja -DSDL_CAMERA=OFF -DSDL_AUDIO=OFF -DSDL_GPU=OFF -DSDL_DIALOG=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL -DSDL_STATIC=ON -DSDL_SHARED=OFF -DSDL_OPENVR=OFF -DSDL_OPENGLES=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_OPENGL=OFF  -DSDL_VULKAN=ON -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RENDER=OFF -DSDL_TESTS=OFF -DSDL_UNINSTALL=OFF -DSDL_DIRECTX=OFF -DSDL_OFFSCREEN=OFF -DSDL_TRAY=OFF -DSDL_SENSOR=OFF -DSDL_FILESYSTEM_DUMMY=OFF -DSDL_FSOPS_DUMMY=OFF -DSDL_THREADS_DISABLED=OFF -DSDL_HIDAPI=OFF -DSDL_HAPTIC=OFF
-cmake --build build --config Release
-E:\cmake\bin\cmake.exe -B build -G Ninja -DSDL_CAMERA=OFF -DSDL_AUDIO=OFF -DSDL_GPU=OFF -DSDL_DIALOG=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebugDLL -DSDL_STATIC=ON -DSDL_SHARED=OFF -DSDL_OPENVR=OFF -DSDL_OPENGLES=OFF -DSDL_DUMMYVIDEO=OFF -DSDL_OPENGL=OFF  -DSDL_VULKAN=ON -DSDL_VIRTUAL_JOYSTICK=OFF -DSDL_RENDER=OFF -DSDL_TESTS=OFF -DSDL_UNINSTALL=OFF -DSDL_DIRECTX=OFF -DSDL_OFFSCREEN=OFF -DSDL_TRAY=OFF -DSDL_SENSOR=OFF -DSDL_FILESYSTEM_DUMMY=OFF -DSDL_FSOPS_DUMMY=OFF -DSDL_THREADS_DISABLED=OFF -DSDL_HIDAPI=OFF -DSDL_HAPTIC=OFF
-cmake --build build --config Debug
+    /*
+    "glfw": {
+        "library_url": "https://github.com/glfw/glfw.git",
+        "include_dir_path": "/include/",
+        "include_file_path": [
+            "GLFW/glfw3native.h",
+            "GLFW/glfw3.h"
+        ],
+        "lib_path": "/build/src/"
+    },
+    "zlib-ng": {
+        "library_url": "https://github.com/zlib-ng/zlib-ng.git",
+        "include_dir_path": "/include/",
+        "include_file_path": [
+            "mimalloc/atomic.h",
+            "mimalloc/internal.h",
+            "mimalloc/prim.h",
+            "mimalloc/track.h",
+            "mimalloc/types.h",
+            "mimalloc.h",
+            "mimalloc-new-delete.h",
+            "mimalloc-override.h",
+            "mimalloc-stats.h"
+        ],
+        "build_cmd": {
+            "Debug": "cmake -B build -G Ninja -DWITH_GTEST=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebugDLL",
+            "Release": "cmake -B build -G Ninja -DWITH_GTEST=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL"
+        },
+        "make_cmd": {
+            "Debug": "cmake --build . --config=Debug",
+            "Release": "cmake --build . --config=Release"
+        }
+    }*/

@@ -1,8 +1,8 @@
 ﻿#include <vulkan/vulkan.hpp>
 
-#include "type/xeOrdinals.hpp"
+#include "type/wrOrdinals.hpp"
 
-namespace xe
+namespace wr
 {
 	void* vk_malloc(void* pd, size_t size, size_t alignment, VkSystemAllocationScope allocation_scope) noexcept;
 
@@ -21,7 +21,7 @@ namespace xe
 	};
 	constexpr auto pvk_allocator = nullptr;
 
-	constexpr auto engine_name = "xe engine main";
+	constexpr auto engine_name = "wr engine main";
 #ifdef _DEBUG
 	const char* const instance_validation_layers_alt1[] =
 	{
@@ -65,4 +65,4 @@ namespace xe
 	void find_gpu(VulkanContext& vk_ctx) noexcept;
 
 	void release_vulkan_ctx(VulkanContext& vk_ctx) noexcept;
-} // namespace xe is end
+} // namespace wr is end

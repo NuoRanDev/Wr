@@ -1,8 +1,8 @@
-﻿#include "testure/xeTesture.hpp"
+﻿#include "testure/wrTesture.hpp"
 
-#include "log/xeLogOutput.hpp"
+#include "log/wrLogOutput.hpp"
 
 #include <cstring>
-namespace xe
+namespace wr
 {
-} // namespace xe is end
+} // namespace wr is end

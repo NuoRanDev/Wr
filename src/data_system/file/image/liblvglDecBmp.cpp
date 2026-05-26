@@ -1,11 +1,11 @@
 ﻿
-#include "log/xeLogOutput.hpp"
+#include "log/wrLogOutput.hpp"
 
 #include <cstring>
 #include <format>
-#include "file/image/xeReadImage.hpp"
+#include "file/image/wrReadImage.hpp"
 
-namespace xe
+namespace wr
 {
 	static bool decoder_info(const ImageFile& file, Image& image)
 	{
@@ -23,7 +23,7 @@ namespace xe
 
 		if (0x42 != headers[0] || 0x4d != headers[1])
 		{
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeDataSystem", "NOT BMP FILE");
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrDataSystem", "NOT BMP FILE");
 			return false;
 		}
 
@@ -33,7 +33,7 @@ namespace xe
 		std::memcpy(&bpp, headers + 28, 2);
 		switch (bpp) {
 		case 16:
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeDataSystem", std::format("Not supported bpp: {0}", bpp).c_str());
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrDataSystem", std::format("Not supported bpp: {0}", bpp).c_str());
 			return false;
 		case 24:
 			image.create_empty(IMG_FORMAT::RGB_U888, w, h);
@@ -42,9 +42,9 @@ namespace xe
 			image.create_empty(IMG_FORMAT::RGBA_U8888, w, h); //LV_COLOR_FORMAT_ARGB8888
 			break;
 		default:
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeDataSystem", std::format("Not supported bpp: {0}", bpp).c_str());
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrDataSystem", std::format("Not supported bpp: {0}", bpp).c_str());
 			return false;
 		}
 		return true;
 	}
-} // namespace xe is end
+} // namespace wr is end

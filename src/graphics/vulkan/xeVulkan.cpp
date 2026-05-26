@@ -1,22 +1,22 @@
-﻿#include "vulkan/xeVulkan.hpp"
+﻿#include "vulkan/wrVulkan.hpp"
 
-#include "log/xeLogOutput.hpp"
-#include "memory/xeAlloc.hpp"
+#include "log/wrLogOutput.hpp"
+#include "memory/wrAlloc.hpp"
 
 #include <format>
 #include <iostream>
 
-namespace xe
+namespace wr
 {
 	void* vk_malloc(void* pd, size_t size, size_t alignment, VkSystemAllocationScope allocation_scope) noexcept
 	{
-		void* ptr = xe_malloc<byte_t>(size);
+		void* ptr = wr_malloc<byte_t>(size);
 		return ptr;
 	}
 
 	void* vk_realloc(void* pd, void* re_ptr, size_t size, size_t alignment, VkSystemAllocationScope allocation_scope) noexcept
 	{
-		void* ptr = xe_realloc<byte_t>(re_ptr, size);
+		void* ptr = wr_realloc<byte_t>(re_ptr, size);
 		return ptr;
 	}
 
@@ -44,7 +44,7 @@ namespace xe
 			}
 			if (!found)
 			{
-				XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", std::format("Cannot find layer: {}", check_names[i]).c_str());
+				XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", std::format("Cannot find layer: {}", check_names[i]).c_str());
 				return false;
 			}
 		}
@@ -75,16 +75,16 @@ namespace xe
 
 #ifdef _DEBUG
 		state = vkEnumerateInstanceLayerProperties(&instance_layer_count, nullptr);
-		if (state != VK_SUCCESS) XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "Find validation layer fatal!");
+		if (state != VK_SUCCESS) XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Find validation layer fatal!");
 		if (instance_layer_count > 0)
 		{
-			vk_ctx.instance_layers = xe_malloc<VkLayerProperties>(instance_layer_count);
+			vk_ctx.instance_layers = wr_malloc<VkLayerProperties>(instance_layer_count);
 			state = vkEnumerateInstanceLayerProperties(&instance_layer_count, vk_ctx.instance_layers);
-			if (state != VK_SUCCESS) XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "Find validation layer fatal!");
+			if (state != VK_SUCCESS) XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Find validation layer fatal!");
 		}
 		else
 		{
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "System doesn't have validation layer library");
+			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "System doesn't have validation layer library");
 			goto IS_RUNNING_WITHOUT_VALIDATION_LAYERS;
 		}
 
@@ -108,7 +108,7 @@ namespace xe
 				}
 				else
 				{
-					XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "the validation layer library doesn't support this");
+					XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "the validation layer library doesn't support this");
 					goto IS_RUNNING_WITHOUT_VALIDATION_LAYERS;
 				}
 			}
@@ -132,7 +132,7 @@ namespace xe
 #endif // _DEBUG
 		if (vulkan_enabled_extension_count == 0)
 		{
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "GUI library can't support vulkan!");
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "GUI library can't support vulkan!");
 		}
 		vk_inst_info =
 		{
@@ -148,21 +148,21 @@ namespace xe
 		if (state == VK_SUCCESS) return;
 		else if (state == VK_ERROR_INCOMPATIBLE_DRIVER)
 		{
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "Cannot find a compatible Vulkan installable client driver!");
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Cannot find a compatible Vulkan installable client driver!");
 		}
 		else if (state == VK_ERROR_EXTENSION_NOT_PRESENT) {
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "Cannot find a specified extension library!");
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Cannot find a specified extension library!");
 		}
 #ifdef _DEBUG
 		else if (state == VK_ERROR_LAYER_NOT_PRESENT)
 		{
 			vkDestroyInstance(vk_ctx.vk_main_instance, pvk_allocator);
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "System doesn't have validation layer library");
+			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "System doesn't have validation layer library");
 			goto IS_RUNNING_WITHOUT_VALIDATION_LAYERS;
 		}
 #endif // _DEBUG
 		else if (state != VK_SUCCESS) {
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "vkCreateInstance failed.\n\nDo you have a compatible Vulkan!");
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "vkCreateInstance failed.\n\nDo you have a compatible Vulkan!");
 		}
 	}
 
@@ -171,14 +171,14 @@ namespace xe
 		VkResult state;
 		state = vkEnumeratePhysicalDevices(vk_ctx.vk_main_instance, &(vk_ctx.gpu_cout), nullptr);
 		if (state != VK_SUCCESS || vk_ctx.gpu_cout == 0)
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "No GPU!");
-		vk_ctx.gpu_list = xe::xe_malloc<VkPhysicalDevice>(vk_ctx.gpu_cout);
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "No GPU!");
+		vk_ctx.gpu_list = wr::wr_malloc<VkPhysicalDevice>(vk_ctx.gpu_cout);
 		state = vkEnumeratePhysicalDevices(vk_ctx.vk_main_instance, &(vk_ctx.gpu_cout), vk_ctx.gpu_list);
 		if (state != VK_SUCCESS || vk_ctx.gpu_cout == 0)
-			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeGraphics::vulkan", "Enumerate gpu failed!");
+			XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Enumerate gpu failed!");
 
-		vk_ctx.vk_gpu_properties = xe_malloc<VkPhysicalDeviceProperties>(vk_ctx.gpu_cout);
-		vk_ctx.vk_gpu_features = xe_malloc<VkPhysicalDeviceFeatures>(vk_ctx.gpu_cout);
+		vk_ctx.vk_gpu_properties = wr_malloc<VkPhysicalDeviceProperties>(vk_ctx.gpu_cout);
+		vk_ctx.vk_gpu_features = wr_malloc<VkPhysicalDeviceFeatures>(vk_ctx.gpu_cout);
 
 		for (uint32_t i = 0; i < vk_ctx.gpu_cout; i++)
 		{
@@ -192,11 +192,11 @@ namespace xe
 	void release_vulkan_ctx(VulkanContext& vk_ctx) noexcept
 	{
 #ifdef _DEBUG
-		xe_free(vk_ctx.instance_layers);
+		wr_free(vk_ctx.instance_layers);
 #endif // _DEBUG
-		xe_free(vk_ctx.vk_gpu_properties);
-		xe_free(vk_ctx.vk_gpu_features);
+		wr_free(vk_ctx.vk_gpu_properties);
+		wr_free(vk_ctx.vk_gpu_features);
 
 		vkDestroyInstance(vk_ctx.vk_main_instance, pvk_allocator);
 	}
-} // namespace xe is end
+} // namespace wr is end

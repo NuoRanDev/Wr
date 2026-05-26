@@ -21,16 +21,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\graphics\testure\xeTesture.cpp" />
     <ClCompile Include="..\..\src\graphics\vulkan\xeVulkan.cpp" />
-    <ClCompile Include="..\..\src\graphics\window\xeWindow.cpp" />
-    <ClCompile Include="..\..\src\graphics\window\xeWindowManager.cpp" />
     <ClCompile Include="..\..\test\game_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\graphics\shader\xeShaderGroup.hpp" />
     <ClInclude Include="..\..\inc\graphics\testure\xeTesture.hpp" />
     <ClInclude Include="..\..\inc\graphics\vulkan\xeVulkan.hpp" />
-    <ClInclude Include="..\..\inc\graphics\window\xeWindow.hpp" />
-    <ClInclude Include="..\..\inc\graphics\window\xeWindowManager.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -87,12 +83,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>

@@ -19,23 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\data_system\audio\xeAudio.cpp" />
+    <ClCompile Include="..\..\src\data_system\audio\wrAudio.cpp" />
     <ClCompile Include="..\..\src\data_system\file\audio\libDrFlac.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libjpegAddons.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\liblvglDecBmp.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libsnpngAddons.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libppm.cpp" />
-    <ClCompile Include="..\..\src\data_system\file\xeMemoryFile.cpp" />
-    <ClCompile Include="..\..\src\data_system\image\xeImage.cpp" />
+    <ClCompile Include="..\..\src\data_system\file\wrMemoryFile.cpp" />
+    <ClCompile Include="..\..\src\data_system\image\wrImage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\data_system\audio\xeAudio.hpp" />
-    <ClInclude Include="..\..\inc\data_system\file\audio\xeAudioFile.hpp" />
-    <ClInclude Include="..\..\inc\data_system\file\audio\xeReadAudioFile.hpp" />
-    <ClInclude Include="..\..\inc\data_system\file\image\xeImgaeFile.hpp" />
-    <ClInclude Include="..\..\inc\data_system\file\image\xeReadImage.hpp" />
-    <ClInclude Include="..\..\inc\data_system\file\xeMemoryFile.hpp" />
-    <ClInclude Include="..\..\inc\data_system\image\xeImage.hpp" />
+    <ClInclude Include="..\..\inc\data_system\audio\wrAudio.hpp" />
+    <ClInclude Include="..\..\inc\data_system\file\audio\wrAudioFile.hpp" />
+    <ClInclude Include="..\..\inc\data_system\file\audio\wrReadAudioFile.hpp" />
+    <ClInclude Include="..\..\inc\data_system\file\image\wrImgaeFile.hpp" />
+    <ClInclude Include="..\..\inc\data_system\file\image\wrReadImage.hpp" />
+    <ClInclude Include="..\..\inc\data_system\file\wrMemoryFile.hpp" />
+    <ClInclude Include="..\..\inc\data_system\image\wrImage.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

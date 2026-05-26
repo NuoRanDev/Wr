@@ -1,12 +1,10 @@
-﻿#include "window/xeWindowManager.hpp"
-#include "log/xeLogOutput.hpp"
-#include "filesystem/xeFileMmapStream.hpp"
-#include "xeAudioPlayerInstance.hpp"
-#include "xeSoundSource.hpp"
-#include "file/audio/xeReadAudioFile.hpp"
+﻿#include "log/wrLogOutput.hpp"
+#include "filesystem/wrFileMmapStream.hpp"
+//#include "wrAudioPlayerInstance.hpp"
+//#include "wrSoundSource.hpp"
+//#include "file/audio/wrReadAudioFile.hpp"
+#include "platform/xeWindowsPlatformWindow.hpp"
 
-#include <vulkan/xeVulkan.hpp>
-#include <SDL3/SDL_vulkan.h>
 
 #include <format>
 #include <iostream>
@@ -14,8 +12,8 @@
 #include <ctime>
 #include <cmath>
 
-using namespace xe;
-
+using namespace wr;
+/*
 vec3f v;
 vec3f pos;
 float pi = 3.1415926f;
@@ -58,7 +56,7 @@ void fakerander(SoundSource& ssrc, double ms)
 	std::cout << "pos x: " << pos.x << " y: " << pos.y << " z: " << pos.z << "\n";
 	// windos
 	system("cls");
-}
+}*/
 
 int main(int argc, char** argv)
 {
@@ -119,31 +117,24 @@ int main(int argc, char** argv)
 		sscrc.set_position(pos);
 	}
 
-	xe::WindowManager wmsg = xe::WindowManager(argv);
+	wr::WindowManager wmsg = wr::WindowManager(argv);
 	VulkanContext vtx = { 0 };
 	uint32_t c;
 	auto vc = SDL_Vulkan_GetInstanceExtensions(&c);
 	init_vulkan_instance(vtx, u8"name", vc, c);
 	find_gpu(vtx);
-	auto name = xe::String("sasas");
+	auto name = wr::String("sasas");
 	auto win = wmsg.create_window(600, 800, name);
 	win->show();*/
 
-	String spath = u8"C:\\Users\\wunuxx喔xxx喔xo\\D\\喔\\eskxx喔xtop\\喔\\audio.flac";
-	String cstr = u8"xx喔x";
+	init_windows_env();
 
-	spath = spath + cstr + u8"gsg六xgs";
-	std::cout << spath << "\n";
-
-	auto ch = U'喔';
-	auto crr = spath.split(cstr);
-	auto brr = spath.split(ch);
-	for (const auto& is_s : crr)
+	String str = u8"六";
+	U16StringRef _16str = str;
+	create_window(_16str, 800, 600);
+	while (switch_enevt())
 	{
-		std::cout << is_s << "\n";
 	}
-	
-	puts("end");
 	
 	return EXIT_SUCCESS; // Success
 }

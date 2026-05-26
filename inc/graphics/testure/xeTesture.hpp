@@ -1,13 +1,13 @@
 ﻿#ifndef _XE_TESTURE_HPP_
 #define _XE_TESTURE_HPP_
 
-#include "image/xeImage.hpp"
+#include "image/wrImage.hpp"
 
-#include "window/xeWindow.hpp"
+#include "window/wrWindow.hpp"
 
 #include <any>
 
-namespace xe
+namespace wr
 {
 }
 #endif // !_XE_TESTURE_HPP_ IS EOF

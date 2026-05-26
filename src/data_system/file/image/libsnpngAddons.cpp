@@ -1,7 +1,7 @@
-﻿#include "file/image/xeReadImage.hpp"
+﻿#include "file/image/wrReadImage.hpp"
 
-#include "log/xeLogOutput.hpp"
-#include "type/xeOrdinals.hpp"
+#include "log/wrLogOutput.hpp"
+#include "type/wrOrdinals.hpp"
 
 #include <cstdint>
 #include <format>
@@ -9,7 +9,7 @@
 #if defined(USE_PNG)
 // Thired-party library: libspng
 #include "spng.h"
-namespace xe
+namespace wr
 {
 	bool read_memory_png_image(const ImageFile& file, Image& img_out) noexcept
 	{
@@ -32,14 +32,14 @@ namespace xe
 		png_buffer = file.get_file_data(file_size);
 		if (png_buffer == nullptr || file_size == 0)
 		{
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} image file data is empty", file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} image file data is empty", file.c_file_name()).c_str());
 			return false;
 		}
 
 		spng_ctx* ctx = spng_ctx_new(0);
 		if (ctx == nullptr)
 		{
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} init context failed", file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} init context failed", file.c_file_name()).c_str());
 			return false;
 		}
 
@@ -47,7 +47,7 @@ namespace xe
 		if (ret)
 		{
 			spng_ctx_free(ctx);
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} load data failed", file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} load data failed", file.c_file_name()).c_str());
 			return false;
 		}
 
@@ -55,7 +55,7 @@ namespace xe
 		if (ret)
 		{
 			spng_ctx_free(ctx);
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} get header information data failed", file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} get header information data failed", file.c_file_name()).c_str());
 			return false;
 		}
 
@@ -63,8 +63,8 @@ namespace xe
 		if (ihdr.bit_depth != 8 and ihdr.bit_depth != 16)
 		{
 			spng_ctx_free(ctx);
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons",
-				std::format("File:{1} image data is broken. Image bit depth is {0}, XE support Bit depth is 8 and 16!", 
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons",
+				std::format("File:{1} image data is broken. Image bit depth is {0}, WR support Bit depth is 8 and 16!", 
 				ihdr.bit_depth, file.c_file_name()).c_str());
 			return false;
 		}
@@ -72,7 +72,7 @@ namespace xe
 		// Get image bit depth and color type
 		color_type = ihdr.color_type;
 
-		// Get all pixel png is Big-endian 
+		// Get all piwrl png is Big-endian 
 		switch (color_type)
 		{
 		case SPNG_COLOR_TYPE_GRAYSCALE:
@@ -95,7 +95,7 @@ namespace xe
 			}
 			else goto COLOR_NOT_SUPPORT;
 			// The fucking old color picture
-		case SPNG_COLOR_TYPE_INDEXED:
+		case SPNG_COLOR_TYPE_INDEWRD:
 			if(ihdr.bit_depth == 8)
 			{
 				spng_decoded_image_size(ctx, SPNG_FMT_RGBA8, &need_new_size);
@@ -154,7 +154,7 @@ namespace xe
 		if (need_new_size != img_out.get_data_size())
 		{
 			spng_ctx_free(ctx);
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken or alloc size failed",file.c_file_name()).c_str());
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken or alloc size failed",file.c_file_name()).c_str());
 			return false;
 		}
 		spng_decode_image(ctx, img_out.unsafe_data(), need_new_size, fmt, 0);
@@ -164,7 +164,7 @@ namespace xe
 		return true;
 	COLOR_NOT_SUPPORT:
 		spng_ctx_free(ctx);
-		XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken.Not support this color format", file.c_file_name()).c_str());
+		WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken.Not support this color format", file.c_file_name()).c_str());
 		return false;
 	}
 }

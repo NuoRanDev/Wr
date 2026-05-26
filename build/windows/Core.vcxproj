@@ -19,32 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\inc\core\devboost\xeMemFind.hpp" />
-    <ClCompile Include="..\..\src\core\devboost\xeMemCmp.cpp" />
-    <ClCompile Include="..\..\src\core\devboost\xeMemFind.cpp" />
-    <ClCompile Include="..\..\src\core\devboost\xeMemRemove.cpp" />
-    <ClCompile Include="..\..\src\core\filesystem\xeFileMmapStream.cpp" />
-    <ClCompile Include="..\..\src\core\filesystem\xePath.cpp" />
-    <ClCompile Include="..\..\src\core\log\xeLogOutpout.cpp" />
-    <ClCompile Include="..\..\src\core\memory\xeAlloc.cpp" />
-    <ClCompile Include="..\..\src\core\string\xeString.cpp" />
+    <ClCompile Include="..\..\inc\core\devboost\wrMemFind.hpp" />
+    <ClCompile Include="..\..\src\core\devboost\wrMemCmp.cpp" />
+    <ClCompile Include="..\..\src\core\devboost\wrMemFind.cpp" />
+    <ClCompile Include="..\..\src\core\devboost\wrMemRemove.cpp" />
+    <ClCompile Include="..\..\src\core\filesystem\wrFileMmapStream.cpp" />
+    <ClCompile Include="..\..\src\core\filesystem\wrPath.cpp" />
+    <ClCompile Include="..\..\src\core\log\wrLogOutpout.cpp" />
+    <ClCompile Include="..\..\src\core\memory\wrAlloc.cpp" />
+    <ClCompile Include="..\..\src\core\string\wrString.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\core\devboost\xeMemCmp.hpp" />
-    <ClInclude Include="..\..\inc\core\devboost\xeMemRemove.hpp" />
-    <ClInclude Include="..\..\inc\core\filesystem\xeFileMmapStream.hpp" />
-    <ClInclude Include="..\..\inc\core\filesystem\xeFilesystem.hpp" />
-    <ClInclude Include="..\..\inc\core\filesystem\xePath.hpp" />
-    <ClInclude Include="..\..\inc\core\log\xeLogOutput.hpp" />
-    <ClInclude Include="..\..\inc\core\math\xeBigNumber.hpp" />
-    <ClInclude Include="..\..\inc\core\math\xeMathVector.hpp" />
-    <ClInclude Include="..\..\inc\core\memory\xeAlloc.hpp" />
-    <ClInclude Include="..\..\inc\core\memory\xeDiskMemoryPool.hpp" />
-    <ClInclude Include="..\..\inc\core\string\xeRegexp.hpp" />
-    <ClInclude Include="..\..\inc\core\string\xeString.hpp" />
-    <ClInclude Include="..\..\inc\core\type\xeDataStruction.hpp" />
-    <ClInclude Include="..\..\inc\core\type\xeOrdinals.hpp" />
-    <ClInclude Include="..\..\inc\core\xeCompiler.hpp" />
+    <ClInclude Include="..\..\inc\core\devboost\wrMemCmp.hpp" />
+    <ClInclude Include="..\..\inc\core\devboost\wrMemRemove.hpp" />
+    <ClInclude Include="..\..\inc\core\filesystem\wrFileMmapStream.hpp" />
+    <ClInclude Include="..\..\inc\core\filesystem\wrFilesystem.hpp" />
+    <ClInclude Include="..\..\inc\core\filesystem\wrPath.hpp" />
+    <ClInclude Include="..\..\inc\core\log\wrLogOutput.hpp" />
+    <ClInclude Include="..\..\inc\core\math\wrBigNumber.hpp" />
+    <ClInclude Include="..\..\inc\core\math\wrMathVector.hpp" />
+    <ClInclude Include="..\..\inc\core\memory\wrAlloc.hpp" />
+    <ClInclude Include="..\..\inc\core\memory\wrDiskMemoryPool.hpp" />
+    <ClInclude Include="..\..\inc\core\string\wrRegexp.hpp" />
+    <ClInclude Include="..\..\inc\core\string\wrString.hpp" />
+    <ClInclude Include="..\..\inc\core\type\wrDataStruction.hpp" />
+    <ClInclude Include="..\..\inc\core\type\wrOrdinals.hpp" />
+    <ClInclude Include="..\..\inc\core\wrCompiler.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

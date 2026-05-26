@@ -1,8 +1,8 @@
-﻿#include "log/xeLogOutput.hpp"
-#include "type/xeOrdinals.hpp"
+﻿#include "log/wrLogOutput.hpp"
+#include "type/wrOrdinals.hpp"
 
-#include "file/audio/xeReadAudioFile.hpp"
-#include "memory/xeAlloc.hpp"
+#include "file/audio/wrReadAudioFile.hpp"
+#include "memory/wrAlloc.hpp"
 
 #include <type_traits>
 #include <format>
@@ -13,21 +13,21 @@ extern"C"
 #include "dr_flac.h"
 }
 
-namespace xe
+namespace wr
 {
 	static void* dr_malloc(size_t sz, void* _none) noexcept
 	{
-		return xe_malloc<byte_t>(sz);
+		return wr_malloc<byte_t>(sz);
 	}
 
 	static void dr_free(void* p, void* _none) noexcept
 	{
-		xe_free(p);
+		wr_free(p);
 	}
 
 	static void* dr_realloc(void* p, size_t sz, void* _none) noexcept
 	{
-		return xe_realloc<byte_t>(reinterpret_cast<byte_t*>(p), sz);
+		return wr_realloc<byte_t>(reinterpret_cast<byte_t*>(p), sz);
 	}
 
 	static drflac_allocation_callbacks dr_flac_alloc_cb_struct =
@@ -46,9 +46,9 @@ namespace xe
 		//uint64_t block_pcm_frame_number = flac_context->totalPCMFrameCount;
 		uint64_t need_byte_size = flac_context->totalPCMFrameCount * sizeof(T);
 
-		XE_INFO_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeAudio :DecFlac", std::format("size: {0} MB", need_byte_size / 1024 / 1024 ).c_str());
+		WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrAudio :DecFlac", std::format("size: {0} MB", need_byte_size / 1024 / 1024 ).c_str());
 		
-		T* out_data = reinterpret_cast<T*>(xe_malloc<byte_t>(need_byte_size));
+		T* out_data = reinterpret_cast<T*>(wr_malloc<byte_t>(need_byte_size));
 		T* cur_data = out_data;
 		uint64_t all_read_size;
 
@@ -57,7 +57,7 @@ namespace xe
 			auto read_size = drflac_read_pcm_frames_type_extension(flac_context, block_pcm_frame_number, cur_data);
 			if (read_size < 0)
 			{
-				XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeAudio :DecFlac", "File is broken!");
+				WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "File is broken!");
 				drflac_close(flac_context);
 				return reinterpret_cast<byte_t*>(cur_data);
 			}
@@ -76,7 +76,7 @@ namespace xe
 		drflac* flac_context = drflac_open_memory(flac_data, flac_size, &dr_flac_alloc_cb_struct);
 		if (flac_context == nullptr)
 		{
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeAudio :DecFlac", "Can't read memory file!");
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "Can't read memory file!");
 			return nullptr;
 		}
 		pcmh.channels = flac_context->channels;
@@ -93,7 +93,7 @@ namespace xe
 
 		if (flac_size == 0 || flac_data == nullptr)
 		{
-			XE_WARNING_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeAudio: DecFlac", "Can't read memory file!");
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrAudio: DecFlac", "Can't read memory file!");
 			return false;
 		};
 
@@ -118,7 +118,7 @@ namespace xe
 			break;
 
 		default:
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeAudio :DecFlac", "format not support!");
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "format not support!");
 			return false;
 		}
 
@@ -127,7 +127,7 @@ namespace xe
 		pcm_out.pcm_data = type_drflac_full_read<drflac_int16>(flac_context, pcm_out.data_size, &(drflac_read_pcm_frames_s16));
 		if (pcm_out.pcm_data == nullptr)
 		{
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeAudio :DecFlac", "Decode is failed!");
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "Decode is failed!");
 			return false;
 		}
 		return true;
@@ -136,9 +136,9 @@ namespace xe
 		pcm_out.pcm_data = type_drflac_full_read<float>(flac_context, pcm_out.data_size, &(drflac_read_pcm_frames_f32));
 		if (pcm_out.pcm_data == nullptr)
 		{
-			XE_ERROR_OUTPUT(XE_TYPE_NAME_OUTPUT::LIB, "xeAudio :DecFlac", "Decode is failed!");
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "Decode is failed!");
 			return false;
 		}
 		return true;
 	}
-} // namespace xe is end
+} // namespace wr is end

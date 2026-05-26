@@ -1,0 +1,35 @@
+{
+    "mimalloc": {
+        "library_url": "https://github.com/microsoft/mimalloc.git",
+        "include_dir_path": "/include/",
+        "include_file_path": [
+            "mimalloc/atomic.h",
+            "mimalloc/internal.h",
+            "mimalloc/prim.h",
+            "mimalloc/track.h",
+            "mimalloc/types.h",
+            "mimalloc.h",
+            "mimalloc-new-delete.h",
+            "mimalloc-override.h",
+            "mimalloc-stats.h"
+        ],
+        "lib_path": "/build/Debug/",
+        "lib_file_name": {
+            "Debug": [
+                "mimalloc-debug.lib",
+                "mimalloc-debug.pdb"
+            ],
+            "Release": [
+                "mimalloc.lib"
+            ]
+        },
+        "build_cmd": {
+            "Debug": "cmake \"{0}\" -B \"{1}\" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebugDLL",
+            "Release": "cmake \"{0}\" -B \"{1}\" -DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL"
+        },
+        "make_cmd": {
+            "Debug": "cmake --build \"{0}\" --config=Debug",
+            "Release": "cmake --build \"{0}\" --config=Release"
+        }
+    }
+}

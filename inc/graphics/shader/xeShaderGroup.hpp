@@ -1,14 +1,14 @@
 ﻿#ifndef _INC_FRAGMENTSHADER_HPP_
 #define _INC_FRAGMENTSHADER_HPP_
 
-#include "type/xeOrdinals.hpp"
-#include "string/xeString.hpp"
+#include "type/wrOrdinals.hpp"
+#include "string/wrString.hpp"
 
 #include "vulkan/vulkan.h"
 
-#include "log/xeLogOutput.hpp"
+#include "log/wrLogOutput.hpp"
 
-namespace xe
+namespace wr
 {
 	/*
 		namespace vulkan
@@ -41,14 +41,14 @@ namespace xe
 				{
 					if (vkCreateShaderModule(vk_device, &(vk_frag_mod_info), nullptr, &vk_frag_mod) != VK_SUCCESS)
 					{
-						XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeGraphicsAPI", "failed to load frag spir-v file!")
+						XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "wrGraphicsAPI", "failed to load frag spir-v file!")
 					}
 				}
 				if (vk_vert_mod_info.pCode != nullptr)
 				{
 					if (vkCreateShaderModule(vk_device, &(vk_vert_mod_info), nullptr, &vk_vert_mod) != VK_SUCCESS)
 					{
-						XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "xeGraphicsAPI", "failed to load vert spir-v file!")
+						XE_FATAL_OUTPUT(XE_TYPE_NAME_OUTPUT::APP, "wrGraphicsAPI", "failed to load vert spir-v file!")
 					}
 				}
 				shader_stage_info[0] =
@@ -82,7 +82,7 @@ namespace xe
 	}// namespace vulkan is end
 	*/
 
-} // namespace xe is end
+} // namespace wr is end
 
 
 #endif // !_INC_FRAGMENTSHADER_HPP_ IS EOF

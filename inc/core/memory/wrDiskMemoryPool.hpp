@@ -1,0 +1,4 @@
+﻿#ifndef _WR_DISK_MEMORY_POOL_HPP_
+#define _WR_DISK_MEMORY_POOL_HPP_
+
+#endif // _WR_DISK_MEMORY_POOL_HPP_ IS EOF

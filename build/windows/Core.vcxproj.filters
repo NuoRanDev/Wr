@@ -27,78 +27,78 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\core\string\xeString.cpp">
+    <ClCompile Include="..\..\src\core\string\wrString.cpp">
       <Filter>core\string</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\devboost\xeMemCmp.cpp">
+    <ClCompile Include="..\..\src\core\devboost\wrMemCmp.cpp">
       <Filter>core\devboost</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\memory\xeAlloc.cpp">
+    <ClCompile Include="..\..\src\core\memory\wrAlloc.cpp">
       <Filter>core\memory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\log\xeLogOutpout.cpp">
+    <ClCompile Include="..\..\src\core\log\wrLogOutpout.cpp">
       <Filter>core\log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\filesystem\xeFileMmapStream.cpp">
+    <ClCompile Include="..\..\src\core\filesystem\wrFileMmapStream.cpp">
       <Filter>core\filesystem</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\filesystem\xePath.cpp">
+    <ClCompile Include="..\..\src\core\filesystem\wrPath.cpp">
       <Filter>core\filesystem</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\inc\core\devboost\xeMemFind.hpp">
+    <ClCompile Include="..\..\inc\core\devboost\wrMemFind.hpp">
       <Filter>core\devboost</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\devboost\xeMemFind.cpp">
+    <ClCompile Include="..\..\src\core\devboost\wrMemFind.cpp">
       <Filter>core\devboost</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\core\devboost\xeMemRemove.cpp">
+    <ClCompile Include="..\..\src\core\devboost\wrMemRemove.cpp">
       <Filter>core\devboost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\core\devboost\xeMemCmp.hpp">
+    <ClInclude Include="..\..\inc\core\devboost\wrMemCmp.hpp">
       <Filter>core\devboost</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\filesystem\xePath.hpp">
+    <ClInclude Include="..\..\inc\core\filesystem\wrPath.hpp">
       <Filter>core\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\filesystem\xeFilesystem.hpp">
+    <ClInclude Include="..\..\inc\core\filesystem\wrFilesystem.hpp">
       <Filter>core\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\filesystem\xeFileMmapStream.hpp">
+    <ClInclude Include="..\..\inc\core\filesystem\wrFileMmapStream.hpp">
       <Filter>core\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\log\xeLogOutput.hpp">
+    <ClInclude Include="..\..\inc\core\log\wrLogOutput.hpp">
       <Filter>core\log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\memory\xeDiskMemoryPool.hpp">
+    <ClInclude Include="..\..\inc\core\memory\wrDiskMemoryPool.hpp">
       <Filter>core\memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\memory\xeAlloc.hpp">
+    <ClInclude Include="..\..\inc\core\memory\wrAlloc.hpp">
       <Filter>core\memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\string\xeString.hpp">
+    <ClInclude Include="..\..\inc\core\string\wrString.hpp">
       <Filter>core\string</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\type\xeOrdinals.hpp">
+    <ClInclude Include="..\..\inc\core\type\wrOrdinals.hpp">
       <Filter>core\type</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\math\xeBigNumber.hpp">
+    <ClInclude Include="..\..\inc\core\math\wrBigNumber.hpp">
       <Filter>core\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\xeCompiler.hpp">
+    <ClInclude Include="..\..\inc\core\wrCompiler.hpp">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\string\xeRegexp.hpp">
+    <ClInclude Include="..\..\inc\core\string\wrRegexp.hpp">
       <Filter>core\string</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\type\xeDataStruction.hpp">
+    <ClInclude Include="..\..\inc\core\type\wrDataStruction.hpp">
       <Filter>core\type</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\devboost\xeMemRemove.hpp">
+    <ClInclude Include="..\..\inc\core\devboost\wrMemRemove.hpp">
       <Filter>core\devboost</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\math\xeMathVector.hpp">
+    <ClInclude Include="..\..\inc\core\math\wrMathVector.hpp">
       <Filter>core\math</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,11 +1,11 @@
-﻿#include "file/image/xeReadImage.hpp"
+﻿#include "file/image/wrReadImage.hpp"
 
-#include "string/xeString.hpp"
+#include "string/wrString.hpp"
 
-namespace xe
+namespace wr
 {
 	bool read_memory_ppm_image(const ImageFile& file, Image& img_out) noexcept
 	{
 		return true;
 	}
-} // namespace xe is end
+} // namespace wr is end
