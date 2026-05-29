@@ -3,7 +3,8 @@
 //#include "wrAudioPlayerInstance.hpp"
 //#include "wrSoundSource.hpp"
 //#include "file/audio/wrReadAudioFile.hpp"
-#include "platform/xeWindowsPlatformWindow.hpp"
+#include "platform/wrWindowsPlatformWindow.hpp"
+#include "wrWindow.hpp"
 
 
 #include <format>
@@ -131,7 +132,7 @@ int main(int argc, char** argv)
 
 	String str = u8"六";
 	U16StringRef _16str = str;
-	create_window(_16str, 800, 600);
+	create_window(_16str, 800, 600, WindowStyle::Close);
 	while (switch_enevt())
 	{
 	}

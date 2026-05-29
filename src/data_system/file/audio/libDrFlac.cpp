@@ -1,9 +1,10 @@
-﻿#include "log/wrLogOutput.hpp"
-#include "type/wrOrdinals.hpp"
-
-#include "file/audio/wrReadAudioFile.hpp"
-#include "memory/wrAlloc.hpp"
-
+﻿// statement
+#include <file/audio/wrReadAudioFile.hpp>
+// core
+#include <log/wrLogOutput.hpp>
+#include <type/wrOrdinals.hpp>
+#include <memory/wrAlloc.hpp>
+// std
 #include <type_traits>
 #include <format>
 

@@ -1,14 +1,15 @@
-﻿#include "file/image/wrReadImage.hpp"
-
-#include "log/wrLogOutput.hpp"
-#include "type/wrOrdinals.hpp"
-
+﻿// statement
+#include <file/image/wrReadImage.hpp>
+// core
+#include <log/wrLogOutput.hpp>
+#include <type/wrOrdinals.hpp>
+// std
 #include <cstdint>
 #include <format>
 
 #if defined(USE_PNG)
-// Thired-party library: libspng
-#include "spng.h"
+// 3rd lib libspng
+#include <spng.h>
 namespace wr
 {
 	bool read_memory_png_image(const ImageFile& file, Image& img_out) noexcept

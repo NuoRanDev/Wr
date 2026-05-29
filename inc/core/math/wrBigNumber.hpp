@@ -1,9 +1,9 @@
 ﻿#ifndef _WR_BIG_NUMBER_HPP_
 #define _WR_BIG_NUMBER_HPP_
-
-#include "type/wrOrdinals.hpp"
-#include "type/wrDataStruction.hpp"
-
+// core
+#include <type/wrOrdinals.hpp>
+#include <type/wrDataStruction.hpp>
+// std
 #include <cstring>
 
 namespace wr

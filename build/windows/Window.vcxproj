@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\window\platform\xeWindowsPlatformWindow.cpp" />
+    <ClCompile Include="..\..\src\window\platform\wrWindowsPlatformWindow.cpp" />
     <ClCompile Include="..\..\src\window\wrWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\window\platform\xeWindowsPlatformWindow.hpp" />
+    <ClInclude Include="..\..\inc\window\platform\wrWindowsPlatformWindow.hpp" />
+    <ClInclude Include="..\..\inc\window\wrWindow.hpp" />
+    <ClInclude Include="..\..\inc\window\wrWindowProperty.hpp" />
+    <ClInclude Include="..\..\inc\window\wrEnent.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,6 +1,7 @@
-﻿#include "devboost/wrMemFind.hpp"
-
-#include "devboost/wrMemCmp.hpp"
+﻿// statement
+#include <devboost/wrMemFind.hpp>
+// core
+#include <devboost/wrMemCmp.hpp>
 
 namespace wr
 {

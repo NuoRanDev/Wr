@@ -2,8 +2,8 @@
 #define _WR_ALLOC_HPP_
 
 #define USE_MIMALLOC
-
-#include "type/wrOrdinals.hpp"
+// core
+#include <type/wrOrdinals.hpp>
 
 //#include "mimalloc-new-delete.h"
 

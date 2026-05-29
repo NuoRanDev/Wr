@@ -1,15 +1,13 @@
 ﻿#ifndef _INC_WR_FILE_MMAP_STREAM_HPP_
 #define _INC_WR_FILE_MMAP_STREAM_HPP_
 
-#include "type/wrOrdinals.hpp"
-#include "string/wrString.hpp"
-#include "memory/wrAlloc.hpp"
-#include "filesystem/wrPath.hpp"
-
-#include <format>
-#if defined(__linux__)
-#include <sys/stat.h>
-#endif
+// core
+#include <type/wrOrdinals.hpp>
+#include <string/wrString.hpp>
+#include <memory/wrAlloc.hpp>
+#include <filesystem/wrPath.hpp>
+// std
+#include <format> // c++ 20
 
 namespace wr
 {
@@ -62,12 +60,12 @@ namespace wr
 		uint64_t file_size;
 
 		void* pfile_start;
-
+		
 #if defined(_WIN32)
 		void* hfile_mapping;
 		void* c_dump_file_descriptor;
 #elif defined(__linux__)
-		struct stat st;
+		any_type_ptr_t stat st;
 		// file description
 		int32_t fd = -1;
 #else

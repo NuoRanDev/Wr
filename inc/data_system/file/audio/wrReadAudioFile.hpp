@@ -1,9 +1,11 @@
 ﻿#ifndef _WR_RWAD_AUDIO_HPP_
 #define _WR_RWAD_AUDIO_HPP_
 
-#include "type/wrOrdinals.hpp"
-#include "file/audio/wrAudioFile.hpp"
-#include "audio/wrAudio.hpp"
+// core
+#include <type/wrOrdinals.hpp>
+// data system
+#include <audio/wrAudio.hpp>
+#include <file/audio/wrAudioFile.hpp>
 
 namespace wr
 {

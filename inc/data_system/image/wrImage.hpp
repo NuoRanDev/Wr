@@ -1,9 +1,9 @@
 ﻿#ifndef _WR_IMAGE_HPP_
 #define _WR_IMAGE_HPP_
-
-#include "type/wrOrdinals.hpp"
-#include "memory/wrAlloc.hpp"
-
+// core
+#include <type/wrOrdinals.hpp>
+#include <memory/wrAlloc.hpp>
+// std
 #include <functional>
 
 namespace wr
@@ -62,14 +62,8 @@ namespace wr
 	{
 	public:
 		// check memory pool
-		Image(std::function<byte_t* (size_t)>alloc_func = &wr_malloc<byte_t>)
-		{
-			alloc_data_memory	= alloc_func;
-			img_data			= nullptr;
-			data_size			= 0;
-			format				= IMG_FORMAT::NONE;
-			x = 0, y = 0;
-		}
+		// TODO: Change this alloc
+		Image(std::function<byte_t* (size_t)>alloc_func = &wr_malloc<byte_t>);
 
 		Image(const Image&) noexcept = default;
 

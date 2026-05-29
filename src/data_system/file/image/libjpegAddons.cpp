@@ -1,15 +1,16 @@
-﻿#include "file/image/wrReadImage.hpp"
-
-#include "log/wrLogOutput.hpp"
-#include "type/wrOrdinals.hpp"
-
+﻿// statement
+#include <file/image/wrReadImage.hpp>
+// core
+#include <log/wrLogOutput.hpp>
+#include <type/wrOrdinals.hpp>
+// std
 #include <cstdint>
 #include <format>
 #if defined(USE_JPEG)
 #include <setjmp.h>
 
-// Thired-party library: libjpeg
-#include "jpeglib.h"
+// srd lib libjpeg
+#include <jpeglib.h>
 
 struct libjpeg_addons {
 	struct jpeg_error_mgr pub; /* "public" fields */

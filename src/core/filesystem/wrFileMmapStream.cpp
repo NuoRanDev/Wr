@@ -1,10 +1,12 @@
-﻿#include "filesystem/wrFileMmapStream.hpp"
-
-#include "log/wrLogOutput.hpp"
-
+﻿// statement
+#include <filesystem/wrFileMmapStream.hpp>
+// core
+#include <log/wrLogOutput.hpp>
+// os api
 #if defined(_WIN32)
 #include <Windows.h>
 #elif defined(__linux__)
+#include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -97,6 +99,7 @@ namespace wr
 			return false;
 		}
 #elif defined(__linux__)
+		struct stat* temp_st = wr_malloc<struct stat>(1);
 		fd = open(reinterpret_cast<const char*>(path.get_native_str(path)), O_RDONLY);
 		if (fd == -1) 
 		{
@@ -106,10 +109,10 @@ namespace wr
 				std::format("Create file mapping failed , SYSTEM ERROR CODE:{0}", errno)..c_str());
 			return false;
 		}
-		fstat(fd, &st);
-		// PROT_READ : 映射区可读
-		// MAP_PRIVATE : 修改内存文件并不会修改底层数据，修改文件仅当前进程有效
-		pfile_start = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+		fstat(fd, temp_st);
+		// PROT_READ : 
+		// MAP_PRIVATE : 
+		pfile_start = mmap(nullptr, temp_st->st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 		if (pfile_start == MAP_FAILED) 
 		{
 			WR_WARNING_OUTPUT(
@@ -119,6 +122,7 @@ namespace wr
 			close(fd);
 			return false;
 		}
+		st = reinterpret_cast<any_type_ptr_t>(temp_st);
 #endif // _WIN32 FUNCTION IS END
 		return true;
 	}
@@ -136,10 +140,12 @@ namespace wr
 		hfile_mapping = nullptr;
 		file_size = 0;
 #elif defined(__linux__)
+		struct stat* temp_st = reinterpret_cast<struct stat*>(st);
 		if (pfile_start != MAP_FAILED){
-			munmap(pfile_start, st.st_size);
+			munmap(pfile_start, temp_st->st_size);
 			close(fd);
 		}
+		xe_free(temp_st);
 #endif // _WIN32 FUNCTION IS END
 	}
 } // namespace wr is end

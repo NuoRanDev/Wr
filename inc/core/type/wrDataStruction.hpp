@@ -1,13 +1,14 @@
 ﻿#ifndef _INC_WR_DATA_STRUCTION_HPP_
 #define _INC_WR_DATA_STRUCTION_HPP_
 
-#include "type/wrOrdinals.hpp"
-
+// statement
+#include <type/wrOrdinals.hpp>
+// std
 #include <vector>
 #include <map>
-
+// 3rd lib mimalloc
 #if defined(USE_MIMALLOC)
-#include "mimalloc-override.h"
+#include <mimalloc-override.h>
 #endif // USE_MIMALLOC
 
 namespace wr

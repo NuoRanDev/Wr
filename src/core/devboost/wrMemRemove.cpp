@@ -1,5 +1,6 @@
-﻿#include "devboost/wrMemCmp.hpp"
-
+﻿// statement
+#include <devboost/wrMemCmp.hpp>
+// avx
 #include <emmintrin.h>
 
 namespace wr

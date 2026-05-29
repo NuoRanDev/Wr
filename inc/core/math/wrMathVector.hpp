@@ -1,6 +1,7 @@
 ﻿#ifndef _INC_WR_MATH_VECTOR_HPP_
 #define _INC_WR_MATH_VECTOR_HPP_
 
+// std
 #include <type_traits>
 
 namespace wr 

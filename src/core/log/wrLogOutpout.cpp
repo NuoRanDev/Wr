@@ -1,9 +1,11 @@
-﻿#include "log/wrLogOutput.hpp"
+﻿// statement
+#include <log/wrLogOutput.hpp>
 
 #if defined(_DEBUG)
 #define OPEN_CLR
 #endif // is defined _DEBUG
 
+// std
 #include <exception>
 #include <iostream>
 #include <format>

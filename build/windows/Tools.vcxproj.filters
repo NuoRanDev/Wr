@@ -5,4 +5,9 @@
       <UniqueIdentifier>{4efda634-d9b5-4f50-ba65-a886e0613b72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\tools\filedialog\wrFileDialog.hpp">
+      <Filter>filedailog</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

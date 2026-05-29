@@ -1,7 +1,8 @@
 ﻿#ifndef _INC_WR_MEM_FIND_HPP_
 #define _INC_WR_MEM_FIND_HPP_
 
-#include "type/wrOrdinals.hpp"
+// core
+#include <type/wrOrdinals.hpp>
 
 namespace wr
 {

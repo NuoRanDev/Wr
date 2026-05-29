@@ -1,6 +1,9 @@
-﻿#include "image/wrImage.hpp"
-#include "log/wrLogOutput.hpp"
-
+﻿// statement
+#include <image/wrImage.hpp>
+// core
+#include <memory/wrAlloc.hpp>
+#include <log/wrLogOutput.hpp>
+// std
 #include <cstring>
 
 namespace wr
@@ -48,6 +51,15 @@ namespace wr
 			dst_cur += channel_size;
 			src_cur += channel_size;
 		}
+	}
+
+	Image::Image(std::function<byte_t* (size_t)>alloc_func)
+	{
+		alloc_data_memory = alloc_func;
+		img_data = nullptr;
+		data_size = 0;
+		format = IMG_FORMAT::NONE;
+		x = 0, y = 0;
 	}
 
 	void Image::create_empty(const IMG_FORMAT src_format, const int32_t src_x, const int32_t src_y) noexcept

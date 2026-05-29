@@ -1,12 +1,13 @@
-﻿#include "string/wrString.hpp"
-
+﻿// statement
+#include <string/wrString.hpp>
+// std
 #include <algorithm>
-
-#include "log/wrLogOutput.hpp"
-#include "memory/wrAlloc.hpp"
-#include "devboost/wrMemCmp.hpp"
-#include "devboost/wrMemFind.hpp"
-#include "devboost/wrMemRemove.hpp"
+// core
+#include <log/wrLogOutput.hpp>
+#include <memory/wrAlloc.hpp>
+#include <devboost/wrMemCmp.hpp>
+#include <devboost/wrMemFind.hpp>
+#include <devboost/wrMemRemove.hpp>
 
 
 namespace wr
@@ -726,36 +727,68 @@ namespace wr
 		return offset;
 	}
 
+	U16StringRef::U16StringRef(const U16StringRef& other) noexcept
+	{
+		load_utf16_by_count(other.data(), other.count());
+	}
+
+	U16StringRef::U16StringRef(U16StringRef&& other) noexcept
+	{
+		characters_data = other.characters_data;
+		characters_number = other.characters_number;
+		other.clear_moved_str();
+	}
+
 	bool U16StringRef::load_utf8(const U8StringRef& u8_str) noexcept
 	{
-		bool state = utf8_to_utf16le(u8_str.data(), u8_str.get_characters_data_size(), &str_data, size);
+		bool state = utf8_to_utf16le(u8_str.data(), u8_str.get_characters_data_size(), &characters_data, characters_number);
 		if (!state)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 to utf16 failed");
-			str_data = nullptr;
-			size = 0;
+			characters_data = nullptr;
+			characters_number = 0;
 		}
 		return state;
 	}
 
 	bool U16StringRef::to_utf8(U8StringRef& u8_dst)  const noexcept
 	{
-		bool state = utf16le_to_utf8(str_data, size, u8_dst);
+		bool state = utf16le_to_utf8(characters_data, characters_number, u8_dst);
 		if (!state)
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf16 to utf8 failed");
 		return state;
 	}
 
+	void U16StringRef::load_utf16_by_count(const utf16le_t* data, int64_t conut) noexcept
+	{
+		if (data == nullptr || conut == 0)
+		{
+			characters_number = 0;
+			characters_data = nullptr;
+			return;
+		}
+		characters_number = conut;
+		characters_data = wr_malloc<utf16le_t>(characters_number + 1);
+		std::memcpy(characters_data, data, conut * 2);
+		characters_data[conut] = 0;
+	}
+
 	void U16StringRef::ptr_resize(int64_t _size) noexcept
 	{
-		size = _size;
-		str_data = wr_realloc<utf16le_t>(str_data, size);
-		str_data[_size - 1] = '\0';
+		characters_number = _size;
+		characters_data = wr_realloc<utf16le_t>(characters_data, characters_number);
+		characters_data[_size - 1] = '\0';
 	}
 
 	void U16StringRef::release() noexcept
 	{
-		if (str_data != nullptr)
-			wr_free(str_data);
+		if (characters_data != nullptr)
+			wr_free(characters_data);
+	}
+
+	void U16StringRef::clear_moved_str() noexcept
+	{
+		characters_data = nullptr;
+		characters_number = 0;
 	}
 } // namespace wr is end

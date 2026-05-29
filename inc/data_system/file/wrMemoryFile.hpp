@@ -1,8 +1,9 @@
 ﻿#ifndef _WR_MEMORY_FILE_HPP_
 #define _WR_MEMORY_FILE_HPP_
 
-#include "type/wrOrdinals.hpp"
-#include "string/wrString.hpp"
+// core
+#include <type/wrOrdinals.hpp>
+#include <string/wrString.hpp>
 
 namespace wr
 {

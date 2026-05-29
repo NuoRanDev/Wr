@@ -1,5 +1,7 @@
-﻿#include "audio/wrAudio.hpp"
-#include "memory/wrAlloc.hpp"
+﻿// statement
+#include <audio/wrAudio.hpp>
+// core
+#include <memory/wrAlloc.hpp>
 
 namespace wr
 {

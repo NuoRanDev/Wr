@@ -1,8 +1,8 @@
 ﻿#ifndef _INC_WR_AUDIO_HPP_
 #define _INC_WR_AUDIO_HPP_
-
-#include "type/wrOrdinals.hpp"
-
+// core
+#include <type/wrOrdinals.hpp>
+// std
 #include <functional>
 
 namespace wr

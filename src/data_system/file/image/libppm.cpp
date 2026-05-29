@@ -1,6 +1,7 @@
-﻿#include "file/image/wrReadImage.hpp"
-
-#include "string/wrString.hpp"
+﻿// statement
+#include <file/image/wrReadImage.hpp>
+// core
+#include <string/wrString.hpp>
 
 namespace wr
 {

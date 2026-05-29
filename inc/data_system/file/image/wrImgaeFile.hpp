@@ -1,7 +1,8 @@
 ﻿#ifndef _WR_IMAGE_FILE_HPP_
 #define _WR_IMAGE_FILE_HPP_
 
-#include "file/wrMemoryFile.hpp"
+// data system
+#include <file/wrMemoryFile.hpp>
 
 namespace wr
 {

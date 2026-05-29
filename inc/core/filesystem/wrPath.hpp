@@ -1,9 +1,8 @@
 ﻿#ifndef _WR_PATH_HPP_
 #define _WR_PATH_HPP_
 
-#include "string/wrString.hpp"
-
-#include <filesystem>
+// core
+#include <string/wrString.hpp>
 
 namespace wr
 {
@@ -23,7 +22,15 @@ namespace wr
 
 		Path(const String &path) noexcept;
 
-		String abs_path() noexcept;
+		Path(Path&& other) noexcept;
+
+#if defined(_WIN32)
+
+		Path(const U16StringRef& path) noexcept { n_str.load_utf16_string(path); }
+
+#endif // defined(_WIN32) is end
+
+		String abs_path() const noexcept;
 
 		String base_name() noexcept;
 
@@ -39,11 +46,14 @@ namespace wr
 
 		bool is_file() const noexcept;
 
-		std::pair<String, String> split()  noexcept;
+		std::pair<String, String> split() const noexcept;
 
 		const OS_CHAR* get_native_str() const { return reinterpret_cast<const OS_CHAR*>(n_str.data()); }
 
 	private:
+
+		friend class Path;
+
 		OS_STRING n_str;
 	}; // namespace Path is end
 

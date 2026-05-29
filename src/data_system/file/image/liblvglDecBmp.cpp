@@ -1,9 +1,10 @@
-﻿
-#include "log/wrLogOutput.hpp"
-
+﻿// core
+#include <log/wrLogOutput.hpp>
+// data system
+#include <file/image/wrReadImage.hpp>
+// std
 #include <cstring>
 #include <format>
-#include "file/image/wrReadImage.hpp"
 
 namespace wr
 {

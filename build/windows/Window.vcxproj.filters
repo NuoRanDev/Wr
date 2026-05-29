@@ -12,13 +12,22 @@
     <ClCompile Include="..\..\src\window\wrWindow.cpp">
       <Filter>window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window\platform\xeWindowsPlatformWindow.cpp">
+    <ClCompile Include="..\..\src\window\platform\wrWindowsPlatformWindow.cpp">
       <Filter>window\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\window\platform\xeWindowsPlatformWindow.hpp">
+    <ClInclude Include="..\..\inc\window\platform\wrWindowsPlatformWindow.hpp">
       <Filter>window\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\window\wrWindow.hpp">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\window\wrWindowProperty.hpp">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\window\wrEnent.hpp">
+      <Filter>window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿#ifndef _WR_MEM_REMOVE_HPP_
 #define _WR_MEM_REMOVE_HPP_
-
-#include "type/wrOrdinals.hpp"
+// core
+#include <type/wrOrdinals.hpp>
 
 namespace wr
 {

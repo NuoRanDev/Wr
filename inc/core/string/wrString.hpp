@@ -1,12 +1,13 @@
 ﻿#ifndef _WR_STRING_HPP_
 #define _WR_STRING_HPP_
 
+// std
 #include <iostream>
 #include <cstring>
 #include <ostream>
-
-#include "type/wrOrdinals.hpp"
-#include "type/wrDataStruction.hpp"
+// core
+#include <type/wrOrdinals.hpp>
+#include <type/wrDataStruction.hpp>
 
 namespace wr
 {
@@ -42,24 +43,14 @@ namespace wr
 
 		U8StringRef(const U8StringRef& temp_string)
 		{
-			if(temp_string.is_empty())
-			{
-				load_default_str();
-				return;
-			}
-			load_wr_str_include0(temp_string.data(), temp_string.get_characters_data_size(), temp_string.get_characters_number());
+			load_u8stringref(temp_string);
 		}
 
 		U8StringRef(U8StringRef&& src) noexcept;
 
 		U8StringRef& operator=(const U8StringRef& temp_string) noexcept 
 		{
-			if (temp_string.is_empty())
-			{
-				this->load_default_str();
-				return *this;
-			}
-			this->load_wr_str_include0(temp_string.data(), temp_string.get_characters_data_size(), temp_string.get_characters_number());
+			this->load_u8stringref(temp_string);
 			return *this;
 		}
 
@@ -227,6 +218,16 @@ namespace wr
 		{
 			load_cpp_u8_str_add0(reinterpret_cast<const utf8_t*>(_c_str));
 		}
+		// laod this class
+		void load_u8stringref(const U8StringRef& temp_string)
+		{
+			if (temp_string.is_empty())
+			{
+				load_default_str();
+				return;
+			}
+			load_wr_str_include0(temp_string.data(), temp_string.get_characters_data_size(), temp_string.get_characters_number());
+		}
 
 	private:
 
@@ -296,9 +297,21 @@ namespace wr
 
 	class U16StringRef
 	{
+		friend class U16StringRef;
+
 	public:
 
-		U16StringRef() = default;
+		U16StringRef() 
+		{
+			characters_data = nullptr;
+			characters_number = 0;
+		}
+
+		U16StringRef(const U16StringRef& other) noexcept;
+
+		U16StringRef(U16StringRef&& other) noexcept;
+
+		U16StringRef operator=(const U16StringRef& other) { return U16StringRef(other); }
 
 		U16StringRef(const U8StringRef& u8_str) noexcept { load_utf8(u8_str); }
 
@@ -306,25 +319,35 @@ namespace wr
 
 		bool to_utf8(U8StringRef& u8_dst) const noexcept;
 
-		const utf16le_t* data() const noexcept { return str_data; }
+		void load_utf16_by_count(const utf16le_t* data, int64_t conut) noexcept;
+
+		void load_utf16_string(const U16StringRef& other) noexcept
+		{
+			load_utf16_by_count(other.data(), other.characters_number);
+		}
+
+		const utf16le_t* data() const noexcept { return characters_data; }
 
 		// String's _size is include 0
 		void ptr_resize(int64_t _size) noexcept;
 
+		int64_t count() const { return characters_number; }
+
 #ifdef _WIN32
-		utf16le_t* get_win32_str_pdata() { return str_data; }
+		utf16le_t* get_win32_str_pdata() { return characters_data; }
 #endif // _WIN32
 
-
 		void release() noexcept;
+
+		void clear_moved_str() noexcept;
 
 		~U16StringRef() { release(); }
 	
 	private:
 
-		utf16le_t* str_data;
+		utf16le_t* characters_data;
 		// include 0
-		int64_t size;
+		int64_t characters_number;
 	};
 } // namespace wr is end
 

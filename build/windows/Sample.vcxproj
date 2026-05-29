@@ -134,7 +134,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib\;$(SolutionDir)..\..\SDK\$(Configuration)\;$(SolutionDir)..\..\3rd\bin\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Window.lib;DataSystem.lib;Sound.lib;Core.lib;Logic.lib;vulkan-1.lib;Avrt.lib;Winmm.lib;User32.lib;turbojpeg.lib;OpenAL32.lib;spng_static.lib;fmtd.lib;zlibd.lib;mimalloc-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Window.lib;DataSystem.lib;Sound.lib;Core.lib;vulkan-1.lib;Shlwapi.lib;Avrt.lib;Dwmapi.lib;Winmm.lib;User32.lib;turbojpeg.lib;OpenAL32.lib;spng_static.lib;fmtd.lib;zlibd.lib;mimalloc-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
@@ -157,7 +157,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VK_SDK_PATH)\Lib\;$(SolutionDir)..\..\SDK\$(Configuration)\;$(SolutionDir)..\..\3rd\bin\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Window.lib;DataSystem.lib;Sound.lib;Core.lib;Logic.lib;vulkan-1.lib;Avrt.lib;Winmm.lib;User32.lib;turbojpeg.lib;OpenAL32.lib;spng_static.lib;fmt.lib;zlib.lib;mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Window.lib;DataSystem.lib;Sound.lib;Core.lib;vulkan-1.lib;Shlwapi.lib;Avrt.lib;Dwmapi.lib;Winmm.lib;User32.lib;turbojpeg.lib;OpenAL32.lib;spng_static.lib;fmt.lib;zlib.lib;mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

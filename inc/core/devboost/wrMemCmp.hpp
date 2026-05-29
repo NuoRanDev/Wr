@@ -1,10 +1,10 @@
 ﻿#ifndef _WR_MEM_CMP_HPP_
 #define _WR_MEM_CMP_HPP_
-
+// std
 #include <cstdint>
-
-#include "type/wrOrdinals.hpp"
-#include "type/wrDataStruction.hpp"
+// core
+#include <type/wrOrdinals.hpp>
+#include <type/wrDataStruction.hpp>
 
 namespace wr
 {

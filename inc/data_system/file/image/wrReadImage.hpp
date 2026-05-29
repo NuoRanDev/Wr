@@ -1,9 +1,11 @@
 ﻿#ifndef _WR_RWAD_IMAGE_HPP_
 #define _WR_RWAD_IMAGE_HPP_
 
-#include "type/wrOrdinals.hpp"
-#include "image/wrImage.hpp"
-#include "file/image/wrImgaeFile.hpp"
+// core
+#include <type/wrOrdinals.hpp>
+// data system
+#include <image/wrImage.hpp>
+#include <file/image/wrImgaeFile.hpp>
 
 namespace wr
 {

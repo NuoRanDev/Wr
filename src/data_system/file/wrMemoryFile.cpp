@@ -1,7 +1,8 @@
-﻿#include "file/image/wrImgaeFile.hpp"
-
-#include "log/wrLogOutput.hpp"
-#include "memory/wrAlloc.hpp"
+﻿// statement
+#include <file/image/wrImgaeFile.hpp>
+// core
+#include <log/wrLogOutput.hpp>
+#include <memory/wrAlloc.hpp>
 
 namespace wr
 {

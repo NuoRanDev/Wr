@@ -1,7 +1,9 @@
-﻿#include "filesystem/wrPath.hpp"
-#include "memory/wrAlloc.hpp"
-#include "log/wrLogOutput.hpp"
-
+﻿// statement
+#include <filesystem/wrPath.hpp>
+// core
+#include <memory/wrAlloc.hpp>
+#include <log/wrLogOutput.hpp>
+// os api
 #if defined(_WIN32)
 #include <Windows.h>
 #include <shlwapi.h>
@@ -10,6 +12,8 @@
 #include <unistd.h>
 #include <sys/stat.h> 
 #endif
+// std
+#include <format>
 
 #if defined(_WIN32)
 #else
@@ -26,10 +30,19 @@ namespace wr
 #endif // init windows native str
 	}
 
-	String Path::abs_path() noexcept
+	Path::Path(Path&& other) noexcept : n_str(std::move(other.n_str)) {}
+
+	String Path::abs_path() const noexcept
 	{
 #if defined(_WIN32)
-
+		U16StringRef u16str;
+		utf16le_t file_path[MAX_PATH];
+		int64_t str_count = GetFullPathNameW(n_str.data(), MAX_PATH, file_path, nullptr);
+		u16str.load_utf16_by_count(file_path, str_count);
+		String u8str{};
+		u16str.to_utf8(u8str);
+		puts(u8str.c_str());
+		return u8str;
 #elif defined(__linux__)
 		return String(realpath(n_str.c_str(), nullptr));
 #endif // OS
@@ -163,13 +176,39 @@ namespace wr
 #endif // OS
 	}
 
-	std::pair<String, String> Path::split()  noexcept
+	std::pair<String, String> Path::split() const noexcept
 	{
+		String base_name_str{};
+		String dir_name_str{};
 #if defined(_WIN32)
-		//PathUnquoteSpacesW获取路径
+		if (!exists()) return { dir_name_str, base_name_str };
+		if (is_dir()) 
+		{
+			n_str.to_utf8(dir_name_str);
+			return { dir_name_str, base_name_str };
+		}
+		else
+		{
+			int64_t i;
+			U16StringRef temp_str;
+			for (i = n_str.count() - 1; i >= 0; i--)
+			{
+				if (((n_str.data())[i] == L'\\') ||
+					((n_str.data())[i] == L'/'))
+				{
+					break;
+				}
+			}
+			temp_str.load_utf16_by_count(n_str.data(), i);
+			temp_str.to_utf8(dir_name_str);
+			temp_str.load_utf16_by_count(n_str.data() + i + 1, n_str.count() - i - 1);
+			temp_str.to_utf8(base_name_str);
+			return { dir_name_str, base_name_str };
+		}
 #elif defined(__linux__)
-		if (!exists()) return { String(), String() };
-		if (is_dir()) return { n_str, String() };
+
+		if (!exists()) return { dir_name_str, base_name_str };
+		if (is_dir()) return { dir_name_str(n_str), base_name_str };
 		else
 		{
 			String base_name_str = base_name();
