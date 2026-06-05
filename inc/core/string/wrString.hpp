@@ -19,7 +19,7 @@ namespace wr
 	// default string format
 	using String = U8StringRef;
 
-	class U8StringRef
+	class U8StringRef final
 	{
 		friend class U8StringRef;
 
@@ -106,7 +106,8 @@ namespace wr
 
 		void append(const U8StringRef& append_string) noexcept
 		{
-			append(append_string.data(), append_string.get_characters_data_size(), append_string.get_characters_number());
+			// get_characters_data_size has appended string 's '\0'
+			append(append_string.data(), append_string.get_characters_data_size() - 1, append_string.get_characters_number());
 		}
 
 		void append(const utf8_t* append_string, int64_t append_size, int64_t append_chacharacters_number) noexcept;
@@ -142,7 +143,7 @@ namespace wr
 		[[nodiscard]] dynamic_array<U8StringRef>
 			split(dynamic_array<int64_t>& separator_list, int64_t separator_characters_data_size) noexcept;
 
-		[[nodiscard]] unicode_t at(int64_t offset) noexcept;
+		[[nodiscard]] unicode_t at(int64_t offset) const noexcept;
 
 		// U8StringRef Comparison Operators
 		[[nodiscard]] unicode_t operator[](int64_t offset) noexcept { return this->at(offset); }
@@ -229,7 +230,68 @@ namespace wr
 			load_wr_str_include0(temp_string.data(), temp_string.get_characters_data_size(), temp_string.get_characters_number());
 		}
 
-	private:
+		class Iterator
+		{
+		public:
+			Iterator(class U8StringRef* src_string) noexcept
+			{
+				cur_characters_number = 0;
+				iterator_string = src_string;
+			}
+
+			unicode_t operator*() const
+			{
+				auto output = iterator_string->at(cur_characters_number);;
+				return output;
+			}
+
+			class Iterator* operator->()
+			{
+				return this;
+			}
+
+			Iterator& operator++()
+			{
+				cur_characters_number++;
+				return *this;
+			}
+
+			Iterator operator++(int)
+			{
+				Iterator tmp = *this;
+				++(*this);
+				return tmp;
+			}
+
+			friend bool operator==(const Iterator& i1, const Iterator& i2) { return i1.cur_characters_number == i2.cur_characters_number; }
+
+			friend bool operator!=(const Iterator& i1, const Iterator& i2) { return i1.cur_characters_number != i2.cur_characters_number; }
+
+			void to_ofs(int64_t ofs_number)
+			{
+				cur_characters_number = ofs_number;
+			}
+
+		private:
+
+			int64_t cur_characters_number;
+			class U8StringRef* iterator_string;
+		};
+
+
+		Iterator begin()
+		{
+			return Iterator(this);
+		}
+
+		Iterator end()
+		{
+			Iterator itor = Iterator(this);
+			itor.to_ofs(characters_number);
+			return itor;
+		}
+
+		private:
 
 		// data ptr
 		utf8_t* characters_data;
@@ -295,7 +357,7 @@ namespace wr
 		return out;
 	}
 
-	class U16StringRef
+	class U16StringRef final
 	{
 		friend class U16StringRef;
 

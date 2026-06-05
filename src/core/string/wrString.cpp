@@ -236,7 +236,7 @@ namespace wr
 		dynamic_array<utf8_t>u8str;
 		
 		// If has bom
-		if (u16le_src_cur == nullptr || u16le_src_cur[0] == 0xFEFF)
+		if (u16le_src_cur[0] == 0xFEFF)
 		{
 			u16le_src_cur += 1;
 			u16_len -= 1;
@@ -429,13 +429,14 @@ namespace wr
 		characters_number = characters_number + append_chacharacters_number;
 
 		// exclude append string 's '\0'
-		characters_data_size = characters_data_size + append_string_data_size - 1;
+		characters_data_size = characters_data_size + append_string_data_size;
 
 		// alloc
 		characters_data = wr_realloc<utf8_t>(characters_data, characters_data_size);
 		append_ptr_start = characters_data + jump_str_offset;
 		//
 		std::memcpy(append_ptr_start, append_string, append_string_data_size);
+		characters_data[characters_data_size - 1] = 0;
 		is_short_string = (characters_data_size < SHORT_STRING_SIZE);
 	}
 
@@ -574,20 +575,21 @@ namespace wr
 		return output;
 	}
 
-	unicode_t U8StringRef::at(int64_t offset) noexcept
+	unicode_t U8StringRef::at(int64_t index) const noexcept
 	{
-		int64_t _cur_number = 0;
+		int64_t _cur_index = 0;
 		utf8_t* cur_str_ptr = characters_data;
 		unicode_t output_character;
-		if (characters_number < 0 || characters_number>characters_data_size)
+		if ((characters_number < 0) || (characters_number > characters_data_size || (index >= characters_number)))
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Out of string");
 			return U'\0';
 		}
-		while (_cur_number != characters_number)
+		while (_cur_index != index)
 		{
 			int type = utf8_byte_type(*cur_str_ptr);
-			while ((type--) > 1) {
+			while ((type--) > 1)
+			{
 				cur_str_ptr++;
 				if (!utf8_bype_is_valid_leading_byte(*cur_str_ptr))
 				{
@@ -595,9 +597,10 @@ namespace wr
 					return U'\0';
 				}
 			}
+			_cur_index++;
 			cur_str_ptr++;
-			_cur_number++;
 		}
+
 		utf8_to_utf32(cur_str_ptr, output_character);
 		return output_character;
 	}

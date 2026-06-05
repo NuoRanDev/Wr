@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 	find_gpu(vtx);
 	auto name = wr::String("sasas");
 	auto win = wmsg.create_window(600, 800, name);
-	win->show();*/
+	win->show();
 
 	init_windows_env();
 
@@ -135,6 +135,18 @@ int main(int argc, char** argv)
 	create_window(_16str, 800, 600, WindowStyle::Close);
 	while (switch_enevt())
 	{
+	}
+	*/
+
+	//str
+	String str = u8"六=ㄉㄝ⋃Ⅸ人";
+
+	String stro = u8"i";
+	
+	for (const auto item : str)
+	{
+		stro.append(item);
+		std::cout << stro << "   end \n";
 	}
 	
 	return EXIT_SUCCESS; // Success
