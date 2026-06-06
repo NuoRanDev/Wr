@@ -66,7 +66,7 @@ namespace wr
 		if (!get_file_size(path))
 			return false;
 #if defined(_WIN32)
-		auto win_str = path.get_native_str();
+		auto win_str = path.get_native_str_data();
 		c_dump_file_descriptor = CreateFileW(
 			win_str,
 			GENERIC_READ,
@@ -100,7 +100,7 @@ namespace wr
 		}
 #elif defined(__linux__)
 		struct stat* temp_st = wr_malloc<struct stat>(1);
-		fd = open(reinterpret_cast<const char*>(path.get_native_str(path)), O_RDONLY);
+		fd = open(reinterpret_cast<const char*>(path.get_native_str_data(path)), O_RDONLY);
 		if (fd == -1) 
 		{
 			WR_WARNING_OUTPUT(

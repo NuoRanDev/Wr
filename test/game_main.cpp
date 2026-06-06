@@ -6,6 +6,8 @@
 #include "platform/wrWindowsPlatformWindow.hpp"
 #include "wrWindow.hpp"
 
+#include <wrFileDialog.hpp>
+
 
 #include <format>
 #include <iostream>
@@ -141,13 +143,12 @@ int main(int argc, char** argv)
 	//str
 	String str = u8"六=ㄉㄝ⋃Ⅸ人";
 
-	String stro = u8"i";
-	
-	for (const auto item : str)
-	{
-		stro.append(item);
-		std::cout << stro << "   end \n";
-	}
-	
+	String stro = u8"./";
+	Path dp = stro;
+	String f = "";
+	String t = "";
+	Path p = FileDialog::open_file(dp, f, t, nullptr);
+	auto c = p.to_string();
+	std::cout << c << std::endl;
 	return EXIT_SUCCESS; // Success
 }

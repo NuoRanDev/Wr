@@ -48,7 +48,27 @@ namespace wr
 
 		std::pair<String, String> split() const noexcept;
 
-		const OS_CHAR* get_native_str() const { return reinterpret_cast<const OS_CHAR*>(n_str.data()); }
+		const String to_string() const noexcept
+		{
+			String out_str;
+#if defined(_WIN32)
+			if (n_str.to_utf8(out_str))
+				return out_str;
+			out_str.load_default_str();
+			return out_str;
+#else
+			return out_str.load_u8stringref(n_str);
+#endif // defined(_WIN32) is end
+		}
+
+		bool is_empty() const noexcept
+		{
+			return n_str.data() == nullptr;
+		}
+
+		const OS_CHAR* get_native_str_data() const { return reinterpret_cast<const OS_CHAR*>(n_str.data()); }
+
+		OS_STRING get_native_str() { return OS_STRING(n_str); }
 
 	private:
 

@@ -142,8 +142,9 @@ namespace wr
 	{
 		if (u8_src == nullptr || utf8_str_size == 0)
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf8 string is empty!")
-			return false;
+			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf8 string is empty!");
+			*u16le_dst = nullptr;
+			return true;
 		}
 
 		int64_t len = utf8_str_size;
@@ -227,8 +228,8 @@ namespace wr
 	{
 		if (u16le_src == nullptr && utf16le_str_size == 0)
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf16 string is empty!")
-			return false; 
+			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf16 string is empty!")
+			return true; 
 		}
 
 		const utf16le_t* u16le_src_cur = u16le_src;
@@ -627,8 +628,7 @@ namespace wr
 	void U8StringRef::release() noexcept
 	{
 		if (characters_data != nullptr)
-			wr_free(characters_data);
-		characters_data = nullptr;
+			characters_data = reinterpret_cast<utf8_t*>(wr_free(characters_data));
 		characters_data_size = 0;
 		characters_number = 0;
 	}
@@ -652,6 +652,12 @@ namespace wr
 		}
 		// include '/0'
 		int64_t src_str_size = std::strlen(reinterpret_cast<const char*>(cpp_utf8_str));
+		if (src_str_size == 0)
+		{
+			characters_data = nullptr;
+			characters_number = 0;
+			return;
+		}
 		// c style string end with 0
 		load_seq_no_0_str_add0(cpp_utf8_str, src_str_size);
 	}
@@ -786,7 +792,7 @@ namespace wr
 	void U16StringRef::release() noexcept
 	{
 		if (characters_data != nullptr)
-			wr_free(characters_data);
+			characters_data = reinterpret_cast<utf16le_t*>(wr_free(characters_data));
 	}
 
 	void U16StringRef::clear_moved_str() noexcept
