@@ -77,6 +77,29 @@ namespace wr
 		OS_STRING n_str;
 	}; // namespace Path is end
 
+	[[nodiscard]] inline std::ostream& operator<<(std::ostream& out, const Path& path)
+	{
+#if defined(_WIN32)
+		auto str = path.to_string();
+		if (str == nullptr)
+			out << "";
+		else
+		{
+			out << str;
+		}
+		return out;
+#else
+		auto str = path.get_native_str_data();;
+		if (str == nullptr)
+			out << "";
+		else
+		{
+			out << str;
+		}
+		return out;
+#endif // defined(_WIN32)
+	}
+
 } // namespace wr is end
 
 #endif // !_WR_PATH_HPP_

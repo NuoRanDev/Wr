@@ -138,7 +138,7 @@ namespace wr
 		}
 	}
 
-	static bool utf8_to_utf16le(const utf8_t* u8_src, int64_t utf8_str_size, utf16le_t** u16le_dst, int64_t& utf16le_str_size) noexcept
+	static bool utf8_to_utf16le(const utf8_t* u8_src, int64_t utf8_str_size, utf16le_t** u16le_dst, int64_t& utf16le_char_count) noexcept
 	{
 		if (u8_src == nullptr || utf8_str_size == 0)
 		{
@@ -211,29 +211,28 @@ namespace wr
 		}
 		if(is_ok)
 		{
-			utf16le_str_size = u16str.size() + 1;
-			*u16le_dst = wr_malloc<utf16le_t>(utf16le_str_size);
+			utf16le_char_count = u16str.size();
+			*u16le_dst = wr_malloc<utf16le_t>(utf16le_char_count);
 			std::memcpy(*u16le_dst, u16str.data(), u16str.size() * sizeof(utf16le_t));
-			u16le_dst[u16str.size()] = 0;
 		}
 		else
 		{
-			utf16le_str_size = 0;
+			utf16le_char_count = 0;
 			*u16le_dst = nullptr;
 		}
 		return is_ok;
 	}
 
-	static bool utf16le_to_utf8(const utf16le_t* u16le_src, int64_t utf16le_str_size, U8StringRef& u8_dst)
+	static bool utf16le_to_utf8(const utf16le_t* u16le_src, int64_t utf16le_char_count, U8StringRef& u8_dst)
 	{
-		if (u16le_src == nullptr && utf16le_str_size == 0)
+		if (u16le_src == nullptr && utf16le_char_count == 0)
 		{
 			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf16 string is empty!")
 			return true; 
 		}
 
 		const utf16le_t* u16le_src_cur = u16le_src;
-		int64_t u16_len = utf16le_str_size;
+		int64_t u16_len = utf16le_char_count;
 		dynamic_array<utf8_t>u8str;
 		
 		// If has bom

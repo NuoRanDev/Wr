@@ -145,10 +145,12 @@ int main(int argc, char** argv)
 
 	String stro = u8"./";
 	Path dp = stro;
-	String f = "";
+	dynamic_array<FileDialog::Filter> f =
+	{
+		{u8"文本文件",{u8"*.TXT"}}
+	};
 	String t = "";
 	Path p = FileDialog::open_file(dp, f, t, nullptr);
-	auto c = p.to_string();
-	std::cout << c << std::endl;
+	std::cout << p << std::endl;
 	return EXIT_SUCCESS; // Success
 }
