@@ -83,12 +83,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\graphics\;$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\graphics\;$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\graphics\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -152,7 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\window\;$(SolutionDir)..\..\inc\graphics\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>

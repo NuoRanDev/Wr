@@ -2,38 +2,31 @@
 #define _INC_WR_WINDOW_HPP_
 // core
 #include <string/wrString.hpp>
+// std
+#include <any>
+// window
+#include <wrWindowProperty.hpp>
 
 namespace wr
 {
-	namespace WindowStyle
-	{
-#if defined(_WIN32)
-		unsigned long ACCEPTFILES = 0x00000010L;
-		unsigned long TOOLWINDOW = 0x00000080L;
-		unsigned long CLIENTEDGE = 0x00000200L;
-#elif defined(wayland)
-
-#endif // defined(_WIN32)
-	}
+	bool init_wr_window_ctx();
 
 	class Window
 	{
 	public:
 
-		enum class Style
-		{
-
-		};
-
 		Window() = default;
 
-		bool create_window(String& window_name)
-		{}
+		bool create_window(String& window_name, int32_t w, int32_t h, uint32_t style = WindowStyle::Default) noexcept;
+
+		bool event();
 
 		~Window();
 
 	private:
 
+		any_type_ptr_t vulkan_ctx;
+		any_type_ptr_t window_hwnd;
 	};
 } // namespace wr is end
 

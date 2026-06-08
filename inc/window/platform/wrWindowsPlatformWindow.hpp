@@ -15,9 +15,9 @@ namespace wr
 {
 	bool init_windows_env() noexcept;
 
-	any_type_ptr_t create_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept;
+	any_type_ptr_t create_windows_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept;
 
-	bool switch_enevt() noexcept;
+	bool switch_event() noexcept;
 
 	bool get_vulkan_surface(VkInstance vk_inst, any_type_ptr_t window_ptr, const VkAllocationCallbacks* cb_allocer, VkSurfaceKHR& out_surface) noexcept;
 

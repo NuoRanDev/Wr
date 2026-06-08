@@ -19,14 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\graphics\testure\xeTesture.cpp" />
-    <ClCompile Include="..\..\src\graphics\vulkan\xeVulkan.cpp" />
-    <ClCompile Include="..\..\test\game_main.cpp" />
+    <ClCompile Include="..\..\src\graphics\vulkan\wrVulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\graphics\shader\xeShaderGroup.hpp" />
-    <ClInclude Include="..\..\inc\graphics\testure\xeTesture.hpp" />
-    <ClInclude Include="..\..\inc\graphics\vulkan\xeVulkan.hpp" />
+    <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkan.hpp" />
+    <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanConfig.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -50,13 +48,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -83,12 +81,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <OutDir>$(SolutionDir)..\..\SDK\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\3rd\inc\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\;$(SolutionDir)..\..\inc\graphics\;$(VK_SDK_PATH)\Include\</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
@@ -135,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>MI_OVERRIDE;_CRT_SECURE_NO_WARNINGS;USE_VULKAN;SPNG_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\;$(SolutionDir)..\..\3rd\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -155,7 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>MI_OVERRIDE;_CRT_SECURE_NO_WARNINGS;USE_VULKAN;SPNG_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\sound\;$(SolutionDir)..\..\inc\tools\;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\;$(SolutionDir)..\..\3rd\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\graphics;$(SolutionDir)..\..\inc\core\;$(VK_SDK_PATH)\Include\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

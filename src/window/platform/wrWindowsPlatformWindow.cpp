@@ -148,7 +148,7 @@ namespace wr
 		return true;
 	}
 
-	any_type_ptr_t create_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept
+	any_type_ptr_t create_windows_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept
 	{
 		WindowsWindowHandle window_inst;
 		unsigned long win32_style = get_window_style(style);
@@ -165,7 +165,7 @@ namespace wr
 		return window_inst;
 	}
 
-	bool switch_enevt() noexcept
+	bool switch_event() noexcept
 	{
 		BOOL state = GetMessageW(&msg, NULL, 0, 0);
 		if (state == FALSE)

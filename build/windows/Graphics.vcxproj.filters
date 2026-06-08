@@ -1,13 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\graphics\testure\xeTesture.cpp">
-      <Filter>graphics\testure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\test\game_main.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\graphics\vulkan\xeVulkan.cpp">
+    <ClCompile Include="..\..\src\graphics\vulkan\wrVulkan.cpp">
       <Filter>graphics\vulkan</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +23,10 @@
     <ClInclude Include="..\..\inc\graphics\shader\xeShaderGroup.hpp">
       <Filter>graphics\shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\graphics\testure\xeTesture.hpp">
-      <Filter>graphics\testure</Filter>
+    <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkan.hpp">
+      <Filter>graphics\vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\graphics\vulkan\xeVulkan.hpp">
+    <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanConfig.hpp">
       <Filter>graphics\vulkan</Filter>
     </ClInclude>
   </ItemGroup>

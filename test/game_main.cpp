@@ -3,7 +3,7 @@
 //#include "wrAudioPlayerInstance.hpp"
 //#include "wrSoundSource.hpp"
 //#include "file/audio/wrReadAudioFile.hpp"
-#include "platform/wrWindowsPlatformWindow.hpp"
+#include <wrWindow.hpp>
 #include "wrWindow.hpp"
 
 #include <wrFileDialog.hpp>
@@ -118,39 +118,15 @@ int main(int argc, char** argv)
 		// linux
 		//system("clear");
 		sscrc.set_position(pos);
-	}
+	}*/
+	init_wr_window_ctx();
+	Window win;
+	String win_name = u8"wr 窗口";
+	win.create_window(win_name, 800, 600);
 
-	wr::WindowManager wmsg = wr::WindowManager(argv);
-	VulkanContext vtx = { 0 };
-	uint32_t c;
-	auto vc = SDL_Vulkan_GetInstanceExtensions(&c);
-	init_vulkan_instance(vtx, u8"name", vc, c);
-	find_gpu(vtx);
-	auto name = wr::String("sasas");
-	auto win = wmsg.create_window(600, 800, name);
-	win->show();
-
-	init_windows_env();
-
-	String str = u8"六";
-	U16StringRef _16str = str;
-	create_window(_16str, 800, 600, WindowStyle::Close);
-	while (switch_enevt())
+	while(win.event())
 	{
 	}
-	*/
-
-	//str
-	String str = u8"六=ㄉㄝ⋃Ⅸ人";
-
-	String stro = u8"./";
-	Path dp = stro;
-	dynamic_array<FileDialog::Filter> f =
-	{
-		{u8"文本文件",{u8"*.TXT"}}
-	};
-	String t = "";
-	Path p = FileDialog::open_file(dp, f, t, nullptr);
-	std::cout << p << std::endl;
+	
 	return EXIT_SUCCESS; // Success
 }

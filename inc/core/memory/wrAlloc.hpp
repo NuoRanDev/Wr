@@ -28,6 +28,7 @@ namespace wr
 		return (T*)wr_only_realloc(src, sizeof(T) * size);
 	}
 
+	// Note : if src is nullptr, will not free!
 	any_type_ptr_t wr_free(any_type_ptr_t src) noexcept;
 
 	template<typename T> void wr_delete_array(T* src) noexcept
