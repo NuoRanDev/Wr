@@ -165,6 +165,21 @@ namespace wr
 		return window_inst;
 	}
 
+	recti get_windows_window_rect(any_type_ptr_t window_ptr) noexcept
+	{
+		HWND window_inst = reinterpret_cast<HWND>(window_ptr);
+		recti wsize = { 0 };
+		RECT wrect;
+		if (GetWindowRect(window_inst, &wrect)) 
+		{
+			wsize.bottom	= wrect.bottom;
+			wsize.left		= wrect.left;
+			wsize.right		= wrect.right;
+			wsize.top		= wrect.top;
+		}
+		return wsize;
+	}
+
 	bool switch_event() noexcept
 	{
 		BOOL state = GetMessageW(&msg, NULL, 0, 0);

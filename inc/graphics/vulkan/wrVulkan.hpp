@@ -58,13 +58,15 @@ namespace wr
 #endif // _DEBUG is end
 	};
 
-	void init_vulkan_instance(VulkanContext& vk_ctx, const utf8_t* app_name) noexcept;
+	void init_vulkan_instance(VulkanContext* vk_ctx, const utf8_t* app_name) noexcept;
 
-	void find_gpu(VulkanContext& vk_ctx) noexcept;
+	void find_gpu(VulkanContext* vk_ctx) noexcept;
 
 	bool get_queue_family_indices(VulkanContext* vk_ctx, bool enable_graphics_queue = true, bool enable_compute_queue = true) noexcept;
 
-	void release_vulkan_ctx(VulkanContext& vk_ctx) noexcept;
+	bool create_logic_device(VulkanContext* vk_ctx, float queue_priority = 1.f, VkDeviceCreateFlags flags = VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT) noexcept;
+
+	void release_vulkan_ctx(VulkanContext* vk_ctx) noexcept;
 } // namespace wr is end
 
 #endif // _INC_WR_VULKAN_HPP_ IS EOF

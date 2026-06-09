@@ -71,7 +71,7 @@ namespace wr
 		return true;
 	}
 
-	void init_vulkan_instance(VulkanContext& vk_ctx, const utf8_t* app_name) noexcept
+	void init_vulkan_instance(VulkanContext* vk_ctx, const utf8_t* app_name) noexcept
 	{
 		VkInstanceCreateInfo vk_inst_info;
 		VkResult state;
@@ -97,8 +97,8 @@ namespace wr
 		if (state != VK_SUCCESS) WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Find validation layer fatal!");
 		if (instance_layer_count > 0)
 		{
-			vk_ctx.instance_layers = wr_malloc<VkLayerProperties>(instance_layer_count);
-			state = vkEnumerateInstanceLayerProperties(&instance_layer_count, vk_ctx.instance_layers);
+			vk_ctx->instance_layers = wr_malloc<VkLayerProperties>(instance_layer_count);
+			state = vkEnumerateInstanceLayerProperties(&instance_layer_count, vk_ctx->instance_layers);
 			if (state != VK_SUCCESS) WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Find validation layer fatal!");
 		}
 		else
@@ -109,7 +109,7 @@ namespace wr
 
 		if (instance_layer_count > 0)
 		{
-			bool validation_found = check_vulkan_validation_layers(1, instance_validation_layers_alt1, instance_layer_count, vk_ctx.instance_layers);
+			bool validation_found = check_vulkan_validation_layers(1, instance_validation_layers_alt1, instance_layer_count, vk_ctx->instance_layers);
 			if (validation_found)
 			{
 				instance_validation_layers = instance_validation_layers_alt1;
@@ -118,7 +118,7 @@ namespace wr
 			}
 			else
 			{
-				bool validation_found = check_vulkan_validation_layers(7, instance_validation_layers_alt2, instance_layer_count, vk_ctx.instance_layers);
+				bool validation_found = check_vulkan_validation_layers(7, instance_validation_layers_alt2, instance_layer_count, vk_ctx->instance_layers);
 				if (validation_found)
 				{
 					instance_validation_layers = instance_validation_layers_alt2;
@@ -163,7 +163,7 @@ namespace wr
 			.enabledExtensionCount = window_vulkan_enabled_extension_count,
 			.ppEnabledExtensionNames = window_vulkan_enabled_extension,
 		};
-		state = vkCreateInstance(&vk_inst_info, pvk_allocator, &(vk_ctx.vk_main_instance));
+		state = vkCreateInstance(&vk_inst_info, pvk_allocator, &(vk_ctx->vk_main_instance));
 		if (state == VK_SUCCESS) return;
 		else if (state == VK_ERROR_INCOMPATIBLE_DRIVER)
 		{
@@ -175,7 +175,7 @@ namespace wr
 #ifdef _DEBUG
 		else if (state == VK_ERROR_LAYER_NOT_PRESENT)
 		{
-			// vkDestroyInstance(vk_ctx.vk_main_instance, pvk_allocator);
+			// vkDestroyInstance(vk_ctx->vk_main_instance, pvk_allocator);
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "System doesn't have validation layer library");
 			goto IS_RUNNING_WITHOUT_VALIDATION_LAYERS;
 		}
@@ -186,25 +186,25 @@ namespace wr
 	}
 
 	// Copy gpu information to "VulkanContext"
-	void find_gpu(VulkanContext& vk_ctx) noexcept
+	void find_gpu(VulkanContext* vk_ctx) noexcept
 	{
 		VkResult state;
-		state = vkEnumeratePhysicalDevices(vk_ctx.vk_main_instance, &(vk_ctx.gpu_cout), nullptr);
-		if (state != VK_SUCCESS || vk_ctx.gpu_cout == 0)
+		state = vkEnumeratePhysicalDevices(vk_ctx->vk_main_instance, &(vk_ctx->gpu_cout), nullptr);
+		if (state != VK_SUCCESS || vk_ctx->gpu_cout == 0)
 			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "No GPU!");
-		vk_ctx.gpu_list = wr::wr_malloc<VkPhysicalDevice>(vk_ctx.gpu_cout);
-		state = vkEnumeratePhysicalDevices(vk_ctx.vk_main_instance, &(vk_ctx.gpu_cout), vk_ctx.gpu_list);
-		if (state != VK_SUCCESS || vk_ctx.gpu_cout == 0)
+		vk_ctx->gpu_list = wr::wr_malloc<VkPhysicalDevice>(vk_ctx->gpu_cout);
+		state = vkEnumeratePhysicalDevices(vk_ctx->vk_main_instance, &(vk_ctx->gpu_cout), vk_ctx->gpu_list);
+		if (state != VK_SUCCESS || vk_ctx->gpu_cout == 0)
 			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Enumerate gpu failed!");
 
-		vk_ctx.vk_gpu_properties = wr_malloc<VkPhysicalDeviceProperties>(vk_ctx.gpu_cout);
-		vk_ctx.vk_gpu_features = wr_malloc<VkPhysicalDeviceFeatures>(vk_ctx.gpu_cout);
+		vk_ctx->vk_gpu_properties = wr_malloc<VkPhysicalDeviceProperties>(vk_ctx->gpu_cout);
+		vk_ctx->vk_gpu_features = wr_malloc<VkPhysicalDeviceFeatures>(vk_ctx->gpu_cout);
 
-		for (uint32_t i = 0; i < vk_ctx.gpu_cout; i++)
+		for (uint32_t i = 0; i < vk_ctx->gpu_cout; i++)
 		{
-			vkGetPhysicalDeviceProperties(vk_ctx.gpu_list[i], vk_ctx.vk_gpu_properties + i);
-			std::cout << "Find Gpu[" << i << "]: " << vk_ctx.vk_gpu_properties[i].deviceName << std::endl;
-			vkGetPhysicalDeviceFeatures(vk_ctx.gpu_list[i], vk_ctx.vk_gpu_features + i);
+			vkGetPhysicalDeviceProperties(vk_ctx->gpu_list[i], vk_ctx->vk_gpu_properties + i);
+			std::cout << "Find Gpu[" << i << "]: " << vk_ctx->vk_gpu_properties[i].deviceName << std::endl;
+			vkGetPhysicalDeviceFeatures(vk_ctx->gpu_list[i], vk_ctx->vk_gpu_features + i);
 		}
 
 	}
@@ -214,6 +214,13 @@ namespace wr
 	{
 		uint32_t ig, ip, ic;
 		VkResult result;
+
+		/*
+		uint32_t gpu_extension_count = 0;
+		vkEnumerateDeviceExtensionProperties(vk_ctx->cur_used_gpu, nullptr, &gpu_extension_count, nullptr);
+		vector<VkExtensionProperties> availableExtensions(extensionCount);
+		vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, availableExtensions.data());
+		*/
 
 		vkGetPhysicalDeviceQueueFamilyProperties(vk_ctx->cur_used_gpu, &(vk_ctx->queue_family_count), nullptr);
 		if (!vk_ctx->queue_family_count)
@@ -277,23 +284,91 @@ namespace wr
 		return true;
 	}
 
-	void release_vulkan_ctx(VulkanContext& vk_ctx) noexcept
+	bool create_logic_device(VulkanContext* vk_ctx, float queue_priority, VkDeviceCreateFlags flags) noexcept
+	{
+		VkResult result;
+		VkDeviceQueueCreateInfo queue_create_infos[3] = 
+		{
+			{
+				.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+				.queueCount = 1,
+				.pQueuePriorities = &queue_priority
+			},
+			{
+				.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+				.queueCount = 1,
+				.pQueuePriorities = &queue_priority
+			},
+			{
+				.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+				.queueCount = 1,
+				.pQueuePriorities = &queue_priority
+			} 
+		};
+
+		uint32_t queue_create_info_count = 0;
+		if (vk_ctx->graphics_queue_index != VK_QUEUE_FAMILY_IGNORED)
+			queue_create_infos[queue_create_info_count++].queueFamilyIndex = vk_ctx->graphics_queue_index;
+		if (vk_ctx->presentation_queue_index != VK_QUEUE_FAMILY_IGNORED &&
+			vk_ctx->graphics_queue_index != vk_ctx->presentation_queue_index)
+			queue_create_infos[queue_create_info_count++].queueFamilyIndex = vk_ctx->presentation_queue_index;
+		if (vk_ctx->compute_queue_index != VK_QUEUE_FAMILY_IGNORED &&
+			vk_ctx->compute_queue_index != vk_ctx->graphics_queue_index &&
+			vk_ctx->compute_queue_index != vk_ctx->presentation_queue_index)
+			queue_create_infos[queue_create_info_count++].queueFamilyIndex = vk_ctx->compute_queue_index;
+
+		VkDeviceCreateInfo deviceCreateInfo = 
+		{
+			.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+			.flags = flags,
+			.queueCreateInfoCount = queue_create_info_count,
+			.pQueueCreateInfos = queue_create_infos,
+			// TODO: enabledExtension
+			.enabledExtensionCount = 0,
+			.ppEnabledExtensionNames = nullptr,
+			.pEnabledFeatures = &(vk_ctx->vk_gpu_features[vk_ctx->cur_used_gpu_index])
+		};
+
+		result = vkCreateDevice(vk_ctx->cur_used_gpu, &deviceCreateInfo, nullptr, &(vk_ctx->vk_logic_vkdevice));
+
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
+				std::format("Failed to create a vulkan logical device!\t Error code: {0}", static_cast<uint64_t>(result)).c_str());
+			return false;
+		}
+
+		if (vk_ctx->graphics_queue_index != VK_QUEUE_FAMILY_IGNORED)
+			vkGetDeviceQueue(vk_ctx->vk_logic_vkdevice, vk_ctx->graphics_queue_index, 0, &(vk_ctx->graphics_queue));
+		if (vk_ctx->presentation_queue_index != VK_QUEUE_FAMILY_IGNORED)
+			vkGetDeviceQueue(vk_ctx->vk_logic_vkdevice, vk_ctx->presentation_queue_index, 0, &(vk_ctx->presentation_queue));
+		if (vk_ctx->compute_queue_index != VK_QUEUE_FAMILY_IGNORED)
+			vkGetDeviceQueue(vk_ctx->vk_logic_vkdevice, vk_ctx->compute_queue_index, 0, &(vk_ctx->compute_queue));
+
+		//vkGetPhysicalDeviceMemoryProperties(vk_ctx->cur_used_gpu, &physicalDeviceMemoryProperties);
+		return true;
+	}
+
+	bool v(){}
+
+	void release_vulkan_ctx(VulkanContext* vk_ctx) noexcept
 	{
 #ifdef _DEBUG
-		wr_free(vk_ctx.instance_layers);
-		vk_ctx.instance_layers = nullptr;
+		wr_free(vk_ctx->instance_layers);
+		vk_ctx->instance_layers = nullptr;
 #endif // _DEBUG
 		
-		wr_free(vk_ctx.vk_gpu_properties);
-		vk_ctx.vk_gpu_properties = nullptr;
+		wr_free(vk_ctx->vk_gpu_properties);
+		vk_ctx->vk_gpu_properties = nullptr;
 
-		wr_free(vk_ctx.vk_gpu_features);
-		vk_ctx.vk_gpu_features = nullptr;
+		wr_free(vk_ctx->vk_gpu_features);
+		vk_ctx->vk_gpu_features = nullptr;
 
-		wr_free(vk_ctx.queue_family_propertieses);
-		vk_ctx.queue_family_propertieses = nullptr;
+		wr_free(vk_ctx->queue_family_propertieses);
+		vk_ctx->queue_family_propertieses = nullptr;
 
-		vkDestroySurfaceKHR(vk_ctx.vk_main_instance, vk_ctx.window_bitmap_surface, pvk_allocator);
-		vkDestroyInstance(vk_ctx.vk_main_instance, pvk_allocator);
+		vkDestroySurfaceKHR(vk_ctx->vk_main_instance, vk_ctx->window_bitmap_surface, pvk_allocator);
+		vkDestroyDevice(vk_ctx->vk_logic_vkdevice, pvk_allocator);
+		vkDestroyInstance(vk_ctx->vk_main_instance, pvk_allocator);
 	}
 } // namespace wr is end

@@ -2,6 +2,7 @@
 #define _INC_WR_WINDOW_HPP_
 // core
 #include <string/wrString.hpp>
+#include <math/wrMathVector.hpp>
 // std
 #include <any>
 // window
@@ -18,6 +19,8 @@ namespace wr
 		Window() = default;
 
 		bool create_window(String& window_name, int32_t w, int32_t h, uint32_t style = WindowStyle::Default) noexcept;
+
+		recti get_window_size();
 
 		bool event();
 

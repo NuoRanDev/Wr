@@ -8,6 +8,7 @@
 #include <vulkan/vulkan.h>
 // core
 #include <string/wrString.hpp>
+#include <math/wrMathVector.hpp>
 // window
 #include <wrWindowProperty.hpp>
 
@@ -16,6 +17,8 @@ namespace wr
 	bool init_windows_env() noexcept;
 
 	any_type_ptr_t create_windows_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept;
+
+	recti get_windows_window_rect(any_type_ptr_t window_ptr) noexcept;
 
 	bool switch_event() noexcept;
 

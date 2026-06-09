@@ -33,11 +33,11 @@ namespace wr
 		// init vulkan instance
 		// not show window
 		// if failed , will exit this program
-		init_vulkan_instance(*vk_ctx, window_name.data());
+		init_vulkan_instance(vk_ctx, window_name.data());
 		
 		// select gpu
 		// if not , will exit this program
-		find_gpu(*vk_ctx);
+		find_gpu(vk_ctx);
 
 		// usually the nvidia's GPU is better than other
 		// what is more, we select AMD GPU and Intel GPU
@@ -87,8 +87,23 @@ namespace wr
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create queue failed!");
 			return false;
 		}
+		if (!create_logic_device(vk_ctx))
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan logic device failed!");
+			return false;
+		}
 		vulkan_ctx = vk_ctx;
 		return true;
+	}
+
+	recti Window::get_window_size()
+	{
+		recti size;
+#if defined(_WIN32)
+		size = get_windows_window_rect(window_hwnd);
+#else
+#endif // window platform
+		return size;
 	}
 
 	bool Window::event()
@@ -103,7 +118,7 @@ namespace wr
 	Window::~Window()
 	{
 		VulkanContext* vk_ctx = reinterpret_cast<VulkanContext*>(vulkan_ctx);
-		release_vulkan_ctx(*vk_ctx);
+		release_vulkan_ctx(vk_ctx);
 		delete vk_ctx;
 	}
 } // namespace wr is end
