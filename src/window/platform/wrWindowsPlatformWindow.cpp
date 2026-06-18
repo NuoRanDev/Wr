@@ -113,7 +113,7 @@ namespace wr
 		return DefWindowProcW(hwnd, msg, wparam, lparam);
 	}
 
-	bool init_windows_env() noexcept
+	ResultInfo init_windows_env() noexcept
 	{
 		wchar_t out_proc_name[256];
 		wchar_t* class_name;
@@ -142,10 +142,10 @@ namespace wr
 		if (atom_state == 0)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", std::format("Create windows class fataled , ERROR CODE: {0}", GetLastError()).c_str());
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
 
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	any_type_ptr_t create_windows_window(U16StringRef& window_name, int32_t w, int32_t h, uint32_t style) noexcept
@@ -165,32 +165,34 @@ namespace wr
 		return window_inst;
 	}
 
-	recti get_windows_window_rect(any_type_ptr_t window_ptr) noexcept
+	rectu get_windows_window_rect(any_type_ptr_t window_ptr) noexcept
 	{
 		HWND window_inst = reinterpret_cast<HWND>(window_ptr);
-		recti wsize = { 0 };
+		rectu wsize = { 0 };
 		RECT wrect;
 		if (GetWindowRect(window_inst, &wrect)) 
 		{
-			wsize.bottom	= wrect.bottom;
-			wsize.left		= wrect.left;
-			wsize.right		= wrect.right;
-			wsize.top		= wrect.top;
+			wsize.bottom	= static_cast<uint32_t>(wrect.bottom);
+			wsize.left		= static_cast<uint32_t>(wrect.left);
+			wsize.right		= static_cast<uint32_t>(wrect.right);
+			wsize.top		= static_cast<uint32_t>(wrect.top);
 		}
 		return wsize;
 	}
 
-	bool switch_event() noexcept
+	ResultInfo switch_event() noexcept
 	{
 		BOOL state = GetMessageW(&msg, NULL, 0, 0);
-		if (state == FALSE)
-			return false;
-		TranslateMessage(&msg);
-		DispatchMessageW(&msg);
-		return true;
+		if (state)
+		{
+			TranslateMessage(&msg);
+			DispatchMessageW(&msg);
+			return ResultInfo::WR_OK;
+		}
+		return ResultInfo::WR_EXIT;
 	}
 
-	bool get_vulkan_surface(VkInstance vk_inst, any_type_ptr_t window_ptr, const VkAllocationCallbacks* cb_allocer, VkSurfaceKHR& out_surface) noexcept
+	ResultInfo get_vulkan_surface(VkInstance vk_inst, any_type_ptr_t window_ptr, const VkAllocationCallbacks* cb_allocer, VkSurfaceKHR* out_surface) noexcept
 	{
 		HWND window_inst = reinterpret_cast<HWND>(window_ptr);
 		VkWin32SurfaceCreateInfoKHR win32surface_create_info = {};
@@ -198,12 +200,12 @@ namespace wr
 		win32surface_create_info.hwnd = window_inst;
 		win32surface_create_info.hinstance = cur_hinst;
 
-		if (vkCreateWin32SurfaceKHR(vk_inst, &win32surface_create_info, cb_allocer, &out_surface) != VK_SUCCESS)
+		if (vkCreateWin32SurfaceKHR(vk_inst, &win32surface_create_info, cb_allocer, out_surface))
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrWindow::(window API , VULKAN)", "Create win32 vulkan surface fataled");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	void free()

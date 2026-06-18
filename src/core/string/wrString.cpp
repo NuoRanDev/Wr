@@ -72,7 +72,7 @@ namespace wr
 			utf32_str = utf32_str >> 6;
 			i--;
 		}
-		utf8_str[0] = static_cast<utf8_t>(utf32_str | PREFIX[len - 1]);
+		utf8_str[0] = static_cast<utf8_t>(utf32_str | static_cast<unicode_t>(PREFIX[len - 1]));
 		return len;
 	}
 
@@ -88,7 +88,7 @@ namespace wr
 
 		if (b < 0x80)
 		{
-			des = b;
+			des = static_cast<unicode_t>(b);
 			return;
 		}
 
@@ -138,17 +138,17 @@ namespace wr
 		}
 	}
 
-	static bool utf8_to_utf16le(const utf8_t* u8_src, int64_t utf8_str_size, utf16le_t** u16le_dst, int64_t& utf16le_char_count) noexcept
+	static ResultInfo utf8_to_utf16le(const utf8_t* u8_src, int64_t utf8_str_size, utf16le_t** u16le_dst, int64_t& utf16le_char_count) noexcept
 	{
 		if (u8_src == nullptr || utf8_str_size == 0)
 		{
 			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf8 string is empty!");
 			*u16le_dst = nullptr;
-			return true;
+			return ResultInfo::WR_OK;
 		}
 
 		int64_t len = utf8_str_size;
-		bool is_ok = true;
+		ResultInfo is_ok = ResultInfo::WR_OK;
 		dynamic_array<utf16le_t> u16str;
 		uint32_t c1;
 		uint32_t c2;
@@ -205,11 +205,11 @@ namespace wr
 				u16str.push_back(static_cast<utf16le_t>(code_point));
 				break;
 			default:
-				is_ok = false;
+				is_ok = ResultInfo::WR_WARNING;
 				break;
 			}
 		}
-		if(is_ok)
+		if(!is_ok)
 		{
 			utf16le_char_count = u16str.size();
 			*u16le_dst = wr_malloc<utf16le_t>(utf16le_char_count);
@@ -223,12 +223,12 @@ namespace wr
 		return is_ok;
 	}
 
-	static bool utf16le_to_utf8(const utf16le_t* u16le_src, int64_t utf16le_char_count, U8StringRef& u8_dst)
+	static ResultInfo utf16le_to_utf8(const utf16le_t* u16le_src, int64_t utf16le_char_count, U8StringRef& u8_dst)
 	{
 		if (u16le_src == nullptr && utf16le_char_count == 0)
 		{
 			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf16 string is empty!")
-			return true; 
+			return ResultInfo::WR_OK;
 		}
 
 		const utf16le_t* u16le_src_cur = u16le_src;
@@ -290,7 +290,7 @@ namespace wr
 		}
 
 		u8_dst.load_seq_no_0_str_add0(u8str.data(), u8str.size());
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	static int64_t count_utf8(const utf8_t* utf8, int64_t alloc_size) noexcept
@@ -390,7 +390,7 @@ namespace wr
 		return characters_number == 0;
 	}
 
-	bool U8StringRef::erase(int64_t index, int64_t count)
+	ResultInfo U8StringRef::erase(int64_t index, int64_t count)
 	{
 		int64_t start = 0;
 		int64_t remove_ofs = 0;
@@ -404,14 +404,14 @@ namespace wr
 		if (temp_data == nullptr)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "String not init");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		characters_data = wr_realloc<utf8_t>(characters_data, characters_data_size - remove_ofs);
 		characters_data[characters_data_size - remove_ofs - 1] = 0;
-		return true;
+		return ResultInfo::WR_OK;
 	STRING_FORMAT_ERROR:
 		WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "String format is broken");
-		return false;
+		return ResultInfo::WR_WARNING;
 	}
 
 	void U8StringRef::append(unicode_t character) noexcept
@@ -747,10 +747,10 @@ namespace wr
 		other.clear_moved_str();
 	}
 
-	bool U16StringRef::load_utf8(const U8StringRef& u8_str) noexcept
+	ResultInfo U16StringRef::load_utf8(const U8StringRef& u8_str) noexcept
 	{
-		bool state = utf8_to_utf16le(u8_str.data(), u8_str.get_characters_data_size(), &characters_data, characters_number);
-		if (!state)
+		ResultInfo state = utf8_to_utf16le(u8_str.data(), u8_str.get_characters_data_size(), &characters_data, characters_number);
+		if (state)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 to utf16 failed");
 			characters_data = nullptr;
@@ -759,10 +759,10 @@ namespace wr
 		return state;
 	}
 
-	bool U16StringRef::to_utf8(U8StringRef& u8_dst)  const noexcept
+	ResultInfo U16StringRef::to_utf8(U8StringRef& u8_dst)  const noexcept
 	{
-		bool state = utf16le_to_utf8(characters_data, characters_number, u8_dst);
-		if (!state)
+		ResultInfo state = utf16le_to_utf8(characters_data, characters_number, u8_dst);
+		if (state)
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf16 to utf8 failed");
 		return state;
 	}

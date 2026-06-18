@@ -5,8 +5,8 @@
 
 namespace wr
 {
-	bool read_memory_ppm_image(const ImageFile& file, Image& img_out) noexcept
+	ResultInfo read_memory_ppm_image(const ImageFile& file, Image& img_out) noexcept
 	{
-		return true;
+		return ResultInfo::WR_OK;
 	}
 } // namespace wr is end

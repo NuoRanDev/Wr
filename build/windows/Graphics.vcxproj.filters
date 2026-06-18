@@ -4,6 +4,9 @@
     <ClCompile Include="..\..\src\graphics\vulkan\wrVulkan.cpp">
       <Filter>graphics\vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\graphics\vulkan\wrVulkanQueues.cpp">
+      <Filter>graphics\vulkan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
@@ -27,6 +30,9 @@
       <Filter>graphics\vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanConfig.hpp">
+      <Filter>graphics\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanQueues.hpp">
       <Filter>graphics\vulkan</Filter>
     </ClInclude>
   </ItemGroup>

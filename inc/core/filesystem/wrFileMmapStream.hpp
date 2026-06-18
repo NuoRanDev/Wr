@@ -3,6 +3,7 @@
 
 // core
 #include <type/wrOrdinals.hpp>
+#include <type/wrResult.hpp>
 #include <string/wrString.hpp>
 #include <memory/wrAlloc.hpp>
 #include <filesystem/wrPath.hpp>
@@ -31,16 +32,16 @@ namespace wr
 
 		// read file data to dst (copy)
 
-		bool read(size_t offset_byte, size_t data_size, any_type_ptr_t dst) const noexcept;
+		ResultInfo read(size_t offset_byte, size_t data_size, any_type_ptr_t dst) const noexcept;
 
-		template<typename T> bool read(T* dst, size_t number) const noexcept { return read(0, dst, number); }
+		template<typename T> ResultInfo read(T* dst, size_t number) const noexcept { return read(0, dst, number); }
 
-		template<typename T> bool read(size_t offset_byte, T* dst, size_t number) const noexcept
+		template<typename T> ResultInfo read(size_t offset_byte, T* dst, size_t number) const noexcept
 		{
 			return read(offset_byte, number * sizeof(T), dst);
 		}
 
-		bool open_file(const Path& path) noexcept;
+		ResultInfo open_file(const Path& path) noexcept;
 
 		void release() noexcept;
 
@@ -55,7 +56,7 @@ namespace wr
 		const uint64_t get_file_size() const noexcept { return file_size; }
 
 	protected:
-		bool get_file_size(const Path& path) noexcept;
+		ResultInfo get_file_size(const Path& path) noexcept;
 
 		uint64_t file_size;
 

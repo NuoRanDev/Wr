@@ -5,6 +5,9 @@
 #include <vulkan/vulkan.h>
 // core
 #include <type/wrOrdinals.hpp>
+#include <math/wrMathVector.hpp>
+// graphics
+#include <vulkan/wrVulkanQueues.hpp>
 
 namespace wr
 {
@@ -38,33 +41,61 @@ namespace wr
 
 		uint32_t						cur_used_gpu_index				= -1;
 		VkPhysicalDevice				cur_used_gpu					= VK_NULL_HANDLE;
+		uint32_t						vk_gpu_extension_count			= 0;
+		VkExtensionProperties*			vk_gpu_extensions				= VK_NULL_HANDLE;
 
 		VkDevice						vk_logic_vkdevice				= VK_NULL_HANDLE;
 		VkSurfaceKHR					window_bitmap_surface			= VK_NULL_HANDLE;
 
-		uint32_t						queue_family_count				= 0;
-		VkQueueFamilyProperties*		queue_family_propertieses		= nullptr;
-		
-		VkQueue							graphics_queue					= VK_NULL_HANDLE;
-		uint32_t						graphics_queue_index			= 0;
+		QueueModule						queue_mod;
 
-		VkQueue							compute_queue					= VK_NULL_HANDLE;
-		uint32_t						compute_queue_index				= 0;
+		VkSwapchainCreateInfoKHR		swapchain_create_info_data;
+		VkSwapchainKHR					swapchain;
 
-		VkQueue							presentation_queue				= VK_NULL_HANDLE;
-		uint32_t						presentation_queue_index		= 0;
+		uint32_t						available_surface_format_count	= 0;
+		VkSurfaceFormatKHR*				available_surface_formats		= VK_NULL_HANDLE;
+
+		uint32_t						surface_present_mode_count		= 0;
+		VkPresentModeKHR*				surface_present_modes			= VK_NULL_HANDLE;
+
+		uint32_t						swapchain_image_count			= 0;
+		VkImage*						swapchain_images				= VK_NULL_HANDLE;
+		VkImageView*					swapchain_image_views			= VK_NULL_HANDLE;
+
+		bool							alpha_window					= true;
+		bool							tty_screen						= false;
+		bool							limit_frame_rate				= true;
+
 #ifdef _DEBUG
 		VkLayerProperties*				instance_layers					= nullptr;
 #endif // _DEBUG is end
 	};
 
+	void init_vk_ctx(VulkanContext* vk_ctx);
+
 	void init_vulkan_instance(VulkanContext* vk_ctx, const utf8_t* app_name) noexcept;
 
 	void find_gpu(VulkanContext* vk_ctx) noexcept;
 
-	bool get_queue_family_indices(VulkanContext* vk_ctx, bool enable_graphics_queue = true, bool enable_compute_queue = true) noexcept;
+	ResultInfo create_logic_device(VulkanContext* vk_ctx, VkDeviceCreateFlags flags = 0, bool use_compute_queue = true) noexcept;
 
-	bool create_logic_device(VulkanContext* vk_ctx, float queue_priority = 1.f, VkDeviceCreateFlags flags = VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT) noexcept;
+	/*=======================================================
+	* \param window_size if draw on screen ,that is screen size
+	* \param cache_surface_count this cache bitmap number
+	* \param alpha_window no window border set alpha
+	* \param tty_screen is direct window
+	* \param limit_frame_rate lock frame rate
+	========================================================*/
+	ResultInfo create_swapchain(VulkanContext* ck_ctx,
+		vec2u window_size,
+		uint32_t cache_surface_count,
+		bool alpha_window,
+		bool tty_screen,
+		bool limit_frame_rate = true);
+
+	VkResult recreate_swapchain(VulkanContext* vk_ctx) noexcept;
+
+	ResultInfo create_image_view(VulkanContext* vk_ctx);
 
 	void release_vulkan_ctx(VulkanContext* vk_ctx) noexcept;
 } // namespace wr is end

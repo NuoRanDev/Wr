@@ -14,7 +14,7 @@
 
 namespace wr
 {
-	const byte_t *Mmapfstream::get_mmap_offset_ptr(size_t offset_byte) const noexcept
+	const byte_t* Mmapfstream::get_mmap_offset_ptr(size_t offset_byte) const noexcept
 	{
 		if (file_size < offset_byte)
 		{
@@ -26,45 +26,45 @@ namespace wr
 		return (byte_t *)pfile_start + offset_byte;
 	}
 
-	bool Mmapfstream::get_file_size(const Path &path) noexcept
+	ResultInfo Mmapfstream::get_file_size(const Path &path) noexcept
 	{
-		if (!path.exists())
+		if (path.exists() == false)
 		{
-			WR_INFO_OUTPUT(
+			WR_WARNING_OUTPUT(
 				WR_TYPE_NAME_OUTPUT::APP,
 				"wrCore",
 				"Can't find file");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
-		if(!path.is_file())
+		if(path.is_file() == false)
 		{
-			WR_INFO_OUTPUT(
+			WR_WARNING_OUTPUT(
 				WR_TYPE_NAME_OUTPUT::APP,
 				"wrCore",
 				"Not file");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		file_size = path.get_size();
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
-	bool Mmapfstream::read(size_t offset_byte, size_t data_size, any_type_ptr_t dst) const noexcept
+	ResultInfo Mmapfstream::read(size_t offset_byte, size_t data_size, any_type_ptr_t dst) const noexcept
 	{
 		if (file_size < offset_byte + data_size)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP,
 							  "wrCore",
 							  std::format("Out of memory : offset size {0}, file size {1}", offset_byte + data_size, file_size).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		std::memcpy(dst, (byte_t *)pfile_start + offset_byte, data_size);
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
-	bool Mmapfstream::open_file(const Path &path) noexcept
+	ResultInfo Mmapfstream::open_file(const Path &path) noexcept
 	{
-		if (!get_file_size(path))
-			return false;
+		if (get_file_size(path))
+			return ResultInfo::WR_WARNING;
 #if defined(_WIN32)
 		auto win_str = path.get_native_str_data();
 		c_dump_file_descriptor = CreateFileW(
@@ -77,7 +77,7 @@ namespace wr
 				WR_TYPE_NAME_OUTPUT::APP,
 				"wrCore",
 				std::format("Create file mapping failed , SYSTEM ERROR CODE:{0}", GetLastError()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		hfile_mapping = CreateFileMapping(c_dump_file_descriptor, NULL, PAGE_READONLY, 0, 0, NULL);
 		if (hfile_mapping == nullptr)
@@ -86,7 +86,7 @@ namespace wr
 				WR_TYPE_NAME_OUTPUT::APP,
 				"wrCore",
 				std::format("Open file mapping failed , SYSTEM ERROR CODE:{0}", GetLastError()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		pfile_start = MapViewOfFile(hfile_mapping, FILE_MAP_READ, 0, 0, 0);
 		if (pfile_start == nullptr)
@@ -96,7 +96,7 @@ namespace wr
 				"wrCore",
 				std::format("Map file mapping failed ,SYSTEM ERROR CODE:{0}", GetLastError()).c_str());
 			CloseHandle(hfile_mapping);
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 #elif defined(__linux__)
 		struct stat* temp_st = wr_malloc<struct stat>(1);
@@ -107,7 +107,7 @@ namespace wr
 				WR_TYPE_NAME_OUTPUT::APP,
 				"wrCore",
 				std::format("Create file mapping failed , SYSTEM ERROR CODE:{0}", errno)..c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		fstat(fd, temp_st);
 		// PROT_READ : 
@@ -120,11 +120,11 @@ namespace wr
 				"wrCore",
 				std::format("Map file mapping failed ,SYSTEM ERROR CODE:{0}", errno).c_str());
 			close(fd);
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		st = reinterpret_cast<any_type_ptr_t>(temp_st);
 #endif // _WIN32 FUNCTION IS END
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	void Mmapfstream::release() noexcept
@@ -138,6 +138,7 @@ namespace wr
 			CloseHandle(c_dump_file_descriptor);
 		pfile_start = nullptr;
 		hfile_mapping = nullptr;
+		c_dump_file_descriptor = nullptr;
 		file_size = 0;
 #elif defined(__linux__)
 		struct stat* temp_st = reinterpret_cast<struct stat*>(st);
@@ -145,7 +146,7 @@ namespace wr
 			munmap(pfile_start, temp_st->st_size);
 			close(fd);
 		}
-		xe_free(temp_st);
+		wr_free(temp_st);
 #endif // _WIN32 FUNCTION IS END
 	}
 } // namespace wr is end

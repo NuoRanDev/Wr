@@ -218,4 +218,17 @@ namespace wr
 
 #endif // OS
 	}
+
+	const String Path::to_string() const noexcept
+	{
+		String out_str;
+#if defined(_WIN32)
+		if (n_str.to_utf8(out_str))
+			return out_str;
+		out_str.load_default_str();
+		return out_str;
+#else
+		return out_str.load_u8stringref(n_str);
+#endif // defined(_WIN32) is end
+	}
 } // namespace wr is end

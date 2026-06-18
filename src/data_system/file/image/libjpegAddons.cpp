@@ -28,7 +28,7 @@ void my_error_exit(j_common_ptr cinfo)
 
 namespace wr
 {
-	bool read_memory_jpg_image(const ImageFile& file, Image& img_out) noexcept
+	ResultInfo read_memory_jpg_image(const ImageFile& file, Image& img_out) noexcept
 	{
 		jpeg_decompress_struct cinfo;
 		libjpeg_addons jerr;
@@ -46,7 +46,7 @@ namespace wr
 		if (setjmp(jerr.setjmp_buffer))
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libjpeg", std::format("File:{0} reed jpeg failed!",file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		jpeg_create_decompress(&cinfo);
@@ -65,7 +65,7 @@ namespace wr
 		{
 		case JCS_UNKNOWN:
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 
 		case JCS_GRAYSCALE:
 			img_out.create_empty(IMG_FORMAT::GRAY_U8, cinfo.image_width, cinfo.image_height);
@@ -77,7 +77,7 @@ namespace wr
 
 		default:
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem: libjpeg", std::format("File:{0} unknown jpeg type\n",file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		// get piwrl lines
@@ -92,7 +92,7 @@ namespace wr
 		jpeg_finish_decompress(&cinfo);
 		jpeg_destroy_decompress(&cinfo);
 
-		return true;
+		return ResultInfo::WR_OK;
 
 	}
 } // namespace wr is end

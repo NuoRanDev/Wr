@@ -12,7 +12,7 @@
 #include <spng.h>
 namespace wr
 {
-	bool read_memory_png_image(const ImageFile& file, Image& img_out) noexcept
+	ResultInfo read_memory_png_image(const ImageFile& file, Image& img_out) noexcept
 	{
 		byte_t color_type = 0;
 		spng_ihdr ihdr = { 0 };
@@ -34,14 +34,14 @@ namespace wr
 		if (png_buffer == nullptr || file_size == 0)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} image file data is empty", file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		spng_ctx* ctx = spng_ctx_new(0);
 		if (ctx == nullptr)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} init context failed", file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		ret = spng_set_png_buffer(ctx, png_buffer, file_size);
@@ -49,7 +49,7 @@ namespace wr
 		{
 			spng_ctx_free(ctx);
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} load data failed", file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		spng_get_ihdr(ctx, &ihdr);
@@ -57,17 +57,17 @@ namespace wr
 		{
 			spng_ctx_free(ctx);
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons", std::format("File:{0} get header information data failed", file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		// Xe studio output data is 8 bit depth
-		if (ihdr.bit_depth != 8 and ihdr.bit_depth != 16)
+		if ((ihdr.bit_depth != 8) && (ihdr.bit_depth != 16))
 		{
 			spng_ctx_free(ctx);
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspngAddons",
 				std::format("File:{1} image data is broken. Image bit depth is {0}, WR support Bit depth is 8 and 16!", 
 				ihdr.bit_depth, file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 
 		// Get image bit depth and color type
@@ -96,7 +96,7 @@ namespace wr
 			}
 			else goto COLOR_NOT_SUPPORT;
 			// The fucking old color picture
-		case SPNG_COLOR_TYPE_INDEWRD:
+		case SPNG_COLOR_TYPE_INDEXED:
 			if(ihdr.bit_depth == 8)
 			{
 				spng_decoded_image_size(ctx, SPNG_FMT_RGBA8, &need_new_size);
@@ -156,17 +156,17 @@ namespace wr
 		{
 			spng_ctx_free(ctx);
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken or alloc size failed",file.c_file_name()).c_str());
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		spng_decode_image(ctx, img_out.unsafe_data(), need_new_size, fmt, 0);
 
 		// Destory linspng struction
 		spng_ctx_free(ctx);
-		return true;
+		return ResultInfo::WR_OK;
 	COLOR_NOT_SUPPORT:
 		spng_ctx_free(ctx);
 		WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "DataSystem : libspng", std::format("Image data is broken.Not support this color format", file.c_file_name()).c_str());
-		return false;
+		return ResultInfo::WR_OK;
 	}
 }
 #endif // USE_PNG

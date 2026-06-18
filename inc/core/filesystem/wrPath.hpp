@@ -30,6 +30,8 @@ namespace wr
 
 #endif // defined(_WIN32) is end
 
+		Path operator=(const U8StringRef& path) { return Path(path); }
+
 		String abs_path() const noexcept;
 
 		String base_name() noexcept;
@@ -48,18 +50,7 @@ namespace wr
 
 		std::pair<String, String> split() const noexcept;
 
-		const String to_string() const noexcept
-		{
-			String out_str;
-#if defined(_WIN32)
-			if (n_str.to_utf8(out_str))
-				return out_str;
-			out_str.load_default_str();
-			return out_str;
-#else
-			return out_str.load_u8stringref(n_str);
-#endif // defined(_WIN32) is end
-		}
+		const String to_string() const noexcept;
 
 		bool is_empty() const noexcept
 		{
@@ -85,11 +76,11 @@ namespace wr
 			out << "";
 		else
 		{
-			out << str;
+			out << str.c_str();
 		}
 		return out;
 #else
-		auto str = path.get_native_str_data();;
+		auto str = path.get_native_str_data();
 		if (str == nullptr)
 			out << "";
 		else

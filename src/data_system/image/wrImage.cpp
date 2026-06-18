@@ -70,33 +70,33 @@ namespace wr
 		img_data = alloc_data_memory(data_size);
 	}
 
-	bool Image::load_data(IMG_FORMAT src_format, const byte_t* src_data, int32_t src_x, int32_t src_y) noexcept
+	ResultInfo Image::load_data(IMG_FORMAT src_format, const byte_t* src_data, int32_t src_x, int32_t src_y) noexcept
 	{
 		create_empty(src_format, src_x, src_y);
 		img_data = alloc_data_memory(data_size);
 		memcpy(img_data, src_data, data_size);
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
-	bool Image::load_data(byte_t* src_data, int32_t src_size) noexcept
+	ResultInfo Image::load_data(byte_t* src_data, int32_t src_size) noexcept
 	{
 		if (src_data == nullptr || src_size == 0)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP,
 				"wrDataSystem",
 				"Image data is empty");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		if (src_size != data_size)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP,
 				"wrDataSystem",
 				"Image data size is not match");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		memcpy(img_data, src_data, src_size);
 		data_size = src_size;
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	const byte_t* const Image::get_data(int64_t& out_data_size) const noexcept

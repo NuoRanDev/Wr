@@ -10,7 +10,7 @@
 
 namespace wr
 {
-	bool init_wr_window_ctx();
+	ResultInfo init_wr_window_ctx();
 
 	class Window
 	{
@@ -18,11 +18,11 @@ namespace wr
 
 		Window() = default;
 
-		bool create_window(String& window_name, int32_t w, int32_t h, uint32_t style = WindowStyle::Default) noexcept;
+		ResultInfo create_window(String& window_name, vec2u size, uint32_t style = WindowStyle::Default) noexcept;
 
-		recti get_window_size();
+		rectu get_window_size();
 
-		bool event();
+		ResultInfo event();
 
 		~Window();
 

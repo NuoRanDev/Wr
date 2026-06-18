@@ -1,9 +1,9 @@
 ﻿// statement
 #include <log/wrLogOutput.hpp>
 
-#if defined(_DEBUG)
+//#if defined(_DEBUG) || defined(__linux__)
 #define OPEN_CLR
-#endif // is defined _DEBUG
+//#endif // is defined _DEBUG
 
 // std
 #include <exception>

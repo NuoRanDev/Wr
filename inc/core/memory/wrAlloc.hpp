@@ -23,6 +23,11 @@ namespace wr
 		return (T*)wr_only_malloc(sizeof(T) * size);
 	}
 
+	template<typename T> T* wr_aligned_alloc(size_t alignment, size_t size) noexcept
+	{
+		return (T*)wr_olny_aligned_alloc(alignment, sizeof(T) * size);
+	}
+
 	template<typename T> T* wr_realloc(any_type_ptr_t src, size_t size) noexcept
 	{
 		return (T*)wr_only_realloc(src, sizeof(T) * size);

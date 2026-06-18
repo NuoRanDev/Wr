@@ -6,20 +6,20 @@
 
 namespace wr
 {
-	bool MemoryFile::load_file_not_copy_in_memory(byte_t* mem_data, size_t data_size, String& mem_file_name) noexcept
+	ResultInfo MemoryFile::load_file_not_copy_in_memory(byte_t* mem_data, size_t data_size, String& mem_file_name) noexcept
 	{
 		if (mem_data == nullptr)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP,
 				"wrDataSystem",
 				"Memory file data is empty");
-			return false;
+			return ResultInfo::WR_WARNING;
 		}
 		file_data = mem_data;
 		file_name = mem_file_name;
 		file_data_size = data_size;
 		is_copy_in_memory = false;
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	const byte_t* const MemoryFile::get_file_data(size_t& out_data_size) const noexcept

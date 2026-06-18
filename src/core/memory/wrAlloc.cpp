@@ -16,7 +16,8 @@ namespace wr
 
 	any_type_ptr_t wr_free(any_type_ptr_t src) noexcept
 	{
-		if (src != nullptr)mi_free(src);
+		if (src != nullptr)
+			mi_free(src);
 		return nullptr;
 	}
 

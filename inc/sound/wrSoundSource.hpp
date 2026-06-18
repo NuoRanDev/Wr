@@ -1,8 +1,11 @@
 ﻿#ifndef _INC_WR_SOUND_SOURCE_HPP_
 #define _INC_WR_SOUND_SOURCE_HPP_
 
-#include "audio/wrAudio.hpp"
-#include "math/wrMathVector.hpp"
+// sound
+#include <audio/wrAudio.hpp>
+// core
+#include <type/wrResult.hpp>
+#include <math/wrMathVector.hpp>
 
 namespace wr
 {
@@ -11,7 +14,7 @@ namespace wr
 	public:
 		SoundSource() noexcept = default;
 
-		bool lood_audio(PcmBlock pcm) noexcept;
+		ResultInfo lood_audio(PcmBlock pcm) noexcept;
 
 		void set_is_loop(bool is_loop) noexcept;
 

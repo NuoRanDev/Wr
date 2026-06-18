@@ -34,9 +34,6 @@
     <ClCompile Include="..\..\src\data_system\image\wrImage.cpp">
       <Filter>data_system\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\data_system\file\image\liblvglDecBmp.cpp">
-      <Filter>data_system\file\image</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\data_system\file\audio\libDrFlac.cpp">
       <Filter>data_system\file\audio</Filter>
     </ClCompile>

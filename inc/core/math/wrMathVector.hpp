@@ -37,6 +37,7 @@ namespace wr
 	using vec3f = vec3<float>;
 	using vec3d = vec3<double>;
 	using vec3i = vec3<int32_t>;
+	using vec3u = vec3<uint32_t>;
 
 	template<baise_type_no_struct_or_class T> struct vec2
 	{
@@ -61,6 +62,7 @@ namespace wr
 	using vec2f = vec2<float>;
 	using vec2d = vec2<double>;
 	using vec2i = vec2<int32_t>;
+	using vec2u = vec2<uint32_t>;
 
 	template<baise_type_no_struct_or_class T> struct rect
 	{
@@ -70,6 +72,7 @@ namespace wr
 	using rectf = rect<float>;
 	using rectd = rect<double>;
 	using recti = rect<int32_t>;
+	using rectu = rect<uint32_t>;
 
 } // namespace wr is end
 

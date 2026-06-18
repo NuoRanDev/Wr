@@ -1,7 +1,8 @@
 ﻿#ifndef _INC_WR_AUDIO_PLAYER_INSTANCE_HPP_
 #define _INC_WR_AUDIO_PLAYER_INSTANCE_HPP_
-
-#include "type/wrDataStruction.hpp"
+// core
+#include <type/wrDataStruction.hpp>
+#include <type/wrResult.hpp>
 
 namespace wr 
 {
@@ -14,7 +15,7 @@ namespace wr
 			context = nullptr;
 		}
 
-		bool init() noexcept;
+		ResultInfo init() noexcept;
 
 		~AudioPlayerInstance();
 

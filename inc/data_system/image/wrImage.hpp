@@ -1,6 +1,7 @@
 ﻿#ifndef _WR_IMAGE_HPP_
 #define _WR_IMAGE_HPP_
 // core
+#include <type/wrResult.hpp>
 #include <type/wrOrdinals.hpp>
 #include <memory/wrAlloc.hpp>
 // std
@@ -73,9 +74,9 @@ namespace wr
 
 		void create_empty(IMG_FORMAT const src_format, int32_t const src_x, int32_t const src_y) noexcept;
 
-		[[nodiscard]] bool load_data(IMG_FORMAT src_format, const byte_t* src_data, int32_t src_x, int32_t src_y) noexcept;
+		[[nodiscard]] ResultInfo load_data(IMG_FORMAT src_format, const byte_t* src_data, int32_t src_x, int32_t src_y) noexcept;
 
-		[[nodiscard]] bool load_data(byte_t* src_data, int32_t src_size) noexcept;
+		[[nodiscard]] ResultInfo load_data(byte_t* src_data, int32_t src_size) noexcept;
 
 		[[nodiscard]] const byte_t* const get_data(int64_t& out_data_size) const noexcept;
 

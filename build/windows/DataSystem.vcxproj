@@ -22,7 +22,6 @@
     <ClCompile Include="..\..\src\data_system\audio\wrAudio.cpp" />
     <ClCompile Include="..\..\src\data_system\file\audio\libDrFlac.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libjpegAddons.cpp" />
-    <ClCompile Include="..\..\src\data_system\file\image\liblvglDecBmp.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libsnpngAddons.cpp" />
     <ClCompile Include="..\..\src\data_system\file\image\libppm.cpp" />
     <ClCompile Include="..\..\src\data_system\file\wrMemoryFile.cpp" />
@@ -139,7 +138,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MI_OVERRIDE;SPNG_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_PNG;USE_JPEG;MI_OVERRIDE;SPNG_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -159,7 +158,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MI_OVERRIDE;SPNG_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_PNG;USE_JPEG;MI_OVERRIDE;SPNG_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\data_system\;$(SolutionDir)..\..\inc\core\</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>

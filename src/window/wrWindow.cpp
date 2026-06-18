@@ -4,6 +4,7 @@
 #include <vulkan/wrVulkan.hpp>
 // core
 #include <log/wrLogOutput.hpp>
+#include <memory/wrAlloc.hpp>
 // std
 #include <cstring>
 #include <format>
@@ -17,18 +18,21 @@
 
 namespace wr
 {
-	bool init_wr_window_ctx()
+	ResultInfo init_wr_window_ctx()
 	{
-		bool state = init_windows_env();
-		if(!state)
+		ResultInfo state = init_windows_env();
+		if(state)
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Init model window env error");
 		return state;
 	}
 
-	bool Window::create_window(String& window_name, int32_t w, int32_t h, uint32_t style) noexcept
+	ResultInfo Window::create_window(String& window_name, vec2u size, uint32_t style) noexcept
 	{
 		uint32_t score = -1;
-		VulkanContext* vk_ctx = new VulkanContext[1];
+		// avx 256
+		VulkanContext* vk_ctx = wr_malloc<VulkanContext>(1);
+
+		init_vk_ctx(vk_ctx);
 		
 		// init vulkan instance
 		// not show window
@@ -42,7 +46,7 @@ namespace wr
 		// usually the nvidia's GPU is better than other
 		// what is more, we select AMD GPU and Intel GPU
 		// in the end NO:0 GPU will be selected
-		for (size_t i = 0; i < vk_ctx->gpu_cout; i++)
+		for (uint32_t i = 0; i < vk_ctx->gpu_cout; i++)
 		{
 			if (strstr(vk_ctx->vk_gpu_properties[i].deviceName, "NVIDIA"))
 			{
@@ -69,36 +73,41 @@ namespace wr
 #if defined(_WIN32)
 		// windows string is utf16 format
 		U16StringRef win_str_window_name = window_name;
-		window_hwnd = create_windows_window(win_str_window_name, w, h, style);
+		window_hwnd = create_windows_window(win_str_window_name, size.x, size.y, style);
 		if(!window_hwnd)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create window failed!");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
 #else
 #endif // window platform
-		if(!get_vulkan_surface(vk_ctx->vk_main_instance, window_hwnd, pvk_allocator, vk_ctx->window_bitmap_surface))
+		if (get_vulkan_surface(vk_ctx->vk_main_instance, window_hwnd, pvk_allocator, &(vk_ctx->window_bitmap_surface)))
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create window surface failed!");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
-		if (!get_queue_family_indices(vk_ctx))
-		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create queue failed!");
-			return false;
-		}
-		if (!create_logic_device(vk_ctx))
+		if (create_logic_device(vk_ctx, 0, false))
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan logic device failed!");
-			return false;
+			return ResultInfo::WR_ERROR;
+		}
+		if (create_swapchain(vk_ctx, size, 3, false, false))
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan logic device failed!");
+			return ResultInfo::WR_ERROR;
+		}
+		if(create_image_view(vk_ctx))
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan image view failed!");
+			return ResultInfo::WR_ERROR;
 		}
 		vulkan_ctx = vk_ctx;
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
-	recti Window::get_window_size()
+	rectu Window::get_window_size()
 	{
-		recti size;
+		rectu size;
 #if defined(_WIN32)
 		size = get_windows_window_rect(window_hwnd);
 #else
@@ -106,7 +115,7 @@ namespace wr
 		return size;
 	}
 
-	bool Window::event()
+	ResultInfo Window::event()
 	{
 #if defined(_WIN32)
 		return switch_event();
@@ -119,6 +128,6 @@ namespace wr
 	{
 		VulkanContext* vk_ctx = reinterpret_cast<VulkanContext*>(vulkan_ctx);
 		release_vulkan_ctx(vk_ctx);
-		delete vk_ctx;
+		wr_free(vk_ctx);
 	}
 } // namespace wr is end

@@ -86,7 +86,7 @@ namespace wr
 		return flac_context;
 	}
 
-	bool read_memory_flac_audio_all_pcm(const AudioFile& file, PcmBlock& pcm_out) noexcept
+	ResultInfo read_memory_flac_audio_all_pcm(const AudioFile& file, PcmBlock& pcm_out) noexcept
 	{
 		drflac* flac_context;
 		size_t flac_size = 0;
@@ -95,12 +95,12 @@ namespace wr
 		if (flac_size == 0 || flac_data == nullptr)
 		{
 			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrAudio: DecFlac", "Can't read memory file!");
-			return false;
+			return ResultInfo::WR_WARNING;
 		};
 
 		flac_context = read_memory_flac_audio_info(flac_size, flac_data, pcm_out.header);
 		if (flac_context == nullptr)
-			return false;
+			return ResultInfo::WR_WARNING;
 
 		switch(flac_context->bitsPerSample)
 		{
@@ -120,7 +120,7 @@ namespace wr
 
 		default:
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "format not support!");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
 
 	INT16_PCM_DEC:
@@ -129,17 +129,17 @@ namespace wr
 		if (pcm_out.pcm_data == nullptr)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "Decode is failed!");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
-		return true;
+		return ResultInfo::WR_OK;
 	INT32_PCM_DEC:
 
 		pcm_out.pcm_data = type_drflac_full_read<float>(flac_context, pcm_out.data_size, &(drflac_read_pcm_frames_f32));
 		if (pcm_out.pcm_data == nullptr)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrAudio :DecFlac", "Decode is failed!");
-			return false;
+			return ResultInfo::WR_ERROR;
 		}
-		return true;
+		return ResultInfo::WR_OK;
 	}
 } // namespace wr is end

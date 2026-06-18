@@ -101,5 +101,8 @@
     <ClInclude Include="..\..\inc\core\math\wrMathVector.hpp">
       <Filter>core\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\core\type\wrResult.hpp">
+      <Filter>core\type</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

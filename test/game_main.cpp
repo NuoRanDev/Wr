@@ -122,9 +122,14 @@ int main(int argc, char** argv)
 	init_wr_window_ctx();
 	Window win;
 	String win_name = u8"wr 窗口";
-	win.create_window(win_name, 800, 600);
+	vec2u si =
+	{
+		.x = 800,
+		.y = 600
+	};
+	win.create_window(win_name, si);
 
-	while(win.event())
+	while (win.event() == ResultInfo::WR_OK)
 	{
 	}
 	

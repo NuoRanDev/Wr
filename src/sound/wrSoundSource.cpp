@@ -9,7 +9,7 @@
 namespace wr
 {
 
-	bool SoundSource::lood_audio(PcmBlock pcm) noexcept 
+	ResultInfo SoundSource::lood_audio(PcmBlock pcm) noexcept
 	{
 		alGenBuffers(1, &buffer);
 		alGenSources(1, &source);
@@ -18,11 +18,11 @@ namespace wr
 
 		if (alGetError() != AL_NO_ERROR)
 		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrSound : OpenAL", "Fail to laod pcm data");
-			return false;
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrSound : OpenAL", "Fail to laod pcm data");
+			return ResultInfo::WR_WARNING;
 		}
 		wr_free(pcm.pcm_data);
-		return true;
+		return ResultInfo::WR_OK;
 	}
 
 	void SoundSource::set_is_loop(bool is_loop) noexcept 

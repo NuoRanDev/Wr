@@ -8,6 +8,7 @@
 // core
 #include <type/wrOrdinals.hpp>
 #include <type/wrDataStruction.hpp>
+#include <type/wrResult.hpp>
 
 namespace wr
 {
@@ -100,7 +101,7 @@ namespace wr
 
 		[[nodiscard]] int64_t get_characters_data_size() const noexcept { return characters_data_size; }
 
-		bool erase(int64_t index, int64_t count);
+		ResultInfo erase(int64_t index, int64_t count);
 
 		void append(unicode_t character) noexcept;
 
@@ -377,9 +378,9 @@ namespace wr
 
 		U16StringRef(const U8StringRef& u8_str) noexcept { load_utf8(u8_str); }
 
-		bool load_utf8(const U8StringRef& u8_str) noexcept;
+		ResultInfo load_utf8(const U8StringRef& u8_str) noexcept;
 
-		bool to_utf8(U8StringRef& u8_dst) const noexcept;
+		ResultInfo to_utf8(U8StringRef& u8_dst) const noexcept;
 
 		void load_utf16_by_count(const utf16le_t* data, int64_t conut) noexcept;
 
