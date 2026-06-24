@@ -70,7 +70,6 @@ namespace wr
 		 dynamic_array<Path> out_data;
 		 uint64_t char_count;
 
-		// 获取拖拽进来文件和目录
 		for (UINT i = 0; i < file_count; i++)
 		{
 			char_count = DragQueryFileW(drop_info, i, file_name, sizeof(file_name));
@@ -84,6 +83,7 @@ namespace wr
 
 	static LRESULT CALLBACK window_proc_event(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept
 	{
+		//puts("window_proc_event");
 		switch (msg)
 		{
 		case WM_DISPLAYCHANGE:
@@ -182,6 +182,7 @@ namespace wr
 
 	ResultInfo switch_event() noexcept
 	{
+		//puts("switch_event");
 		BOOL state = GetMessageW(&msg, NULL, 0, 0);
 		if (state)
 		{

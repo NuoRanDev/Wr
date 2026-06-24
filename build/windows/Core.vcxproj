@@ -45,6 +45,7 @@
     <ClInclude Include="..\..\inc\core\type\wrDataStruction.hpp" />
     <ClInclude Include="..\..\inc\core\type\wrOrdinals.hpp" />
     <ClInclude Include="..\..\inc\core\type\wrResult.hpp" />
+    <ClInclude Include="..\..\inc\core\type\wrTemplate.hpp" />
     <ClInclude Include="..\..\inc\core\wrCompiler.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

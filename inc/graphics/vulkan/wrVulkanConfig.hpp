@@ -35,7 +35,7 @@ const char* const instance_validation_layers_alt2[] =
 constexpr uint32_t instance_validation_layers_alt2_count = 7;
 constexpr VkDeviceQueueCreateFlags queue_flags = 0;
 #else
-constexpr VkDeviceQueueCreateFlags queue_flags = VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT;
+constexpr VkDeviceQueueCreateFlags queue_flags = 0;//VK_DEVICE_QUEUE_CREATE_PROTECTED_BIT;
 #endif // _DEBUG is end
 
 const char* const device_enabled_extensions[] = { "VK_KHR_swapchain" };

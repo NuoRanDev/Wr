@@ -9,13 +9,14 @@
 #include <algorithm>
 // graphics
 #include <vulkan/wrVulkanConfig.hpp>
+// std
+#include <functional>
+// core
+#include <type/wrDataStruction.hpp>
 
 namespace wr
 {
-	constexpr int64_t VkResult_to_int64(VkResult result)
-	{
-		return static_cast<int64_t>(result);
-	}
+	static dynamic_array <std::pair<any_type_ptr_t, std::function<ResultInfo(any_type_ptr_t)>>> recreate_swapchain_task;
 
 	void* vk_malloc(void* pd, size_t size, size_t alignment, VkSystemAllocationScope allocation_scope) noexcept
 	{
@@ -51,7 +52,12 @@ namespace wr
 		vk_ctx->vk_logic_vkdevice = VK_NULL_HANDLE;
 		vk_ctx->window_bitmap_surface = VK_NULL_HANDLE;
 
-		// The struct will be used when create and recreate swapchain
+		vk_ctx->available_surface_format_count = 0;
+		vk_ctx->available_surface_formats = VK_NULL_HANDLE;
+
+		vk_ctx->surface_present_mode_count = 0;
+		vk_ctx->surface_present_modes = VK_NULL_HANDLE;
+
 		vk_ctx->swapchain_create_info_data.oldSwapchain = nullptr;
 		vk_ctx->swapchain = VK_NULL_HANDLE;
 
@@ -63,11 +69,15 @@ namespace wr
 		vk_ctx->tty_screen = false;
 		vk_ctx->limit_frame_rate = true;
 
+		// The struct will be used when create and recreate swapchain
 		vk_ctx->swapchain_create_info_data.imageFormat = VK_FORMAT_UNDEFINED;
 
 #ifdef _DEBUG
 		vk_ctx->instance_layers = nullptr;
 #endif // _DEBUG is end
+
+		recreate_swapchain_task = 
+			dynamic_array<std::pair<any_type_ptr_t, std::function<ResultInfo(any_type_ptr_t)>>>();
 	}
 
 	static bool check_vulkan_validation_layers(uint32_t check_count, const char * const* check_names,
@@ -218,7 +228,7 @@ namespace wr
 		for (uint32_t i = 0; i < vk_ctx->gpu_cout; i++)
 		{
 			vkGetPhysicalDeviceProperties(vk_ctx->gpu_list[i], vk_ctx->vk_gpu_properties + i);
-			std::cout << "Find Gpu[" << i << "]: " << vk_ctx->vk_gpu_properties[i].deviceName << std::endl;
+			WR_CLR_WRITE_LINE(std::format("Find Gpu[{0}] : {1} ", i, vk_ctx->vk_gpu_properties[i].deviceName).c_str());
 			vkGetPhysicalDeviceFeatures(vk_ctx->gpu_list[i], vk_ctx->vk_gpu_features + i);
 		}
 		return;
@@ -295,7 +305,8 @@ namespace wr
 			.ppEnabledLayerNames = nullptr,
 			.enabledExtensionCount = device_enabled_extension_count,
 			.ppEnabledExtensionNames = device_enabled_extensions,
-			.pEnabledFeatures = &(vk_ctx->vk_gpu_features[1])
+			.pEnabledFeatures = &(vk_ctx->vk_gpu_features[vk_ctx->cur_used_gpu_index])
+			//.pEnabledFeatures = nullptr
 		};
 
 		result = vkCreateDevice(vk_ctx->cur_used_gpu, &deviceCreateInfo, pvk_allocator, &(vk_ctx->vk_logic_vkdevice));
@@ -336,7 +347,7 @@ namespace wr
 				{
 					vk_ctx->swapchain_create_info_data.imageFormat = vk_ctx->available_surface_formats[i].format;
 					vk_ctx->swapchain_create_info_data.imageColorSpace = vk_ctx->available_surface_formats[i].colorSpace;
-					goto SWITCH_FORMAT;
+					return true;
 				}
 			}
 		}
@@ -350,20 +361,14 @@ namespace wr
 				{
 					vk_ctx->swapchain_create_info_data.imageFormat = vk_ctx->available_surface_formats[i].format;
 					vk_ctx->swapchain_create_info_data.imageColorSpace = vk_ctx->available_surface_formats[i].colorSpace;
-					goto SWITCH_FORMAT;
+					return true;
 				}
 			}
 		}
 		WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-			std::format("Failed to find surface formats!\nError code: {}\n",
-				VkResult_to_int64(VK_ERROR_FORMAT_NOT_SUPPORTED)).c_str());
-		return false;
-	SWITCH_FORMAT:
-
-		//如果交换链已存在，调用RecreateSwapchain()重建交换链
-		//if (vk_ctx)
-			//return RecreateSwapchain();
-		return true;
+			std::format("Failed to find surface formats!\tError code: {0}",
+				static_cast<int64_t>(VK_ERROR_FORMAT_NOT_SUPPORTED)).c_str());
+		return false;		
 	}
 
 	VkResult recreate_swapchain(VulkanContext* vk_ctx, vec2u window_size)
@@ -376,7 +381,7 @@ namespace wr
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
 				std::format("Failed to get physical device surface capabilities!\tError code : {0}",
-				VkResult_to_int64(result)).c_str());
+				static_cast<int64_t>(result)).c_str());
 			return result;
 		}
 		// is window min
@@ -412,8 +417,77 @@ namespace wr
 	QUEUE_WAIT_ERROR:
 		WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
 			std::format("Failed to wait for the queue to be idle!\tError code: {0}",
-			VkResult_to_int64(result)).c_str());
+			static_cast<int64_t>(result)).c_str());
 		return result;
+	}
+
+	static ResultInfo get_gpu_suface_support(VulkanContext* vk_ctx)
+	{
+		VkResult result;
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+			&vk_ctx->available_surface_format_count, nullptr);
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				std::format("Failed to get the count of surface formats!\tError code: {0}",
+					static_cast<int64_t>(result)).c_str());
+			return ResultInfo::WR_ERROR;
+		}
+		if (!vk_ctx->available_surface_format_count)
+		{
+			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				"Failed to find any supported surface format!");
+		}
+		vk_ctx->available_surface_formats = wr_malloc<VkSurfaceFormatKHR>(vk_ctx->available_surface_format_count);
+
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+			&(vk_ctx->available_surface_format_count), vk_ctx->available_surface_formats);
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				std::format("Failed to get surface formats!\tError code: {}\n", static_cast<int64_t>(result)).c_str());
+			return ResultInfo::WR_ERROR;
+		}
+		return ResultInfo::WR_OK;
+	}
+
+	static ResultInfo get_surface_present_support(VulkanContext* vk_ctx)
+	{
+		VkResult result;
+		uint32_t old_surface_present_mode_count = vk_ctx->surface_present_mode_count;
+		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+			&vk_ctx->surface_present_mode_count, nullptr);
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				std::format("Failed to get the count of surface present modes!\t Error code: {0}",
+					static_cast<int64_t>(result)).c_str());
+			return ResultInfo::WR_ERROR;
+		}
+		if (!vk_ctx->surface_present_mode_count)
+			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				"Failed to find any surface present mode!");
+		if (vk_ctx->surface_present_modes != nullptr)
+		{
+			if (old_surface_present_mode_count != vk_ctx->surface_present_mode_count)
+				vk_ctx->surface_present_modes = wr_realloc<VkPresentModeKHR>(vk_ctx->surface_present_modes,
+					vk_ctx->surface_present_mode_count);
+		}
+		else
+		{
+			vk_ctx->surface_present_modes = wr_malloc<VkPresentModeKHR>(vk_ctx->surface_present_mode_count);
+		}
+		
+		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+			&vk_ctx->surface_present_mode_count, vk_ctx->surface_present_modes);
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				std::format("Failed to get surface present modes!\tError code: {0}", static_cast<int64_t>(result)).c_str()
+			);
+			return ResultInfo::WR_ERROR;
+		}
+		return ResultInfo::WR_OK;
 	}
 
 	ResultInfo create_swapchain(VulkanContext* vk_ctx,
@@ -426,6 +500,7 @@ namespace wr
 		VkSwapchainCreateFlagsKHR flags = 0;
 		VkSurfaceCapabilitiesKHR surface_capabilities = {};
 		VkResult result;
+		char is_running = 'Y';
 
 		vk_ctx->alpha_window			= alpha_window;
 		vk_ctx->tty_screen				= tty_screen;
@@ -435,8 +510,8 @@ namespace wr
 		if (result)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-				std::format("Failed to get physical device surface capabilities!\tError code: {}",
-					VkResult_to_int64(result)).c_str());
+				std::format("Failed to get physical device surface capabilities!\tError code: {0}",
+					static_cast<int64_t>(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
 		vk_ctx->swapchain_create_info_data.minImageCount =
@@ -461,7 +536,7 @@ namespace wr
 		vk_ctx->swapchain_create_info_data.flags = flags;
 
 		vk_ctx->swapchain_create_info_data.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-		// The tty not support prtin screen <VK_IMAGE_USAGE_TRANSFER_SRC_BIT>
+		// The tty not support print screen <VK_IMAGE_USAGE_TRANSFER_SRC_BIT>
 		if (surface_capabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT ||
 			tty_screen)
 			vk_ctx->swapchain_create_info_data.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
@@ -473,72 +548,45 @@ namespace wr
 				std::format("VK_IMAGE_USAGE_TRANSFER_DST_BIT isn't supported!").c_str());
 			return ResultInfo::WR_ERROR;
 		}
-
-		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
-			&vk_ctx->available_surface_format_count, nullptr);
-		if (result) 
+		//////////////////////////////////////////////////////////////////////////
+		if (get_gpu_suface_support(vk_ctx))
 		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-				std::format("Failed to get the count of surface formats!\tError code: {0}",
-					VkResult_to_int64(result)).c_str());
-			return ResultInfo::WR_ERROR;
-		}
-		if (!vk_ctx->available_surface_format_count)
-			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-				"Failed to find any supported surface format!");
-
-		vk_ctx->available_surface_formats = wr_malloc<VkSurfaceFormatKHR>(vk_ctx->available_surface_format_count);
-
-		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
-			&(vk_ctx->available_surface_format_count), vk_ctx->available_surface_formats);
-
-		if (result)
-		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-				std::format("Failed to get surface formats!\tError code: {}\n", VkResult_to_int64(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
 
 		if (!vk_ctx->swapchain_create_info_data.imageFormat)
 		{
-			if (tty_screen)
+			if (tty_screen || (!alpha_window))
 			{
 				if (set_surface_format(vk_ctx, { VK_FORMAT_R8G8B8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
 					goto END_OF_SET_IMAGE_FORMAT;
 				else { goto FAILD_OF_SET_IMAGE_FORMAT; }
 			}
-			if (set_surface_format(vk_ctx, { VK_FORMAT_R8G8B8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
-				goto END_OF_SET_IMAGE_FORMAT;
-			if (set_surface_format(vk_ctx, { VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
-				goto END_OF_SET_IMAGE_FORMAT;
+			else
+			{
+				if (set_surface_format(vk_ctx, { VK_FORMAT_R8G8B8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
+					goto END_OF_SET_IMAGE_FORMAT;
+				else
+				{
+					WR_CLR_WRITE_LINE("Do you want to run this program that doesn't run without alpha window? [Y : YES N : NO]", WR_CLR_COLOR::YELLOW);
+					std::cin >> is_running;
+					if (is_running == 'Y')
+					if (set_surface_format(vk_ctx, { VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
+						goto END_OF_SET_IMAGE_FORMAT;
+					return ResultInfo::WR_ERROR;
+				}
+			}
 		FAILD_OF_SET_IMAGE_FORMAT:
 			vk_ctx->swapchain_create_info_data.imageFormat = vk_ctx->available_surface_formats[0].format;
 			vk_ctx->swapchain_create_info_data.imageColorSpace = vk_ctx->available_surface_formats[0].colorSpace;
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
 				"Failed to select a four-component UNORM surface format!");
-		}
-	END_OF_SET_IMAGE_FORMAT:
-		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
-			&vk_ctx->surface_present_mode_count, nullptr);
-		if (result) 
-		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-				std::format("Failed to get the count of surface present modes!\t Error code: {0}",
-					VkResult_to_int64(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
-		if (!vk_ctx->surface_present_mode_count)
-			WR_FATAL_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-				"Failed to find any surface present mode!");
-
-		vk_ctx->surface_present_modes = wr_malloc<VkPresentModeKHR>(vk_ctx->surface_present_mode_count);
-		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
-			&vk_ctx->surface_present_mode_count, vk_ctx->surface_present_modes);
-		if (result)
+	END_OF_SET_IMAGE_FORMAT:
+		//////////////////////////////////////////////////////////////////////////////
+		if (get_surface_present_support(vk_ctx))
 		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-				std::format("Failed to get surface present modes!\tError code: {0}", VkResult_to_int64(result)).c_str()
-			);
 			return ResultInfo::WR_ERROR;
 		}
 
@@ -593,7 +641,7 @@ namespace wr
 		if (result) 
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-				std::format("Failed to create a swapchain!\nError code: {}\n", VkResult_to_int64(result)).c_str());
+				std::format("Failed to create a swapchain!\nError code: {}\n", static_cast<int64_t>(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
 		vk_ctx->swapchain_create_info_data = vk_ctx->swapchain_create_info_data;
@@ -609,7 +657,7 @@ namespace wr
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
 				std::format("Failed to get the count of swapchain images!\tError code: {0}", 
-					VkResult_to_int64(result)).c_str());
+					static_cast<int64_t>(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
 		vk_ctx->swapchain_images = wr_malloc<VkImage>(vk_ctx->swapchain_image_count);
@@ -619,7 +667,7 @@ namespace wr
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
 				std::format("Failed to get swapchain images!\tError code: {0}", 
-					VkResult_to_int64(result)).c_str());
+					static_cast<int64_t>(result)).c_str());
 			return ResultInfo::WR_ERROR;
 		}
 
@@ -641,8 +689,8 @@ namespace wr
 			if (result)
 			{
 				WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-					std::format("[ graphicsBase ] ERROR\nFailed to create a swapchain image view!\nError code: {}\n", 
-						VkResult_to_int64(result)).c_str());
+					std::format("Failed to create a swapchain image view!\tError code: {0}", 
+						static_cast<int64_t>(result)).c_str());
 				return ResultInfo::WR_ERROR;
 			}
 		}

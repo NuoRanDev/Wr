@@ -23,6 +23,7 @@ namespace wr
 		ResultInfo state = init_windows_env();
 		if(state)
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Init model window env error");
+		WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Init model window env")
 		return state;
 	}
 
@@ -91,7 +92,7 @@ namespace wr
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan logic device failed!");
 			return ResultInfo::WR_ERROR;
 		}
-		if (create_swapchain(vk_ctx, size, 3, false, false))
+		if (create_swapchain(vk_ctx, size, 3, true, false, true))
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrWindow", "Create vulkan logic device failed!");
 			return ResultInfo::WR_ERROR;

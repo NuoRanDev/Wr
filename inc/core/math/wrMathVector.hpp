@@ -1,19 +1,13 @@
 ﻿#ifndef _INC_WR_MATH_VECTOR_HPP_
 #define _INC_WR_MATH_VECTOR_HPP_
 
+// core
+#include <type/wrTemplate.hpp>
 // std
 #include <type_traits>
 
 namespace wr 
 {
-	template <typename T> concept baise_type_no_struct_or_class =
-		std::is_same<T, float>::value || std::is_same<T, double>::value ||
-		std::is_same<T, int8_t>::value || std::is_same<T, uint8_t>::value ||
-		std::is_same<T, int16_t>::value || std::is_same<T, uint16_t>::value ||
-		std::is_same<T, int32_t>::value || std::is_same<T, uint32_t>::value ||
-		std::is_same<T, int64_t>::value || std::is_same<T, uint64_t>::value;
-
-
 	template<baise_type_no_struct_or_class T> struct vec3
 	{
 		T x, y, z;

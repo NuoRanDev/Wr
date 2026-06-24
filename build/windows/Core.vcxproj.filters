@@ -104,5 +104,8 @@
     <ClInclude Include="..\..\inc\core\type\wrResult.hpp">
       <Filter>core\type</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\core\type\wrTemplate.hpp">
+      <Filter>core\type</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
