@@ -30,6 +30,9 @@ struct state {
     _Bool running;
 };
 
+
+//////////////////////////////////
+
 // 绘制函数
 static void draw_frame(struct state *state) {
     int stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, state->width);
