@@ -19,12 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\sound\audio_steam\wrPcmStream.hpp" />
     <ClInclude Include="..\..\inc\sound\wrSoundSource.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\inc\sound\wrAudioPlayerInstance.hpp" />
-    <ClCompile Include="..\..\src\sound\audio_steam\wrPcmStream.cpp" />
     <ClCompile Include="..\..\src\sound\wrAudioPlayerInstance.cpp" />
     <ClCompile Include="..\..\src\sound\wrSoundSource.cpp" />
   </ItemGroup>

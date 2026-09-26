@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\graphics\vulkan\wrVulkan.cpp" />
     <ClCompile Include="..\..\src\graphics\vulkan\wrVulkanQueues.cpp" />
+    <ClCompile Include="..\..\src\graphics\wrGraphicsInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\graphics\shader\xeShaderGroup.hpp" />
     <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkan.hpp" />
     <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanConfig.hpp" />
     <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanQueues.hpp" />
+    <ClInclude Include="..\..\inc\graphics\wrGraphicsInstance.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

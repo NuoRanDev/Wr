@@ -7,6 +7,9 @@
     <ClCompile Include="..\..\src\graphics\vulkan\wrVulkanQueues.cpp">
       <Filter>graphics\vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\graphics\wrGraphicsInstance.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
@@ -34,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\graphics\vulkan\wrVulkanQueues.hpp">
       <Filter>graphics\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\graphics\wrGraphicsInstance.hpp">
+      <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

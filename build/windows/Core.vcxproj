@@ -28,6 +28,7 @@
     <ClCompile Include="..\..\src\core\log\wrLogOutpout.cpp" />
     <ClCompile Include="..\..\src\core\memory\wrAlloc.cpp" />
     <ClCompile Include="..\..\src\core\string\wrString.cpp" />
+    <ClCompile Include="..\..\src\core\string\wrStringConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\core\devboost\wrMemCmp.hpp" />
@@ -40,7 +41,7 @@
     <ClInclude Include="..\..\inc\core\math\wrMathVector.hpp" />
     <ClInclude Include="..\..\inc\core\memory\wrAlloc.hpp" />
     <ClInclude Include="..\..\inc\core\memory\wrDiskMemoryPool.hpp" />
-    <ClInclude Include="..\..\inc\core\string\wrRegexp.hpp" />
+    <ClInclude Include="..\..\inc\core\string\wrStringConvert.hpp" />
     <ClInclude Include="..\..\inc\core\string\wrString.hpp" />
     <ClInclude Include="..\..\inc\core\type\wrDataStruction.hpp" />
     <ClInclude Include="..\..\inc\core\type\wrOrdinals.hpp" />
@@ -70,13 +71,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -166,7 +167,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;mimalloc-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\SDK\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -193,7 +194,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\SDK\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <LinkStatus>false</LinkStatus>

@@ -18,10 +18,15 @@ namespace wr
 
 		MemoryFile& operator=(MemoryFile&&) noexcept = default;
 
-		// load image file
+		// load file file
 		ResultInfo load_file_not_copy_in_memory(byte_t* mem_data, size_t data_size, String& mem_file_name) noexcept;
 
-		// get image data
+		// empty file
+		void create_empty(size_t data_size, String& mem_file_name) noexcept;
+
+		byte_t* get_unsafe_data() noexcept { return file_data; }
+
+		// get file data
 		const byte_t* const get_file_data(size_t& out_data_size) const noexcept;
 
 		// get file name

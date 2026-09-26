@@ -9,7 +9,10 @@
 
 namespace wr
 {
-	ResultInfo AudioPlayerInstance::init() noexcept
+	static ALCdevice* device;
+	static ALCcontext* context;
+
+	ResultInfo init_audio_instance() noexcept
 	{
 		// device  : ALCdevice*
 		// context : ALCcontext*
@@ -34,9 +37,9 @@ namespace wr
 		return ResultInfo::WR_OK;
 	}
 
-	AudioPlayerInstance::~AudioPlayerInstance()
+	void free_audio_instance() noexcept
 	{
-		alcDestroyContext(reinterpret_cast<ALCcontext*>(context));
-		alcCloseDevice(reinterpret_cast<ALCdevice*>(device));
+		alcDestroyContext(context);
+		alcCloseDevice(device);
 	}
 } // namespace wr is end

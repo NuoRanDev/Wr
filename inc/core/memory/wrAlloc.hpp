@@ -4,18 +4,18 @@
 #define USE_MIMALLOC
 // core
 #include <type/wrOrdinals.hpp>
-
+#include <wrCompiler.hpp>
 //#include "mimalloc-new-delete.h"
 
 namespace wr
 {
-	any_type_ptr_t wr_only_malloc(size_t byte_size) noexcept;
+	any_type_ptr_t exportfunc wr_only_malloc(size_t byte_size) noexcept;
 
-	any_type_ptr_t wr_only_realloc(any_type_ptr_t src, size_t byte_size) noexcept;
+	any_type_ptr_t exportfunc wr_only_realloc(any_type_ptr_t src, size_t byte_size) noexcept;
 
-	any_type_ptr_t wr_olny_aligned_alloc(size_t alignment, size_t byte_size) noexcept;
+	any_type_ptr_t exportfunc wr_olny_aligned_alloc(size_t alignment, size_t byte_size) noexcept;
 
-	any_type_ptr_t wr_olny_aligned_realloc(any_type_ptr_t src, size_t alignment, size_t byte_size) noexcept;
+	any_type_ptr_t exportfunc wr_olny_aligned_realloc(any_type_ptr_t src, size_t alignment, size_t byte_size) noexcept;
 
 	// malloc
 	template<typename T> T* wr_malloc(size_t size) noexcept
@@ -34,7 +34,7 @@ namespace wr
 	}
 
 	// Note : if src is nullptr, will not free!
-	any_type_ptr_t wr_free(any_type_ptr_t src) noexcept;
+	any_type_ptr_t exportfunc wr_free(any_type_ptr_t src) noexcept;
 
 	template<typename T> void wr_delete_array(T* src) noexcept
 	{

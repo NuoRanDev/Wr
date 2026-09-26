@@ -3,6 +3,7 @@
 
 // core
 #include <string/wrString.hpp>
+#include <wrCompiler.hpp>
 
 namespace wr
 {
@@ -15,7 +16,7 @@ namespace wr
 	using OS_CHAR = char;
 #endif // defined(_WIN32) IS END
 
-	class Path
+	class exportfunc Path
 	{
 	public:
 		Path() = default;

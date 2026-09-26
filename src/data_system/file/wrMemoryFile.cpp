@@ -22,6 +22,14 @@ namespace wr
 		return ResultInfo::WR_OK;
 	}
 
+	void MemoryFile::create_empty(size_t data_size, String& mem_file_name) noexcept
+	{
+		file_name = mem_file_name;
+		file_data_size = data_size;
+		is_copy_in_memory = true;
+		file_data = wr::wr_malloc<byte_t>(data_size);
+	}
+
 	const byte_t* const MemoryFile::get_file_data(size_t& out_data_size) const noexcept
 	{
 		if (file_data == nullptr)

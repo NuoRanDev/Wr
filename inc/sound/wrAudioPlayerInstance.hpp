@@ -4,28 +4,13 @@
 #include <type/wrDataStruction.hpp>
 #include <type/wrResult.hpp>
 
-namespace wr 
+namespace wr
 {
-	class AudioPlayerInstance
-	{
-	public:
-		AudioPlayerInstance()
-		{
-			device = nullptr;
-			context = nullptr;
-		}
 
-		ResultInfo init() noexcept;
+	ResultInfo init_audio_instance() noexcept;
 
-		~AudioPlayerInstance();
+	void free_audio_instance() noexcept;
 
-	private:
-
-		dynamic_array<std::pair<uint32_t, uint32_t>> src_buf;
-
-		void* device;
-		void* context;
-	};
 
 } // namespace wr is end
 

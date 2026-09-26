@@ -14,12 +14,6 @@ namespace wr
 	using utf16le_t = wchar_t;
 
 	using any_type_ptr_t = void*;
-
-	template<typename T>
-	concept IntegralType = requires(T)
-	{
-		std::is_integral<T>::value;
-	};
 } // namespace wr is end
 
 #endif // _WR_ORDINALA_HPP_ IS END

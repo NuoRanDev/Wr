@@ -554,7 +554,7 @@ namespace wr
 		}
 	}
 
-	dynamic_array<U8StringRef> U8StringRef::split(dynamic_array<int64_t>& separator_list, int64_t separator_characters_data_size) noexcept
+	dynamic_array<U8StringRef> U8StringRef::split(dynamic_array<int64_t>& separator_list, int64_t separator_characters_data_size) const noexcept
 	{
 		int64_t cur_number = 0;
 		int64_t segment_size = 0;
@@ -701,15 +701,6 @@ namespace wr
 		return short_memory_cmp(reinterpret_cast<byte_t*>(characters_data), reinterpret_cast<const byte_t*>(cmp_str), cmp_str_size);
 	}
 
-	void U8StringRef::integral_to_string_ptr(int64_t number, utf8_t* str, int64_t& str_size) noexcept
-	{
-		str_size = 0;
-		while(number)
-		{
-			str[str_size++] = static_cast<utf8_t>((number % 10) + '0');
-			number = number / 10;
-		}
-	}
 
 	int64_t U8StringRef::get_u8_data_ofs(int64_t index , utf8_t* cur_str_ptr)
 	{

@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\src\core\devboost\wrMemRemove.cpp">
       <Filter>core\devboost</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\core\string\wrStringConvert.cpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\core\devboost\wrMemCmp.hpp">
@@ -89,7 +92,7 @@
     <ClInclude Include="..\..\inc\core\wrCompiler.hpp">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\string\wrRegexp.hpp">
+    <ClInclude Include="..\..\inc\core\string\wrStringConvert.hpp">
       <Filter>core\string</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\core\type\wrDataStruction.hpp">

@@ -45,7 +45,7 @@ namespace wr
 		VkExtensionProperties*			vk_gpu_extensions				= VK_NULL_HANDLE;
 
 		VkDevice						vk_logic_vkdevice				= VK_NULL_HANDLE;
-		VkSurfaceKHR					window_bitmap_surface			= VK_NULL_HANDLE;
+		VkSurfaceKHR					bitmap_surface					= VK_NULL_HANDLE;
 
 		QueueModule						queue_mod;
 
@@ -63,8 +63,9 @@ namespace wr
 		VkImageView*					swapchain_image_views			= VK_NULL_HANDLE;
 
 		bool							alpha_window					= true;
-		bool							tty_screen						= false;
 		bool							limit_frame_rate				= true;
+
+		bool							is_direct_display				= false;
 
 #ifdef _DEBUG
 		VkLayerProperties*				instance_layers					= nullptr;
@@ -90,10 +91,9 @@ namespace wr
 		vec2u window_size,
 		uint32_t cache_surface_count,
 		bool alpha_window,
-		bool tty_screen,
 		bool limit_frame_rate = true);
 
-	VkResult recreate_swapchain(VulkanContext* vk_ctx) noexcept;
+	VkResult recreate_swapchain(VulkanContext* vk_ctx, vec2u window_size) noexcept;
 
 	ResultInfo create_image_view(VulkanContext* vk_ctx);
 

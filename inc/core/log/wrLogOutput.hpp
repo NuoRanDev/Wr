@@ -1,6 +1,9 @@
 ﻿#ifndef _WR_ERROR_OURPUT_HPP_
 #define _WR_ERROR_OURPUT_HPP_
 
+// core
+#include <wrCompiler.hpp>
+
 namespace wr
 {
 	namespace WR_TYPE_NAME_OUTPUT
@@ -19,21 +22,21 @@ namespace wr
 		constexpr const char WHITE[] = "\033[37m";
 	}
 
-	void WR_CLR_OUTPUT(
+	void exportfunc WR_CLR_OUTPUT(
 		const char* color, const char* color_string, 
 		const char* output_type,
 		const char* addon_type, const char* output_text,
 		const char* file, int line, const char* function);
 
-	void WR_CLR_OUTPUT_EXIT(
+	void exportfunc WR_CLR_OUTPUT_EXIT(
 		const char* color, const char* color_string,
 		const char* output_type,
 		const char* addon_type, const char* output_text,
 		const char* file, int line, const char* function);
 
-	void WR_CLR_WRITE(const char* src, const char* color = WR_CLR_COLOR::WHITE);
+	void exportfunc WR_CLR_WRITE(const char* src, const char* color = WR_CLR_COLOR::WHITE);
 
-	void WR_CLR_WRITE_LINE(const char* src, const char* color = WR_CLR_COLOR::WHITE);
+	void exportfunc WR_CLR_WRITE_LINE(const char* src, const char* color = WR_CLR_COLOR::WHITE);
 
 #define WR_FATAL_OUTPUT(output_type, addon_type, output_text)\
 		WR_CLR_OUTPUT_EXIT(wr::WR_CLR_COLOR::RED, "FATAL", output_type, addon_type, output_text, __FILE__, __LINE__, __FUNCTION__);

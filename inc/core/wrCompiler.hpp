@@ -1,7 +1,7 @@
 ﻿#ifndef _INC_WR_COMPILER_H_
 #define _INC_WR_COMPILER_H_
 
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__) || (defined(__clang__) && defined(__linux__))
 #define forceinline		inline __attribute__((always_inline))
 #define exportfunc		__attribute__((visibility("default")))
 #elif defined(_MSC_VER)

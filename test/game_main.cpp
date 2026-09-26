@@ -3,8 +3,9 @@
 //#include "wrAudioPlayerInstance.hpp"
 //#include "wrSoundSource.hpp"
 //#include "file/audio/wrReadAudioFile.hpp"
-#include <wrWindow.hpp>
-#include "wrWindow.hpp"
+//#include <wrWindow.hpp>
+#include <string/wrStringConvert.hpp>
+// link Graphics.lib Window.lib
 
 #include <wrFileDialog.hpp>
 
@@ -119,19 +120,27 @@ int main(int argc, char** argv)
 		//system("clear");
 		sscrc.set_position(pos);
 	}*/
-	init_wr_window_ctx();
-	Window win;
-	String win_name = u8"wr 窗口";
-	vec2u si =
-	{
-		.x = 800,
-		.y = 600
-	};
-	win.create_window(win_name, si);
 
-	while (win.event() == ResultInfo::WR_OK)
-	{
-	}
-	
+	// 64993
+	uint32_t hexu = 0xFDE1;
+	uint32_t octu = 666888;
+	int32_t octi = -1234;
+
+	String dec_str = "-123490dsdaewfrv";
+
+	auto hexu_str = StringConvert::to_hex_string(hexu);
+	auto octu_str = StringConvert::to_dec_string(octu);
+	auto octi_str = StringConvert::to_dec_string(octi);
+
+	auto dec_i = StringConvert::dec_str_to_int64(dec_str);
+	auto hexu_o = StringConvert::hex_str_to_uint64(hexu_str);
+
+	std::cout << hexu_str << std::endl;
+	std::cout << octu_str << std::endl;
+	std::cout << octi_str << std::endl;
+
+	std::cout << dec_i << std::endl;
+	std::cout << hexu_o << std::endl;
+
 	return EXIT_SUCCESS; // Success
 }

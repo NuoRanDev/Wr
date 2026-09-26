@@ -7,12 +7,13 @@
 #include <string/wrString.hpp>
 #include <memory/wrAlloc.hpp>
 #include <filesystem/wrPath.hpp>
+#include <wrCompiler.hpp>
 // std
 #include <format> // c++ 20
 
 namespace wr
 {
-	class Mmapfstream final
+	class exportfunc Mmapfstream final
 	{
 	public:
 

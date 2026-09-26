@@ -20,7 +20,7 @@ namespace wr
 
 		ResultInfo create_window(String& window_name, vec2u size, uint32_t style = WindowStyle::Default) noexcept;
 
-		rectu get_window_size();
+		rectu get_window_size() const;
 
 		ResultInfo event();
 
@@ -28,7 +28,8 @@ namespace wr
 
 	private:
 
-		any_type_ptr_t vulkan_ctx;
+		any_type_ptr_t vulkan_inst;
+		any_type_ptr_t vk_surface;
 		any_type_ptr_t window_hwnd;
 	};
 } // namespace wr is end

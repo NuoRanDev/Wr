@@ -9,6 +9,7 @@
 #include <type/wrOrdinals.hpp>
 #include <type/wrDataStruction.hpp>
 #include <type/wrResult.hpp>
+#include <wrCompiler.hpp>
 
 namespace wr
 {
@@ -20,7 +21,7 @@ namespace wr
 	// default string format
 	using String = U8StringRef;
 
-	class U8StringRef final
+	class exportfunc U8StringRef final
 	{
 		friend class U8StringRef;
 
@@ -142,7 +143,7 @@ namespace wr
 			split(const utf8_t* separator, int64_t separator_characters_data_size)noexcept;
 
 		[[nodiscard]] dynamic_array<U8StringRef>
-			split(dynamic_array<int64_t>& separator_list, int64_t separator_characters_data_size) noexcept;
+			split(dynamic_array<int64_t>& separator_list, int64_t separator_characters_data_size) const noexcept;
 
 		[[nodiscard]] unicode_t at(int64_t offset) const noexcept;
 
@@ -186,19 +187,11 @@ namespace wr
 			return this->stringcmp(src.data(), src.characters_data_size);
 		}
 
-		template<IntegralType T> void integral_to_string(T number) noexcept
-		{
-			utf8_t characters[sizeof(T)] = { 0 };
-			int64_t str_size = 0;
-
-			integral_to_string_ptr(static_cast<int64_t>(number), characters, str_size);
-			load_data(characters, str_size, str_size);
-		}
-
 		inline U8StringRef operator+(const U8StringRef& string) noexcept
 		{
-			this->append(string);
-			return *this;
+			U8StringRef new_str = *this;
+			new_str.append(string);
+			return new_str;
 		}
 
 		U8StringRef operator+(const utf8_t* string) noexcept;
@@ -212,7 +205,7 @@ namespace wr
 		// load other wr string
 		void load_wr_str_include0(const utf8_t* wr_utf8_str, int64_t wr_str_size, int64_t input_character_number) noexcept;
 		// load cpp char8_t style utf8 string
-		void load_cpp_u8_str_add0(const utf8_t* c_utf8_str) noexcept;
+		void load_cpp_u8_str_add0(const utf8_t* cpp_utf8_str) noexcept;
 		// load seq_no_0 string
 		void load_seq_no_0_str_add0(const utf8_t* wr_seq_no_0_str, int64_t seq_no_0_str_size);
 		// load c style string
@@ -337,8 +330,6 @@ namespace wr
 
 		bool string_short_cmp(const utf8_t* cmp_str, int64_t cmp_str_size) const noexcept;
 
-		void integral_to_string_ptr(int64_t number, utf8_t* str, int64_t& str_size) noexcept;
-
 		// input utf-8 index out data offset
 		int64_t get_u8_data_ofs(int64_t index, utf8_t* cur_str_ptr);
 		// 
@@ -346,7 +337,7 @@ namespace wr
 	};
 
 	// std::cout << <U8StringRef>
-	[[nodiscard]] inline std::ostream& operator<<(std::ostream& out, const U8StringRef& string)
+	inline std::ostream& operator<<(std::ostream& out, const U8StringRef& string)
 	{
 		auto str = string.c_str();
 		if (str == nullptr)
@@ -358,7 +349,15 @@ namespace wr
 		return out;
 	}
 
-	class U16StringRef final
+	inline std::istream& operator>>(std::istream& in, U8StringRef& string)
+	{
+		std::string in_str;
+		in >> in_str;
+		string = in_str.c_str();
+		return in;
+	}
+
+	class exportfunc U16StringRef final
 	{
 		friend class U16StringRef;
 

@@ -4,6 +4,7 @@
 #include <type/wrOrdinals.hpp>
 #include <type/wrDataStruction.hpp>
 #include <type/wrTemplate.hpp>
+#include <wrCompiler.hpp>
 // std
 #include <cstring>
 #include <type_traits>
@@ -12,8 +13,7 @@
 namespace wr
 {
 
-	class BigInteger
-
+	class exportfunc BigInteger
 	{
 	public:
 		BigInteger() noexcept

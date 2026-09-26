@@ -16,6 +16,29 @@
 
 namespace wr
 {
+#ifdef _DEBUG
+	static bool check_vulkan_validation_layers(uint32_t check_count, const char* const* check_names,
+		uint32_t layer_count, VkLayerProperties* layers) noexcept
+	{
+		uint32_t i, j;
+		uint32_t is_check_count = 0;
+		for (i = 0; i < check_count; i++)
+		{
+			for (j = 0; j < layer_count; j++)
+			{
+				if (strcmp(check_names[i], layers[j].layerName) == 0)
+				{
+					is_check_count++;
+					break;
+				}
+			}
+		}
+		if (is_check_count != check_count)
+			return false;
+		return true;
+	}
+#endif // _DEBUG
+
 	static dynamic_array <std::pair<any_type_ptr_t, std::function<ResultInfo(any_type_ptr_t)>>> recreate_swapchain_task;
 
 	void* vk_malloc(void* pd, size_t size, size_t alignment, VkSystemAllocationScope allocation_scope) noexcept
@@ -37,6 +60,8 @@ namespace wr
 
 	void init_vk_ctx(VulkanContext* vk_ctx)
 	{
+		vk_ctx->is_direct_display = false;
+
 		vk_ctx->vk_main_instance = VK_NULL_HANDLE;
 
 		vk_ctx->gpu_cout = 0;
@@ -50,7 +75,7 @@ namespace wr
 		vk_ctx->vk_gpu_extensions = VK_NULL_HANDLE;
 
 		vk_ctx->vk_logic_vkdevice = VK_NULL_HANDLE;
-		vk_ctx->window_bitmap_surface = VK_NULL_HANDLE;
+		vk_ctx->bitmap_surface = VK_NULL_HANDLE;
 
 		vk_ctx->available_surface_format_count = 0;
 		vk_ctx->available_surface_formats = VK_NULL_HANDLE;
@@ -66,7 +91,6 @@ namespace wr
 		vk_ctx->swapchain_image_views = VK_NULL_HANDLE;
 
 		vk_ctx->alpha_window = true;
-		vk_ctx->tty_screen = false;
 		vk_ctx->limit_frame_rate = true;
 
 		// The struct will be used when create and recreate swapchain
@@ -78,27 +102,6 @@ namespace wr
 
 		recreate_swapchain_task = 
 			dynamic_array<std::pair<any_type_ptr_t, std::function<ResultInfo(any_type_ptr_t)>>>();
-	}
-
-	static bool check_vulkan_validation_layers(uint32_t check_count, const char * const* check_names,
-		uint32_t layer_count, VkLayerProperties* layers) noexcept
-	{
-		uint32_t i, j;
-		uint32_t is_check_count = 0;
-		for (i = 0; i < check_count; i++)
-		{
-			for (j = 0; j < layer_count; j++)
-			{
-				if (strcmp(check_names[i], layers[j].layerName) == 0)
-				{
-					is_check_count++;
-					break;
-				}
-			}
-		}
-		if (is_check_count != check_count)
-			return false;
-		return true;
 	}
 
 	void init_vulkan_instance(VulkanContext* vk_ctx, const utf8_t* app_name) noexcept
@@ -113,10 +116,10 @@ namespace wr
 			.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
 			.pNext = nullptr,
 			.pApplicationName = reinterpret_cast<const char*>(app_name),
-			.applicationVersion = 0,
+			.applicationVersion = 1,
 			.pEngineName = engine_name,
 			.engineVersion = 0,
-			.apiVersion = VK_API_VERSION_1_0,
+			.apiVersion = VK_API_VERSION_1_2,
 		};
 
 #ifdef _DEBUG
@@ -280,7 +283,7 @@ namespace wr
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Get graphics queue failed!");
 			return ResultInfo::WR_ERROR;
 		}
-		if (set_presentation_queue(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface, vk_ctx->queue_mod))
+		if (set_presentation_queue(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface, vk_ctx->queue_mod))
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", "Get presentation queue failed!");
 			return ResultInfo::WR_ERROR;
@@ -371,60 +374,10 @@ namespace wr
 		return false;		
 	}
 
-	VkResult recreate_swapchain(VulkanContext* vk_ctx, vec2u window_size)
-	{
-		VkSurfaceCapabilitiesKHR surface_capabilities = {};
-		VkResult result;
-		vk_ctx->swapchain_create_info_data.oldSwapchain = vk_ctx->swapchain;
-		result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface, &surface_capabilities);
-		if (result)
-		{
-			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan", 
-				std::format("Failed to get physical device surface capabilities!\tError code : {0}",
-				static_cast<int64_t>(result)).c_str());
-			return result;
-		}
-		// is window min
-		if (surface_capabilities.currentExtent.width == 0 || surface_capabilities.currentExtent.height == 0)
-			return VK_SUBOPTIMAL_KHR;
-		vk_ctx->swapchain_create_info_data.imageExtent = surface_capabilities.currentExtent;
-
-		// wait queue is end
-		if (vk_ctx->queue_mod.queue_list.graphics_queue_inst.index ==
-			vk_ctx->queue_mod.queue_list.presentation_queue_inst.index)
-		{
-			// graphics_queue is must been created
-			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.graphics_queue_inst.queue);
-			if (result) goto QUEUE_WAIT_ERROR;
-		}
-		else
-		{
-			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.graphics_queue_inst.queue);
-			if (result) goto QUEUE_WAIT_ERROR;
-
-			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.presentation_queue_inst.queue);
-			if (result) goto QUEUE_WAIT_ERROR;
-		}
-		for (uint32_t i = 0; i < vk_ctx->swapchain_image_count; i++)
-		{
-			vkDestroyImageView(vk_ctx->vk_logic_vkdevice, vk_ctx->swapchain_image_views[i], pvk_allocator);
-		}
-		if (create_swapchain(vk_ctx, window_size, vk_ctx->swapchain_create_info_data.minImageCount,
-			vk_ctx->alpha_window, vk_ctx->tty_screen, vk_ctx->limit_frame_rate))
-			return VK_ERROR_INITIALIZATION_FAILED;
-
-		return VK_SUCCESS;
-	QUEUE_WAIT_ERROR:
-		WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
-			std::format("Failed to wait for the queue to be idle!\tError code: {0}",
-			static_cast<int64_t>(result)).c_str());
-		return result;
-	}
-
 	static ResultInfo get_gpu_suface_support(VulkanContext* vk_ctx)
 	{
 		VkResult result;
-		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface,
 			&vk_ctx->available_surface_format_count, nullptr);
 		if (result)
 		{
@@ -440,7 +393,7 @@ namespace wr
 		}
 		vk_ctx->available_surface_formats = wr_malloc<VkSurfaceFormatKHR>(vk_ctx->available_surface_format_count);
 
-		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+		result = vkGetPhysicalDeviceSurfaceFormatsKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface,
 			&(vk_ctx->available_surface_format_count), vk_ctx->available_surface_formats);
 		if (result)
 		{
@@ -455,7 +408,7 @@ namespace wr
 	{
 		VkResult result;
 		uint32_t old_surface_present_mode_count = vk_ctx->surface_present_mode_count;
-		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface,
 			&vk_ctx->surface_present_mode_count, nullptr);
 		if (result)
 		{
@@ -478,7 +431,7 @@ namespace wr
 			vk_ctx->surface_present_modes = wr_malloc<VkPresentModeKHR>(vk_ctx->surface_present_mode_count);
 		}
 		
-		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface,
+		result = vkGetPhysicalDeviceSurfacePresentModesKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface,
 			&vk_ctx->surface_present_mode_count, vk_ctx->surface_present_modes);
 		if (result)
 		{
@@ -494,7 +447,6 @@ namespace wr
 		vec2u window_size,
 		uint32_t cache_surface_count,
 		bool alpha_window,
-		bool tty_screen,
 		bool limit_frame_rate)
 	{
 		VkSwapchainCreateFlagsKHR flags = 0;
@@ -503,10 +455,9 @@ namespace wr
 		char is_running = 'Y';
 
 		vk_ctx->alpha_window			= alpha_window;
-		vk_ctx->tty_screen				= tty_screen;
 		vk_ctx->limit_frame_rate		= limit_frame_rate;
 
-		result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(vk_ctx->cur_used_gpu, vk_ctx->window_bitmap_surface, &surface_capabilities);
+		result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface, &surface_capabilities);
 		if (result)
 		{
 			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
@@ -527,7 +478,8 @@ namespace wr
 
 		// the desktop that not support alpha, such as niri and so on
 		if (surface_capabilities.supportedCompositeAlpha & VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR //windowed
-			&& (!tty_screen) && (!alpha_window))
+			&& (!alpha_window)
+			&& (!vk_ctx->is_direct_display))
 			vk_ctx->swapchain_create_info_data.compositeAlpha = VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR;
 		else
 		{
@@ -536,9 +488,10 @@ namespace wr
 		vk_ctx->swapchain_create_info_data.flags = flags;
 
 		vk_ctx->swapchain_create_info_data.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+		
 		// The tty not support print screen <VK_IMAGE_USAGE_TRANSFER_SRC_BIT>
 		if (surface_capabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT ||
-			tty_screen)
+			vk_ctx->is_direct_display)
 			vk_ctx->swapchain_create_info_data.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
 		if (surface_capabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)
 			vk_ctx->swapchain_create_info_data.imageUsage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
@@ -556,7 +509,7 @@ namespace wr
 
 		if (!vk_ctx->swapchain_create_info_data.imageFormat)
 		{
-			if (tty_screen || (!alpha_window))
+			if (vk_ctx->is_direct_display || (!alpha_window))
 			{
 				if (set_surface_format(vk_ctx, { VK_FORMAT_R8G8B8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR }))
 					goto END_OF_SET_IMAGE_FORMAT;
@@ -595,7 +548,7 @@ namespace wr
 		// This environment not has window synth which is linux in tty
 		// The VK_PRESENT_MODE_MAILBOX_KHR is fucking carzy joke
 		// Fuck windows window synth
-		if (tty_screen) limit_frame_rate = false;
+		if (vk_ctx->is_direct_display) limit_frame_rate = false;
 		if (!limit_frame_rate)
 		{
 			for (size_t i = 0; i < vk_ctx->surface_present_mode_count; i++)
@@ -632,7 +585,7 @@ namespace wr
 
 		vk_ctx->swapchain_create_info_data.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 		vk_ctx->swapchain_create_info_data.flags = flags;
-		vk_ctx->swapchain_create_info_data.surface = vk_ctx->window_bitmap_surface;
+		vk_ctx->swapchain_create_info_data.surface = vk_ctx->bitmap_surface;
 		vk_ctx->swapchain_create_info_data.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		vk_ctx->swapchain_create_info_data.clipped = VK_TRUE;
 		vk_ctx->swapchain_create_info_data.pNext = nullptr;
@@ -646,6 +599,56 @@ namespace wr
 		}
 		vk_ctx->swapchain_create_info_data = vk_ctx->swapchain_create_info_data;
 		return ResultInfo::WR_OK;
+	}
+
+	VkResult recreate_swapchain(VulkanContext* vk_ctx, vec2u window_size) noexcept
+	{
+		VkSurfaceCapabilitiesKHR surface_capabilities = {};
+		VkResult result;
+		vk_ctx->swapchain_create_info_data.oldSwapchain = vk_ctx->swapchain;
+		result = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(vk_ctx->cur_used_gpu, vk_ctx->bitmap_surface, &surface_capabilities);
+		if (result)
+		{
+			WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+				std::format("Failed to get physical device surface capabilities!\tError code : {0}",
+					static_cast<int64_t>(result)).c_str());
+			return result;
+		}
+		// is window min
+		if (surface_capabilities.currentExtent.width == 0 || surface_capabilities.currentExtent.height == 0)
+			return VK_SUBOPTIMAL_KHR;
+		vk_ctx->swapchain_create_info_data.imageExtent = surface_capabilities.currentExtent;
+
+		// wait queue is end
+		if (vk_ctx->queue_mod.queue_list.graphics_queue_inst.index ==
+			vk_ctx->queue_mod.queue_list.presentation_queue_inst.index)
+		{
+			// graphics_queue is must been created
+			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.graphics_queue_inst.queue);
+			if (result) goto QUEUE_WAIT_ERROR;
+		}
+		else
+		{
+			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.graphics_queue_inst.queue);
+			if (result) goto QUEUE_WAIT_ERROR;
+
+			result = vkQueueWaitIdle(vk_ctx->queue_mod.queue_list.presentation_queue_inst.queue);
+			if (result) goto QUEUE_WAIT_ERROR;
+		}
+		for (uint32_t i = 0; i < vk_ctx->swapchain_image_count; i++)
+		{
+			vkDestroyImageView(vk_ctx->vk_logic_vkdevice, vk_ctx->swapchain_image_views[i], pvk_allocator);
+		}
+		if (create_swapchain(vk_ctx, window_size, vk_ctx->swapchain_create_info_data.minImageCount,
+			vk_ctx->alpha_window, vk_ctx->limit_frame_rate))
+			return VK_ERROR_INITIALIZATION_FAILED;
+
+		return VK_SUCCESS;
+	QUEUE_WAIT_ERROR:
+		WR_ERROR_OUTPUT(WR_TYPE_NAME_OUTPUT::LIB, "wrGraphics::vulkan",
+			std::format("Failed to wait for the queue to be idle!\tError code: {0}",
+				static_cast<int64_t>(result)).c_str());
+		return result;
 	}
 
 	ResultInfo create_image_view(VulkanContext* vk_ctx)
@@ -736,7 +739,7 @@ namespace wr
 #endif // _DEBUG
 		vkDestroySwapchainKHR(vk_ctx->vk_logic_vkdevice, vk_ctx->swapchain, pvk_allocator);
 		vkDestroyDevice(vk_ctx->vk_logic_vkdevice, pvk_allocator);
-		vkDestroySurfaceKHR(vk_ctx->vk_main_instance, vk_ctx->window_bitmap_surface, pvk_allocator);
+		vkDestroySurfaceKHR(vk_ctx->vk_main_instance, vk_ctx->bitmap_surface, pvk_allocator);
 		vkDestroyInstance(vk_ctx->vk_main_instance, pvk_allocator);
 	}
 } // namespace wr is end
