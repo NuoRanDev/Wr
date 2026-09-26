@@ -1,0 +1,13 @@
+/build/windows/.vs
+/build/windows/.vs/*
+/build/windows/OBJ
+/build/windows/OBJ/*
+/SDK/*
+/rust/Cargo.lock
+/rust/target/*
+/temp/*
+/.vs/
+/build/cmake/build/*
+/.vscode/*
+/3rd/inc/*
+/3rd/bin/*
