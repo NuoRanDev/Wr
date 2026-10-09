@@ -1,0 +1,97 @@
+﻿#ifndef _WR_PATH_HPP_
+#define _WR_PATH_HPP_
+
+// core
+#include <string/wrString.hpp>
+#include <wrCompiler.hpp>
+
+namespace wr
+{
+
+#if defined(_WIN32)
+	using OS_STRING = U16StringRef;
+	using OS_CHAR = utf16le_t;
+#else
+	using OS_STRING = U8StringRef;
+	using OS_CHAR = char;
+#endif // defined(_WIN32) IS END
+
+	class exportfunc Path
+	{
+	public:
+		Path() = default;
+
+		Path(const String &path) noexcept;
+
+		Path(Path&& other) noexcept;
+
+#if defined(_WIN32)
+
+		Path(const U16StringRef& path) noexcept { n_str.load_utf16_string(path); }
+
+#endif // defined(_WIN32) is end
+
+		Path operator=(const U8StringRef& path) { return Path(path); }
+
+		String abs_path() const noexcept;
+
+		String base_name() noexcept;
+
+		bool exists() const noexcept;
+
+		std::time_t get_create_time() const noexcept;
+
+		uint64_t get_size() const noexcept;
+
+		bool is_abs() const noexcept;
+
+		bool is_dir() const noexcept;
+
+		bool is_file() const noexcept;
+
+		std::pair<String, String> split() const noexcept;
+
+		const String to_string() const noexcept;
+
+		bool is_empty() const noexcept
+		{
+			return n_str.data() == nullptr;
+		}
+
+		const OS_CHAR* get_native_str_data() const { return reinterpret_cast<const OS_CHAR*>(n_str.data()); }
+
+		OS_STRING get_native_str() { return OS_STRING(n_str); }
+
+	private:
+
+		friend class Path;
+
+		OS_STRING n_str;
+	}; // namespace Path is end
+
+	[[nodiscard]] inline std::ostream& operator<<(std::ostream& out, const Path& path)
+	{
+#if defined(_WIN32)
+		auto str = path.to_string();
+		if (str == nullptr)
+			out << "";
+		else
+		{
+			out << str.c_str();
+		}
+		return out;
+#else
+		auto str = path.get_native_str_data();
+		if (str == nullptr)
+			out << "";
+		else
+		{
+			out << str;
+		}
+		return out;
+#endif // defined(_WIN32)
+	}
+
+} // namespace wr is end
+
+#endif // !_WR_PATH_HPP_

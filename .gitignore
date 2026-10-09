@@ -1,8 +1,9 @@
-/build/windows/.vs
-/build/windows/.vs/*
-/build/windows/OBJ
-/build/windows/OBJ/*
-/SDK/*
+/build/msbuild/.vs
+/build/msbuild/.vs/*
+/build/msbuild/OBJ
+/build/msbuild/OBJ/*
+/bin/*
+/out/*
 /rust/Cargo.lock
 /rust/target/*
 /temp/*

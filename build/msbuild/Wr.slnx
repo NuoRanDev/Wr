@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="debug" />
+    <BuildType Name="release" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Core.vcxproj" Id="cdff4d3e-c976-48a1-8762-4967ca950e0c">
+    <BuildDependency Project="Dev.vcxproj" />
+  </Project>
+  <Project Path="Dev.vcxproj" Id="7c2cf11e-7659-4f63-925b-3f9d3f1e9790" />
+  <Project Path="OS.vcxproj" Id="db64a60b-f37f-467a-9f15-55cb6f2a40fe">
+    <BuildDependency Project="Dev.vcxproj" />
+  </Project>
+</Solution>

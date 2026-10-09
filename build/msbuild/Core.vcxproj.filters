@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{8928f0be-bc3a-48a8-ae48-dc17afd40209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\string">
+      <UniqueIdentifier>{b0068f71-b78f-4575-a2dc-9e9f6a2605ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\dynamic_array">
+      <UniqueIdentifier>{d58569cc-c338-4ad4-96ff-d1c70d74a084}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\core\string\wrStringRef.hpp">
+      <Filter>core\string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\string\wrU8String.hpp">
+      <Filter>core\string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\string\wrU16String.hpp">
+      <Filter>core\string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\wrString.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\wrSegmentMemory.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\dynamic_array\wrPodDynamicArray.hpp">
+      <Filter>core\dynamic_array</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\wrDynamicArray.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\core\string\wrStringRef.cpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\string\wrU16String.cpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\string\wrU8String.cpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\coreTest.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\dynamic_array\wrPodDynamicArray.cpp">
+      <Filter>core\dynamic_array</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

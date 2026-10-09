@@ -1,0 +1,18 @@
+﻿#ifndef _WR_TYPE_HPP_
+#define _WR_TYPE_HPP_
+
+// std
+#include <cstdint>
+
+namespace wr
+{
+	using unicode_t = char32_t;
+	using byte_t = uint8_t;
+
+	using utf8_t = char8_t;
+	using utf16le_t = wchar_t;
+
+	using any_type_ptr_t = void*;
+} // namespace wr is end
+
+#endif // _WR_TYPE_HPP_ IS END
