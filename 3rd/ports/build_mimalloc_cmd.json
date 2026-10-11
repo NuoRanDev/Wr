@@ -1,0 +1,13 @@
+{
+    "base_make":"-DMI_OPT_ARCH=OFF -DMI_SECURE=OFF -DMI_STATS=DEFAULT -DMI_DEBUG_FULL=OFF -DMI_DEBUG=OFF -DMI_BUILD_TESTS=OFF -DMI_STATS=OFF -DMI_PROFILE=OFF -DMI_BUILD_OBJECT=OFF -DMI_FREE_IS_CHECKED=ON -DMI_BUILD_STATIC=ON -DMI_BUILD_SHARED=ON",
+    "make":
+    {
+        "windows"   :"-A x64 -T ClangCl",
+        "linux"     :"-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"
+    },
+    "build":
+    {
+        "windows"   :"--config Release --parallel 4",
+        "linux"     :""
+    }
+}

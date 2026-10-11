@@ -1,10 +1,12 @@
 // statement
 #include <core/string/wrU8String.hpp>
-// OS
+// base
 #include <os/wrAlloc.hpp>
 #include <os/wrLogOutput.hpp>
 // dev
 #include <dev/wrMemory.hpp>
+// core
+#include <core/wrSegmentOperate.hpp>
 // std
 #include <algorithm>
 
@@ -24,13 +26,6 @@ namespace wr
 		0x80000000      // U+04000000 - U+7FFFFFFF  
 	};
 
-	inline bool compare_memory(const utf8_t* lhs, const utf8_t* rhs, int64_t length) noexcept
-	{
-		if (length == 0)
-			return 0;
-		return wr_memcmp(lhs, rhs, length) == 0;
-	}
-
 	static int32_t utf8_byte_type(utf8_t c) noexcept
 	{
 		if (c < 0x80)
@@ -40,7 +35,7 @@ namespace wr
 		else if (c >= 0xF5 || (c & 0xFE) == 0xC0)
 		{
 			// "octet values c0, c1, f5 to ff never appear"
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "octet values c0, c1, f5 to ff never appear");
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "octet values c0, c1, f5 to ff never appear");
 			return -1;
 		}
 		else
@@ -63,7 +58,7 @@ namespace wr
 			if (utf32_str < CODE_UP[i]) break;
 		if (i == len)
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf32 string is invalid");
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "The utf32 string is invalid");
 			return 0;
 		}
 		len = i + 1;
@@ -95,7 +90,7 @@ namespace wr
 
 		if (b < 0xC0 || b > 0xFD)
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The src is invalid");
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "The src is invalid");
 			return;
 		} // the src is invalid  
 
@@ -132,7 +127,7 @@ namespace wr
 			b = src[i];
 			if (b < 0x80 || b > 0xBF)
 			{
-				WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "the src is invalid");
+				WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "the src is invalid");
 				return; // the src is invalid  
 			}
 			des = (des << 6) + (b & 0x3F);
@@ -154,14 +149,14 @@ namespace wr
 			int type = utf8_byte_type(*utf8);
 			if (!utf8_bype_is_valid_leading_byte(type) || utf8 + type > stop)
 			{
-				WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 text not coherent");
+				WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Utf8 text not coherent");
 				return 0;  // Sequence extends beyond end.
 			}
 			while ((type--) > 1) {
 				++utf8;
 				if (!utf8_byte_is_continuation(*utf8))
 				{
-					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 text not coherent");
+					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Utf8 text not coherent");
 					return 0;
 				}
 			}
@@ -171,7 +166,24 @@ namespace wr
 		return count;
 	}
 
-	u8_string load_all(const void* char_data, int64_t char_num, int64_t char_data_alloc_size) noexcept
+	static pod_dynamic_array find_all_byte_u8_str_ofs(
+		const byte_t* src, size_t src_size,
+		const byte_t* pattern, size_t pattern_size) noexcept
+	{
+		if (pattern_size == 0) [[unlikely]]
+		{
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Not input unicode");
+			return pod_dynamic_array_create(sizeof(int64_t));;
+		}
+		else [[likely]]
+		{
+			return segment_byte_find_all(
+				src, src_size,
+				pattern, pattern_size);
+		}
+	}
+
+	u8_string u8_str_load_all(const void* char_data, int64_t char_num, int64_t char_data_alloc_size) noexcept
 	{	
 		if(char_data_alloc_size) [[unlikely]]
 		{
@@ -189,13 +201,13 @@ namespace wr
 		}
 	}
 
-	u8_string load_c_str(const void* char_data, int64_t char_data_alloc_size) noexcept
+	u8_string u8_str_load_c_str(const void* char_data, int64_t char_data_alloc_size) noexcept
 	{
 		int64_t num = count_utf8(reinterpret_cast<const utf8_t*>(char_data), char_data_alloc_size - 1);
-		return load_all(char_data, num, char_data_alloc_size);
+		return u8_str_load_all(char_data, num, char_data_alloc_size);
 	}
 
-	bool str_cmp(const u8_string str1, const u8_string str2) noexcept
+	bool u8_str_cmp(const u8_string str1, const u8_string str2) noexcept
 	{
 		if (str1.char_data_size != str2.char_data_size) [[likely]]
 			return false;
@@ -205,7 +217,7 @@ namespace wr
 		}
 	}
 
-	u8_string str_slice(u8_string str, int64_t start, int64_t end) noexcept
+	u8_string u8_str_slice(u8_string str, int64_t start, int64_t end) noexcept
 	{
 		int64_t _cur_number = 0;
 		utf8_t* start_str_ptr = nullptr;
@@ -228,7 +240,7 @@ namespace wr
 				cur_str_ptr++;
 				if (!utf8_bype_is_valid_leading_byte(*cur_str_ptr))
 				{
-					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 text not coherent");
+					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Utf8 text not coherent");
 					return create_empty_u8str();
 				}
 			}
@@ -246,7 +258,7 @@ namespace wr
 				need_copy_offset++;
 				if (!utf8_bype_is_valid_leading_byte(*cur_str_ptr))
 				{
-					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 text not coherent");
+					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Utf8 text not coherent");
 					return create_empty_u8str();
 				}
 			}
@@ -254,10 +266,10 @@ namespace wr
 			cur_str_ptr++;
 			_cur_number++;
 		}
-		return load_all(start_str_ptr, need_copy_offset + 1, end - start);
+		return u8_str_load_all(start_str_ptr, need_copy_offset + 1, end - start);
 	}
 
-	u8_string append_str(u8_string src, const u8_string append_str) noexcept
+	u8_string u8_str_append_u8_str(u8_string src, const u8_string append_str) noexcept
 	{
 		int64_t jump_str_offset = src.char_data_size - 1;
 		utf8_t* append_ptr_start = nullptr;
@@ -277,7 +289,7 @@ namespace wr
 		return src;
 	}
 
-	u8_string append_char(u8_string src, unicode_t character) noexcept
+	u8_string u8_str_append_unicode_char(u8_string src, unicode_t character) noexcept
 	{
 		utf8_t output_utf8_str[4] = { 0 };
 		int32_t output_utf8_str_size = utf32_to_utf8(character, output_utf8_str);
@@ -290,7 +302,7 @@ namespace wr
 				.is_short_string = true,
 				.char_data = output_utf8_str,
 			};
-			return append_str(src, u8char);
+			return u8_str_append_u8_str(src, u8char);
 		}
 		else
 		{
@@ -298,14 +310,14 @@ namespace wr
 		}
 	}
 
-	unicode_t at(const u8_string src, int64_t char_index) noexcept
+	unicode_t u8_str_at(const u8_string src, int64_t char_index) noexcept
 	{
 		int64_t _cur_index = 0;
 		const utf8_t* cur_str_ptr = src.char_data;
 		unicode_t output_character = U'\0';
 		if ((char_index < 0) || (char_index >= src.char_num))
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Out of string");
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Out of string");
 			return output_character;
 		}
 		while (_cur_index != char_index)
@@ -316,7 +328,7 @@ namespace wr
 				cur_str_ptr++;
 				if (!utf8_bype_is_valid_leading_byte(*cur_str_ptr))
 				{
-					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Utf8 text not coherent");
+					WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Utf8 text not coherent");
 					return U'\0';
 				}
 			}
@@ -328,30 +340,50 @@ namespace wr
 		return output_character;
 	}
 
-	void release_u8_string(u8_string str) noexcept
+	void u8_str_release(u8_string str) noexcept
 	{
 		wr_check_null_free(str.char_data);
 	}
-	/*
-	dynamic_array_data<int64_t> find_all_ofs(const unicode_t pattern) noexcept
+
+	pod_dynamic_array u8_str_find_all_u8_str_ofs(const u8_string src, const u8_string pattern) noexcept
+	{
+		return find_all_byte_u8_str_ofs
+		(
+			reinterpret_cast<const byte_t*>(src.char_data),
+			src.char_data_size,
+			reinterpret_cast<const byte_t*>(pattern.char_data),
+			pattern.char_data_size
+		);
+	}
+
+	pod_dynamic_array u8_str_find_all_unicode_ofs(const u8_string src, unicode_t pattern) noexcept
 	{
 		utf8_t utf8_separator[4] = { 0 };
 		auto out_size = utf32_to_utf8(pattern, utf8_separator);
-		dynamic_array<int64_t> out;
-		if (out_size == 0)
+		if (out_size <= 0) [[unlikely]]
 		{
-			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "Not input unicode");
-			return out.move_pod();
+			WR_WARNING_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "Core", "Not input unicode");
+			return pod_dynamic_array_create(sizeof(int64_t));
 		}
-		if (out_size == 1)return find_all(utf8_separator[0]);
 		else
 		{
-			return find_all(utf8_separator, out_size);
+			return find_all_byte_u8_str_ofs
+			(
+				reinterpret_cast<const byte_t*>(src.char_data),
+				src.char_data_size,
+				reinterpret_cast<const byte_t*>(utf8_separator),
+				out_size
+			);
 		}
 	}
 
-	dynamic_array_data<u8_string> split(const u8_string separator) noexcept
+	pod_dynamic_array u8_byte_split(
+		const byte_t* src, size_t src_size,
+		const byte_t* pattern, size_t pattern_size) noexcept
 	{
-		return dynamic_array_data<u8_string>();
-	}*/
+		auto ofs_list = find_all_byte_u8_str_ofs(src, src_size, pattern, pattern_size);
+
+		pod_dynamic_array_release(ofs_list);
+		return ofs_list;
+	}
 } // namespace wr is end

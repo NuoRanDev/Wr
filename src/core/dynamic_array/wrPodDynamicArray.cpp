@@ -1,13 +1,15 @@
 // statement
 #include <core/dynamic_array/wrPodDynamicArray.hpp>
-// os
+// core
+#include <core/wrSegmentStruct.hpp>
+// base
 #include <os/wrAlloc.hpp>
 // dev
 #include <dev/wrMemory.hpp>
 
 namespace wr
 {
-	pod_dynamic_array pod_create(size_t item_size, size_t init_size) noexcept
+	pod_dynamic_array pod_dynamic_array_create(size_t item_size, size_t init_size) noexcept
 	{
 		pod_dynamic_array format_data =
 		{
@@ -19,9 +21,12 @@ namespace wr
 		return format_data;
 	}
 
-	pod_dynamic_array pod_form(pod_dynamic_array format_data, const void* ptr, size_t num, size_t item_size) noexcept
+	pod_dynamic_array pod_dynamic_array_form(pod_dynamic_array format_data, const void* ptr, size_t num, size_t item_size) noexcept
 	{
-		pod_release(format_data);
+		if (format_data.item_num && format_data.capacity_num) [[unlikely]]
+		{
+			pod_dynamic_array_release(format_data);
+		}
 		format_data =
 		{
 			.item_num = num,
@@ -33,13 +38,13 @@ namespace wr
 		return format_data;
 	}
 
-	pod_dynamic_array pod_pop_back(pod_dynamic_array format_data) noexcept
+	pod_dynamic_array pod_dynamic_array_pop_back(pod_dynamic_array format_data) noexcept
 	{
 		format_data.item_num--;
 		return format_data;
 	}
 
-	pod_dynamic_array pod_resize(pod_dynamic_array format_data, size_t num) noexcept
+	pod_dynamic_array pod_dynamic_array_resize(pod_dynamic_array format_data, size_t num) noexcept
 	{
 		if (num == format_data.item_num) [[unlikely]]
 			return format_data;
@@ -51,7 +56,7 @@ namespace wr
 			{
 				if (num == 0) [[unlikely]]
 				{
-					pod_release(format_data);
+					pod_dynamic_array_release(format_data);
 					return format_data;
 				}
 				else [[likely]]
@@ -59,7 +64,7 @@ namespace wr
 					format_data.item_num = num;
 					if (num > format_data.capacity_num) [[likely]]
 					{
-						pod_capacity(format_data, num);
+						pod_dynamic_array_capacity(format_data, num);
 						return format_data;
 					}
 					else [[unlikely]]
@@ -71,7 +76,7 @@ namespace wr
 		}
 	}
 
-	pod_dynamic_array pod_capacity(pod_dynamic_array format_data, size_t num) noexcept
+	pod_dynamic_array pod_dynamic_array_capacity(pod_dynamic_array format_data, size_t num) noexcept
 	{
 		if (num < 0) [[unlikely]]
 		{
@@ -81,7 +86,7 @@ namespace wr
 		{
 			if (num == 0) [[unlikely]]
 			{
-				pod_release(format_data);
+				pod_dynamic_array_release(format_data);
 				return format_data;
 			}
 			else [[likely]]
@@ -102,7 +107,7 @@ namespace wr
 		}
 	}
 
-	pod_dynamic_array pod_push_back(pod_dynamic_array format_data, const void* ptr, size_t num) noexcept
+	pod_dynamic_array pod_dynamic_array_push_back(pod_dynamic_array format_data, const void* ptr, size_t num) noexcept
 	{
 		if (num == 0 || ptr == nullptr) [[unlikely]]
 			return format_data;
@@ -111,7 +116,7 @@ namespace wr
 			size_t new_item_num = num + format_data.item_num;
 			if (new_item_num > format_data.capacity_num) [[likely]]
 			{
-				pod_capacity(format_data, (new_item_num / MEMORY_ALIGNED_BLOCK_SIZE + 1) * MEMORY_ALIGNED_BLOCK_SIZE);
+				pod_dynamic_array_capacity(format_data, (new_item_num / MEMORY_ALIGNED_BLOCK_SIZE + 1) * MEMORY_ALIGNED_BLOCK_SIZE);
 			}
 			auto cpy_to = format_data.pitems
 				+ format_data.item_num * format_data.item_size;
@@ -121,13 +126,13 @@ namespace wr
 		}
 	}
 
-	pod_dynamic_array pod_release(pod_dynamic_array format_data) noexcept
+	pod_dynamic_array pod_dynamic_array_release(pod_dynamic_array format_data) noexcept
 	{
 		format_data =
 		{
 			.item_num = 0,
 			.capacity_num = 0,
-			.pitems = reinterpret_cast<byte_t*>(wr_free(format_data.pitems))
+			.pitems = reinterpret_cast<byte_t*>(wr_check_null_free(format_data.pitems))
 		};
 		return format_data;
 	}

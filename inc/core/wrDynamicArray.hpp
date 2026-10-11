@@ -13,10 +13,13 @@ namespace wr
 	{
 	public:
 		// create empty 
-		dynamic_array() noexcept { format_data = pod_create(sizeof(T)); }
+		dynamic_array() noexcept { format_data = pod_dynamic_array_create(sizeof(T)); }
 
 		// create
-		dynamic_array(size_t _num) noexcept { format_data = pod_create(sizeof(T), _num); }
+		dynamic_array(size_t _num) noexcept { format_data = pod_dynamic_array_create(sizeof(T), _num); }
+
+		// get
+		dynamic_array(pod_dynamic_array data) noexcept { format_data = data; }
 
 		// move
 		dynamic_array(dynamic_array<T>&& temp) noexcept
@@ -31,26 +34,26 @@ namespace wr
 		// load data form external ptr
 		void form(const T* ptr, size_t _num) noexcept
 		{
-			pod_form(format_data, ptr, _num, sizeof(T));
+			pod_dynamic_array_form(format_data, ptr, _num, sizeof(T));
 		}
 
 		// load C abi input data
 		void load(pod_dynamic_array format_input) noexcept { format_data = format_input; }
 
 		// delete end
-		void pop_back() noexcept { format_data = pod_pop_back(format_data); }
+		void pop_back() noexcept { format_data = pod_dynamic_array_pop_back(format_data); }
 
 		// adjusts the size of a dynamic_array, adding or removing elements as needed,
 		// optionally initializing new elements with a specified value.
 		void resize(size_t _num) noexcept
 		{
-			pod_resize(format_data, _num);
+			pod_dynamic_array_resize(format_data, _num);
 		}
 
 		// capacity is the number of elements the dynamic_array can hold without reallocating memory
 		void capacity(size_t _num) noexcept
 		{
-			pod_capacity(format_data, _num);
+			pod_dynamic_array_capacity(format_data, _num);
 		}
 
 		// is empty?
@@ -65,13 +68,13 @@ namespace wr
 		//
 		void push_back(const T* ptr, size_t _num) noexcept
 		{
-			format_data = pod_push_back(format_data, ptr, _num);
+			format_data = pod_dynamic_array_push_back(format_data, ptr, _num);
 		}
 
 		//
 		void push_back(T item) noexcept
 		{
-			format_data = pod_push_back(format_data, &item, 1);
+			format_data = pod_dynamic_array_push_back(format_data, &item, 1);
 		}
 
 		T at(size_t num) noexcept
@@ -104,7 +107,7 @@ namespace wr
 		// full 0 in format_data
 		void release()
 		{
-			format_data = pod_release(format_data);
+			format_data = pod_dynamic_array_release(format_data);
 		}
 
 		// destory

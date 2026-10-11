@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{3c84b4d3-e59f-41d8-91bc-a3b62e744513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\os">
+      <UniqueIdentifier>{8928f0be-bc3a-48a8-ae48-dc17afd40209}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\os\wrAlloc.cpp">
+      <Filter>base\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\os\wrLogOutpout.cpp">
+      <Filter>base\os</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\os\wrAlloc.hpp">
+      <Filter>base\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\os\wrLogOutput.hpp">
+      <Filter>base\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\wrCompiler.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\wrResult.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\wrTemplate.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\wrType.hpp">
+      <Filter>base</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

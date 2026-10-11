@@ -24,13 +24,16 @@
     <ClInclude Include="..\..\inc\core\wrString.hpp">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\core\wrSegmentMemory.hpp">
+    <ClInclude Include="..\..\inc\core\wrSegmentStruct.hpp">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\core\dynamic_array\wrPodDynamicArray.hpp">
       <Filter>core\dynamic_array</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\core\wrDynamicArray.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\core\wrSegmentOperate.hpp">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\core\dynamic_array\wrPodDynamicArray.cpp">
       <Filter>core\dynamic_array</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\wrSegmentOperate.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

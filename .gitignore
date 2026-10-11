@@ -11,4 +11,4 @@
 /build/cmake/build/*
 /.vscode/*
 /3rd/inc/*
-/3rd/bin/*
+/3rd/lib/*

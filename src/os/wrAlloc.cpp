@@ -1,6 +1,6 @@
 ﻿#include <os/wrAlloc.hpp>
 // 3rd lib mimalloc
-#include <mimalloc-override.h>
+#include <mimalloc.h>
 
 namespace wr
 {
