@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\os\wrAlloc.cpp" />
     <ClCompile Include="..\..\src\os\wrLogOutpout.cpp" />
+    <ClCompile Include="..\..\src\os\wrNew.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\os\wrNew.hpp" />
     <ClInclude Include="..\..\inc\wrCompiler.hpp" />
     <ClInclude Include="..\..\inc\wrResult.hpp" />
     <ClInclude Include="..\..\inc\wrTemplate.hpp" />
@@ -54,13 +56,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

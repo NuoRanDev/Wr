@@ -1,5 +1,5 @@
-#ifndef _INC_WR_SEGMENT_STRUCT_HPP_
-#define _INC_WR_SEGMENT_STRUCT_HPP_
+#ifndef _WR_SEGMENT_STRUCT_HPP_
+#define _WR_SEGMENT_STRUCT_HPP_
 
 // base
 #include <wrType.hpp>
@@ -20,4 +20,4 @@ namespace wr
 	//constexpr segment* to_segment_view(void* ptr) { return reinterpret_cast<segment*>(ptr); }
 } // namespace wr is end
 
-#endif // _INC_WR_SEGMENT_STRUCT_HPP_ IS EOF
+#endif // _WR_SEGMENT_STRUCT_HPP_ IS EOF

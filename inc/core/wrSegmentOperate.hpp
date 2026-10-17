@@ -1,5 +1,5 @@
-#ifndef _INC_SEGMENT_OPERATE_
-#define _INC_SEGMENT_OPERATE_
+#ifndef _SEGMENT_OPERATE_
+#define _SEGMENT_OPERATE_
 
 // base
 #include <wrType.hpp>
@@ -20,4 +20,4 @@ namespace wr
 	(const byte_t* main_seg, size_t main_seg_size, const byte_t* child_seg, size_t child_seg_size) noexcept;
 } // namespace wr is end
 
-#endif // !_INC_SEGMENT_OPERATE_
+#endif // _SEGMENT_OPERATE_ IS EOF

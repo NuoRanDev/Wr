@@ -38,9 +38,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\core\string\wrStringRef.cpp">
-      <Filter>core\string</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\string\wrU16String.cpp">
       <Filter>core\string</Filter>
     </ClCompile>

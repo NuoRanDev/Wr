@@ -9,14 +9,27 @@
 
 namespace wr
 {
-	pod_dynamic_array pod_dynamic_array_create(size_t item_size, size_t init_size) noexcept
+	pod_dynamic_array pod_dynamic_void_array_create(size_t init_item_size, size_t init_capacity_num) noexcept
 	{
 		pod_dynamic_array format_data =
 		{
 			.item_num = 0,
-			.item_size = item_size,
-			.capacity_num = init_size,
-			.pitems = wr_malloc<byte_t>(init_size * item_size)
+			.item_size = init_item_size,
+			.capacity_num = init_capacity_num,
+			.pitems = wr_malloc<byte_t>(init_capacity_num * init_item_size)
+		};
+		return format_data;
+	}
+
+	pod_dynamic_array pod_dynamic_empty_array_create(size_t init_item_size, size_t init_item_num) noexcept
+	{
+		size_t init_capacity_num = init_item_size;
+		pod_dynamic_array format_data =
+		{
+			.item_num = init_item_num,
+			.item_size = init_item_size,
+			.capacity_num = init_capacity_num,
+			.pitems = wr_malloc<byte_t>(init_capacity_num * init_item_size)
 		};
 		return format_data;
 	}

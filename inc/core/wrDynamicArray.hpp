@@ -5,18 +5,40 @@
 #include <wrType.hpp>
 // core
 #include <core/dynamic_array/wrPodDynamicArray.hpp>
+// std
+#include <memory>
 
 namespace wr
 {
-	template<typename T> 
+	constexpr size_t bast_num(size_t item_size)
+	{
+		if (item_size > 8)
+			return 2;
+		if (item_size > 4)
+			return 4;
+		if (item_size > 2)
+			return 8;
+		else
+		{
+			return 16;
+		}
+	}
+
+	template<class T> 
 	class dynamic_array
 	{
 	public:
 		// create empty 
-		dynamic_array() noexcept { format_data = pod_dynamic_array_create(sizeof(T)); }
+		dynamic_array() noexcept 
+		{
+			format_data = pod_dynamic_void_array_create(sizeof(T), bast_num(sizeof(T)));
+		}
 
 		// create
-		dynamic_array(size_t _num) noexcept { format_data = pod_dynamic_array_create(sizeof(T), _num); }
+		dynamic_array(size_t _num) noexcept 
+		{
+			format_data = pod_dynamic_empty_array_create(sizeof(T), _num); 
+		}
 
 		// get
 		dynamic_array(pod_dynamic_array data) noexcept { format_data = data; }
@@ -31,10 +53,19 @@ namespace wr
 		// by form(*)
 		dynamic_array(const T* ptr, size_t number) noexcept { form(ptr, number); }
 
+		// clear all data
 		// load data form external ptr
-		void form(const T* ptr, size_t _num) noexcept
+		void form(T* ptr, size_t _num) noexcept
 		{
-			pod_dynamic_array_form(format_data, ptr, _num, sizeof(T));
+			if (format_data.item_num != 0) [[unlikely]]
+				release();
+			format_data = pod_dynamic_empty_array_create(sizeof(T), _num);
+			T* item_data = reinterpret_cast<T*>(format_data.pitems);
+
+			for (size_t i = 0; i < _num; i++)
+			{
+				std::construct_at(item_data + i, ptr[i]);
+			}
 		}
 
 		// load C abi input data
@@ -107,6 +138,11 @@ namespace wr
 		// full 0 in format_data
 		void release()
 		{
+			T* item_data = reinterpret_cast<T*>(format_data.pitems);
+			for (size_t i = 0; i < format_data.item_num; i++)
+			{
+				std::destroy_at(item_data + i);
+			}
 			format_data = pod_dynamic_array_release(format_data);
 		}
 

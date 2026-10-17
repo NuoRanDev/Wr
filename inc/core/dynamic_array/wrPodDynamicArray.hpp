@@ -17,19 +17,21 @@ namespace wr
 		byte_t* pitems;
 	};
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_create(size_t item_size, size_t init_size = MEMORY_ALIGNED_BLOCK_SIZE) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_void_array_create(size_t init_item_size, size_t init_capacity_num = MEMORY_ALIGNED_BLOCK_SIZE) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_form(pod_dynamic_array format_data, const void* ptr, size_t num, size_t item_size) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_empty_array_create(size_t init_item_size, size_t init_item_num) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_pop_back(pod_dynamic_array format_data) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_form(pod_dynamic_array format_data, const void* ptr, size_t num, size_t item_size) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_resize(pod_dynamic_array format_data, size_t num) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_pop_back(pod_dynamic_array format_data) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_capacity(pod_dynamic_array format_data, size_t num) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_resize(pod_dynamic_array format_data, size_t num) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_push_back(pod_dynamic_array format_data, const void* ptr, size_t num) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_capacity(pod_dynamic_array format_data, size_t num) noexcept;
 
-	c_extern exportfunc pod_dynamic_array pod_dynamic_array_release(pod_dynamic_array format_data) noexcept;
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_push_back(pod_dynamic_array format_data, const void* ptr, size_t num) noexcept;
+
+	[[nodiscard]] c_extern exportfunc pod_dynamic_array pod_dynamic_array_release(pod_dynamic_array format_data) noexcept;
 
 } // namespace wr is end
 

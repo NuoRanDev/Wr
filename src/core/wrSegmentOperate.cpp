@@ -25,7 +25,7 @@ namespace wr
 	pod_dynamic_array segment_byte_find_all(const byte_t* main_seg, size_t main_seg_size,
 		const byte_t* child_seg, size_t child_seg_size) noexcept
 	{
-		pod_dynamic_array out = pod_dynamic_array_create(sizeof(size_t));
+		pod_dynamic_array out = pod_dynamic_void_array_create(sizeof(size_t));
 
 		if (main_seg_size < child_seg_size) [[unlikely]]
 			return out;
@@ -34,11 +34,14 @@ namespace wr
 		size_t cur_ofs = 0;
 		const size_t end_ofs = main_seg_size - child_seg_size + 1;
 
+
 		while (cur_ofs < end_ofs)
 		{
+			// auto c1 = reinterpret_cast<const char8_t*>(cur_ptr);
+			// auto c2 = reinterpret_cast<const char8_t*>(child_seg);
 			if (wr_memcmp(cur_ptr, child_seg, child_seg_size)) [[unlikely]]
 			{
-				pod_dynamic_array_push_back(out, &cur_ofs, 1llu);
+				out = pod_dynamic_array_push_back(out, &cur_ofs, 1llu);
 			}
 			cur_ofs++;
 			cur_ptr++;

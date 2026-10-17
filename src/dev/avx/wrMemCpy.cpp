@@ -36,7 +36,7 @@ namespace wr
 				need_copy_size -= 32;
 				copy_from += 32;
 				copy_to += 32;
-			} while (need_copy_size > 16);
+			} while (need_copy_size > 32);
 			if (need_copy_size < 16) goto _OFS_JMP;
 
 		_16_BYTE:
