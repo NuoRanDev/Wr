@@ -11,6 +11,8 @@
 
 namespace wr
 {
+	const uint16_t END_OF_STRING = 0;
+
 	struct u8_string
 	{
 		// string size
@@ -32,6 +34,8 @@ namespace wr
 	[[nodiscard]] c_extern exportfunc u8_string u8_str_load_c_str(const void* init_char_data, int64_t char_data_alloc_size) noexcept;
 
 	[[nodiscard]] c_extern exportfunc bool u8_str_cmp(const u8_string str1, const u8_string str2) noexcept;
+
+	[[nodiscard]] c_extern exportfunc u8_string u8_str_recount(u8_string str);
 
 	[[nodiscard]] c_extern exportfunc u8_string u8_str_slice(const u8_string str, int64_t start, int64_t end) noexcept;
 

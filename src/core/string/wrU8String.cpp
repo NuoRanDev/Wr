@@ -284,6 +284,12 @@ namespace wr
 		}
 	}
 
+	u8_string u8_str_recount(u8_string str)
+	{
+		str.char_num = count_utf8(str.char_data, str.char_data_size);
+		return str;
+	}
+
 	u8_string u8_str_slice(const u8_string str, int64_t start, int64_t end) noexcept
 	{
 		int64_t _cur_number = 1;
