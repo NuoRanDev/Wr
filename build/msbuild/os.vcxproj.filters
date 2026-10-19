@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{3c84b4d3-e59f-41d8-91bc-a3b62e744513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\os">
+      <UniqueIdentifier>{8928f0be-bc3a-48a8-ae48-dc17afd40209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\os\winows">
+      <UniqueIdentifier>{0c8e4be3-a0dc-475b-b859-858b7fdd63f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\os\winows\wrWinowsPath.cpp">
+      <Filter>base\os\winows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\os\wrPath.cpp">
+      <Filter>base\os</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\os\winows\wrWinowsPath.hpp">
+      <Filter>base\os\winows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\os\wrPath.hpp">
+      <Filter>base\os</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

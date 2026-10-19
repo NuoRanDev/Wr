@@ -15,9 +15,6 @@
     <ClCompile Include="..\..\src\os\wrLogOutpout.cpp">
       <Filter>base\os</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\os\wrNew.cpp">
-      <Filter>base\os</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\os\wrAlloc.hpp">
@@ -37,9 +34,6 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\wrType.hpp">
       <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\os\wrNew.hpp">
-      <Filter>base\os</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

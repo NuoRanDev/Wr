@@ -21,10 +21,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\os\wrAlloc.cpp" />
     <ClCompile Include="..\..\src\os\wrLogOutpout.cpp" />
-    <ClCompile Include="..\..\src\os\wrNew.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\os\wrNew.hpp" />
     <ClInclude Include="..\..\inc\wrCompiler.hpp" />
     <ClInclude Include="..\..\inc\wrResult.hpp" />
     <ClInclude Include="..\..\inc\wrTemplate.hpp" />

@@ -1,5 +1,4 @@
-﻿#include <os/wrNew.hpp>
-#include <core/wrDynamicArray.hpp>
+﻿#include <core/wrDynamicArray.hpp>
 #include <iostream>
 #include <string>
 #include <core/wrString.hpp>
