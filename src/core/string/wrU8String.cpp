@@ -274,6 +274,11 @@ namespace wr
 		return u8_str_load_all(init_char_data, num, char_data_alloc_size);
 	}
 
+	u8_string u8_str_load_no_size_c_str(const void* init_char_data) noexcept
+	{
+		return u8_str_load_c_str(init_char_data, strlen(reinterpret_cast<const char*>(init_char_data)));
+	}
+
 	bool u8_str_cmp(const u8_string str1, const u8_string str2) noexcept
 	{
 		if (str1.char_data_size != str2.char_data_size) [[likely]]
@@ -287,6 +292,7 @@ namespace wr
 	u8_string u8_str_recount(u8_string str)
 	{
 		str.char_num = count_utf8(str.char_data, str.char_data_size);
+		str.is_short_string = str.char_data_size < SHORT_STRING_SIZE;
 		return str;
 	}
 

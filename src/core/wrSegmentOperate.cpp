@@ -37,8 +37,6 @@ namespace wr
 
 		while (cur_ofs < end_ofs)
 		{
-			// auto c1 = reinterpret_cast<const char8_t*>(cur_ptr);
-			// auto c2 = reinterpret_cast<const char8_t*>(child_seg);
 			if (wr_memcmp(cur_ptr, child_seg, child_seg_size)) [[unlikely]]
 			{
 				out = pod_dynamic_array_push_back(out, &cur_ofs, 1llu);

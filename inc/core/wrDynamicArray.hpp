@@ -87,22 +87,22 @@ namespace wr
 			pod_dynamic_array_capacity(format_data, _num);
 		}
 
-		// is empty?
+		// empty dynamic_array return true
 		bool empty()const noexcept { return format_data.item_num == 0; }
 
-		//
+		// push some item which is class-dynamic_array in dynamic_array end
 		void push_back(const dynamic_array<T>& darr) noexcept
 		{
 			return push_back(darr.const_data(), darr.item_size());
 		}
 
-		//
+		// push some item which is pointer in dynamic_array end
 		void push_back(const T* ptr, size_t _num) noexcept
 		{
 			format_data = pod_dynamic_array_push_back(format_data, ptr, _num);
 		}
 
-		//
+		// push a item in dynamic_array end
 		void push_back(T item) noexcept
 		{
 			format_data = pod_dynamic_array_push_back(format_data, &item, 1);
@@ -120,12 +120,12 @@ namespace wr
 		constexpr size_t item_size() const noexcept { return format_data.item_size; }
 
 		// get unsafe item data
-		T* unsafe_data() noexcept { return reinterpret_cast<T*>(format_data.pitems); }
+		T* mut_data() noexcept { return reinterpret_cast<T*>(format_data.pitems); }
 
 		// get unsafe item data
 		const T* const_data() const noexcept { return reinterpret_cast<const T*>(format_data.pitems); }
 
-		// move pod
+		// move c api struct to other progream code c style struction
 		pod_dynamic_array move_pod() noexcept
 		{
 			pod_dynamic_array output = format_data;
@@ -133,6 +133,7 @@ namespace wr
 			return output;
 		}
 
+		// return c api struct to other progream code c abi function
 		const pod_dynamic_array get_pod() const noexcept { return format_data; }
 
 		// full 0 in format_data

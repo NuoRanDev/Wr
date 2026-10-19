@@ -3,7 +3,7 @@
 
 // core
 #include <core/string/wrStringRef.hpp>
-#if !definde(DISABLED_UTF16_STRING) || defined(_WIN32)
+#if !defined(DISABLED_UTF16_STRING) || defined(_WIN32)
 #include <core/string/wrU16String.hpp>
 #endif // DISABLED_UTF16_STRING
 

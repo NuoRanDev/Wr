@@ -105,7 +105,9 @@ namespace wr
 			else [[likely]]
 			{
 				if (format_data.capacity_num != 0) [[likely]]
+				{
 					format_data.pitems = wr_realloc<byte_t>(format_data.pitems, format_data.item_size * num);
+				}
 				else [[unlikely]]
 				{
 					format_data.pitems = wr_malloc<byte_t>(format_data.item_size * num);
@@ -129,7 +131,7 @@ namespace wr
 			size_t new_item_num = num + format_data.item_num;
 			if (new_item_num > format_data.capacity_num) [[likely]]
 			{
-				pod_dynamic_array_capacity(format_data, (new_item_num / MEMORY_ALIGNED_BLOCK_SIZE + 1) * MEMORY_ALIGNED_BLOCK_SIZE);
+				format_data = pod_dynamic_array_capacity(format_data, (new_item_num / MEMORY_ALIGNED_BLOCK_SIZE + 1) * MEMORY_ALIGNED_BLOCK_SIZE);
 			}
 			auto cpy_to = format_data.pitems
 				+ format_data.item_num * format_data.item_size;

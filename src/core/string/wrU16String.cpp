@@ -2,6 +2,8 @@
 #include <core/string/wrU16String.hpp>
 // base
 #include <os/wrLogOutput.hpp>
+// base
+#include <os/wrAlloc.hpp>
 
 namespace wr
 {
@@ -87,7 +89,10 @@ namespace wr
 		if (u16str.item_num) [[likely]]
 		{
 			pod_dynamic_array_push_back(u16str, &END_OF_STRING, 1);
-			out.char_data = reinterpret_cast<utf16le_t*>(u16str.pitems);
+			if (u16str.item_num < u16str.capacity_num)
+			{
+				out.char_data = wr_realloc<utf16le_t>(u16str.pitems, u16str.item_num);
+			}
 			out.char_data_size = u16str.item_num;
 		}
 		return out;
@@ -119,7 +124,7 @@ namespace wr
 			u16_len -= 1;
 		}
 
-		u8str = pod_dynamic_void_array_create(sizeof(utf8_t), utf16le_char_count);
+		u8str = pod_dynamic_void_array_create(sizeof(utf8_t), utf16le_char_count * 3);
 
 		for (int64_t i = 0; i < u16_len; ++i)
 		{
@@ -164,6 +169,7 @@ namespace wr
 				u8str = pod_dynamic_array_push_back(u8str, &u8c, 1);
 				continue;
 			}
+			else
 			{
 				// * U-0000E000 - U-0000FFFF:  1110xxxx 10xxxxxx 10xxxxxx
 				u8c = static_cast<char>((char)(((u16char >> 12) & 0x0F) | 0xE0));
@@ -180,9 +186,12 @@ namespace wr
 		
 		if(u8str.item_num) [[likely]]
 		{
-			out.char_data = reinterpret_cast<utf8_t*>(u8str.pitems);
 			out.char_data_size = u8str.item_num;
-			u8_str_recount(out);
+			if (u8str.item_num < u8str.capacity_num)
+			{
+				out.char_data = wr_realloc<utf8_t>(u8str.pitems, u8str.item_num);
+			}
+			out = u8_str_recount(out);
 		}
 		return out;
 	}

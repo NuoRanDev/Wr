@@ -145,7 +145,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <AdditionalOptions>/utf-8 -mavx -mavx2 </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -166,7 +166,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\3rd\inc\</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>

@@ -18,7 +18,7 @@ namespace wr
 			int mask = 0;
 
 			if (cmp_size < 32)
-				goto END_STR_CMP;
+				goto END_MEM_CMP;
 			do {
 				cmp1_32_byte = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(buf1));
 				cmp2_32_byte = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(buf2));
@@ -36,7 +36,7 @@ namespace wr
 				buf2 = buf2 + 32;
 				i += 32;
 			} while ((i + 32) < cmp_size);
-		END_STR_CMP:
+		END_MEM_CMP:
 			if (i == cmp_size)
 			{
 				return true; // all bytes are equal
