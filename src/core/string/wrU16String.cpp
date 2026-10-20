@@ -102,20 +102,20 @@ namespace wr
 	{
 		const utf16le_t* u16le_src = u16_str.char_data;
 		int64_t utf16le_char_count = u16_str.char_data_size;
-
-		const utf16le_t* u16le_src_cur = u16le_src;
-		int64_t u16_len = utf16le_char_count;
-		pod_dynamic_array u8str;
 		u8_string out = { 0 };
-
-		utf16le_t u16char;
-		char u8c = 0;
 
 		if (u16le_src == nullptr && utf16le_char_count == 0)
 		{
 			WR_INFO_OUTPUT(WR_TYPE_NAME_OUTPUT::APP, "wrCore", "The utf16 string is empty!");
 			return out;
 		}
+
+		const utf16le_t* u16le_src_cur = u16le_src;
+		int64_t u16_len = utf16le_char_count;
+		pod_dynamic_array u8str;
+
+		utf16le_t u16char;
+		char u8c = 0;
 
 		// If has bom
 		if (u16le_src_cur[0] == 0xFEFF)
@@ -194,6 +194,13 @@ namespace wr
 			out = u8_str_recount(out);
 		}
 		return out;
+	}
+
+	u16_string u16le_str_release(u16_string u16_str)
+	{
+		wr_check_null_free(u16_str.char_data);
+		u16_str = { 0 };
+		return u16_str;
 	}
 
 } // namespace wr is end

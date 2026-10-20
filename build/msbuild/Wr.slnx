@@ -12,5 +12,5 @@
   <Project Path="Dev.vcxproj" Id="7c2cf11e-7659-4f63-925b-3f9d3f1e9790">
     <BuildDependency Project="Base.vcxproj" />
   </Project>
-  <Project Path="os.vcxproj" />
+  <Project Path="os.vcxproj" Id="e1ec9bb7-cb2a-4539-b8e8-95c2bc54d91c" />
 </Solution>
