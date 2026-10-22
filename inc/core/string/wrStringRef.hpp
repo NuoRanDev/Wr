@@ -41,6 +41,19 @@ namespace wr
 			str_data = pod;
 		}
 
+		// copy
+		u8_string_ref(const u8_string_ref& other)
+		{
+			auto temp_pod = other.get_pod();
+			str_data = u8_str_load_all(temp_pod.char_data, temp_pod.char_num, temp_pod.char_data_size);
+		}
+
+		// pod in
+		void load_pod(u8_string pod_in)
+		{
+			str_data = pod_in;
+		}
+
 		// return c api struct to other progream code c abi function
 		const u8_string get_pod() const noexcept
 		{
@@ -98,7 +111,7 @@ namespace wr
 		}
 
 		// empty dynamic_array return true
-		bool empty() { return str_data.char_data_size == 0; }
+		bool empty() const { return str_data.char_data_size == 0; }
 
 		// get unsafe item data
 		utf8_t* mut_data() noexcept { return str_data.char_data; }

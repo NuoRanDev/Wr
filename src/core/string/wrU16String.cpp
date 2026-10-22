@@ -88,12 +88,12 @@ namespace wr
 		}
 		if (u16str.item_num) [[likely]]
 		{
-			pod_dynamic_array_push_back(u16str, &END_OF_STRING, 1);
+			u16str = pod_dynamic_array_push_back(u16str, &END_OF_STRING, 1);
 			if (u16str.item_num < u16str.capacity_num)
 			{
 				out.char_data = wr_realloc<utf16le_t>(u16str.pitems, u16str.item_num);
 			}
-			out.char_data_size = u16str.item_num;
+			out.char_number = u16str.item_num;
 		}
 		return out;
 	}
@@ -101,7 +101,7 @@ namespace wr
 	u8_string u16le_str_to_utf8_str(const u16_string u16_str) noexcept
 	{
 		const utf16le_t* u16le_src = u16_str.char_data;
-		int64_t utf16le_char_count = u16_str.char_data_size;
+		int64_t utf16le_char_count = u16_str.char_number;
 		u8_string out = { 0 };
 
 		if (u16le_src == nullptr && utf16le_char_count == 0)
@@ -196,7 +196,7 @@ namespace wr
 		return out;
 	}
 
-	u16_string u16le_str_release(u16_string u16_str)
+	u16_string u16le_str_release(u16_string u16_str) noexcept
 	{
 		wr_check_null_free(u16_str.char_data);
 		u16_str = { 0 };

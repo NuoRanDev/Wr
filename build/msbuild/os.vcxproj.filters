@@ -12,19 +12,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\os\winows\wrWinowsPath.cpp">
-      <Filter>base\os\winows</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\os\wrPath.cpp">
       <Filter>base\os</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\os\wrFileMmapViewer.cpp">
+      <Filter>base\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\os\windows\wrWindowsMmap.cpp">
+      <Filter>base\os\winows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\os\windows\wrWinowsPath.cpp">
+      <Filter>base\os\winows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\os\winows\wrWinowsPath.hpp">
-      <Filter>base\os\winows</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\os\wrPath.hpp">
       <Filter>base\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\os\wrFileMmapViewer.hpp">
+      <Filter>base\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\os\windows\wrWindowsMmap.hpp">
+      <Filter>base\os\winows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\os\windows\wrWinowsPath.hpp">
+      <Filter>base\os\winows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

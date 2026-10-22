@@ -23,7 +23,10 @@
     <ClCompile Include="..\..\src\dev\avx\wrMemCmpAVX.cpp">
       <Filter>dev\avx</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\dev\avx\wrMemCpy.cpp">
+    <ClCompile Include="..\..\src\dev\avx\wrMemCpyAVX.cpp">
+      <Filter>dev\avx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dev\avx\wrMemSetAVX.cpp">
       <Filter>dev\avx</Filter>
     </ClCompile>
   </ItemGroup>

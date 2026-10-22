@@ -136,7 +136,6 @@ namespace wr
 
 	static int64_t count_utf8(const utf8_t* utf8, int64_t alloc_size) noexcept
 	{
-		const utf8_t* src = utf8;
 		int count = 0;
 		if ((utf8 == nullptr) || (alloc_size == 0) || (utf8[0] == '\0'))
 		{
@@ -190,8 +189,6 @@ namespace wr
 		const utf8_t* pattern, int64_t pattern_size) noexcept
 	{
 		int64_t cur_ofs = 0ll;
-		int64_t cur_segment_size = 0ll;
-		int64_t split_char_num = 0ll;
 		int64_t need_copy_size = src_size;
 
 		u8_string str;

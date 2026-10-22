@@ -37,7 +37,7 @@ namespace wr
 		// create
 		dynamic_array(size_t _num) noexcept 
 		{
-			format_data = pod_dynamic_empty_array_create(sizeof(T), _num); 
+			format_data = pod_dynamic_void_array_create(sizeof(T), _num);
 		}
 
 		// get
@@ -72,18 +72,25 @@ namespace wr
 		void load(pod_dynamic_array format_input) noexcept { format_data = format_input; }
 
 		// delete end
-		void pop_back() noexcept { format_data = pod_dynamic_array_pop_back(format_data); }
+		void pop_back() noexcept 
+		{
+			if (format_data.item_num > 0) [[likely]]
+				std::destroy_at((reinterpret_cast<T*>(format_data)) + (format_data.item_num - 1));
+			format_data = pod_dynamic_array_pop_back(format_data);
+		}
 
 		// adjusts the size of a dynamic_array, adding or removing elements as needed,
 		// optionally initializing new elements with a specified value.
 		void resize(size_t _num) noexcept
 		{
+			destory_over_flow(_num);
 			pod_dynamic_array_resize(format_data, _num);
 		}
 
 		// capacity is the number of elements the dynamic_array can hold without reallocating memory
 		void capacity(size_t _num) noexcept
 		{
+			destory_over_flow(_num);
 			pod_dynamic_array_capacity(format_data, _num);
 		}
 
@@ -93,24 +100,30 @@ namespace wr
 		// push some item which is class-dynamic_array in dynamic_array end
 		void push_back(const dynamic_array<T>& darr) noexcept
 		{
-			return push_back(darr.const_data(), darr.item_size());
+			push_back(darr.const_data(), darr.item_size());
 		}
 
 		// push some item which is pointer in dynamic_array end
 		void push_back(const T* ptr, size_t _num) noexcept
 		{
+			size_t start_ofs = format_data.item_num;
 			format_data = pod_dynamic_array_push_back(format_data, ptr, _num);
+			T* item_data = reinterpret_cast<T*>(format_data.pitems);
+			for (size_t i = 0; i < _num; i++)
+			{
+				std::construct_at(item_data + (start_ofs + i), ptr[i]);
+			}
 		}
 
 		// push a item in dynamic_array end
 		void push_back(T item) noexcept
 		{
-			format_data = pod_dynamic_array_push_back(format_data, &item, 1);
+			push_back(&item, 1);
 		}
 
 		T at(size_t num) noexcept
 		{
-			return reinterpret_cast<T*>(format_data.pitems)[num];
+			return (reinterpret_cast<T*>(format_data.pitems))[num];
 		}
 
 		// get item number
@@ -151,6 +164,18 @@ namespace wr
 		~dynamic_array() { release(); }
 
 	private:
+
+		void destory_over_flow(size_t _num)
+		{
+			if (_num < format_data.item_num)
+			{
+				T* item_data = reinterpret_cast<T*>(format_data.pitems);
+				for (size_t i = _num; i < format_data.item_num; i++)
+				{
+					std::destroy_at(item_data + i); std::destroy_at();
+				}
+			}
+		}
 
 		pod_dynamic_array format_data;
 	};

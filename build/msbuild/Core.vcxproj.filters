@@ -36,6 +36,9 @@
     <ClInclude Include="..\..\inc\core\wrSegmentOperate.hpp">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\core\wrPair.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\string\wrU16String.cpp">

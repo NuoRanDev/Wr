@@ -38,4 +38,14 @@ namespace wr
 		return std::memcmp(buf1, buf2, cmp_size);
 #endif // CPU platform
 	}
+
+	void* wr_memset(int8_t val, size_t bytes, void* where) noexcept
+	{
+#if defined(USE_AVX)
+		return avx::wr_memset(val, bytes, where);
+#elif defined(USE_NEON)
+#else // DEFAULT
+		return std::memcmp(buf1, buf2, cmp_size);
+#endif // CPU platform
+	}
 } // namespace wr is end

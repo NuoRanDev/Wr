@@ -20,6 +20,8 @@ namespace wr
 		void* wr_memcpy(byte_t* dst, const byte_t* src, size_t cpy_size) noexcept;
 
 		int32_t wr_memcmp(const byte_t* buf1, const byte_t* buf2, size_t cmp_size) noexcept;
+
+		void* wr_memset(int8_t val, size_t bytes, void* where) noexcept;
 	} // namespace avx is end
 } // namespace wr is end
 #endif // AVX CPU platform

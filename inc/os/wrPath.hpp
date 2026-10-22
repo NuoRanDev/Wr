@@ -1,17 +1,20 @@
 #ifndef _WR_PATH_HPP_
 #define _WR_PATH_HPP_
 
+// base
+#include <wrCompiler.hpp>
 // core
 #include <core/wrString.hpp>
+#include <core/wrPair.hpp>
 // os
 #if defined(_WIN32)
-#include <os/winows/wrWinowsPath.hpp>
+#include <os/windows/wrWinowsPath.hpp>
 #endif // OS
 
 
 namespace wr
 {
-	class path
+	class exportfunc path
 	{
 	public:
 		path(wr_string& init_path);
@@ -22,7 +25,13 @@ namespace wr
 
 		int64_t get_create_time() const noexcept;
 
-		u8_string abs_path() const noexcept;
+		wr_string abs_path() const noexcept;
+
+		wr_string base_name() const noexcept;
+
+		wr_string dir_name() const noexcept;
+
+		pair<wr_string, wr_string> split() const noexcept;
 
 		size_t get_size() const noexcept;
 
