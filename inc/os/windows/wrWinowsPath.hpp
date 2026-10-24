@@ -12,7 +12,7 @@
 
 namespace wr
 {
-	using OS_STRING = u16_string;
+	using os_string = u16_string;
 
 	namespace windows
 	{

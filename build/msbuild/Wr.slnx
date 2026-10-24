@@ -2,9 +2,14 @@
   <Configurations>
     <BuildType Name="debug" />
     <BuildType Name="release" />
+    <Platform Name="Any CPU" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="../make_llvm_ir/make_llvm_ir.csproj" Id="d2e5632d-7a2f-4fc0-8bd1-8122254cbf58">
+    <BuildType Solution="debug|*" Project="Debug" />
+    <BuildType Solution="release|*" Project="Release" />
+  </Project>
   <Project Path="Base.vcxproj" Id="db64a60b-f37f-467a-9f15-55cb6f2a40fe" />
   <Project Path="Core.vcxproj" Id="cdff4d3e-c976-48a1-8762-4967ca950e0c">
     <BuildDependency Project="os.vcxproj" />
@@ -14,5 +19,8 @@
   </Project>
   <Project Path="os.vcxproj" Id="e1ec9bb7-cb2a-4539-b8e8-95c2bc54d91c">
     <BuildDependency Project="Dev.vcxproj" />
+  </Project>
+  <Project Path="Test.vcxproj" Id="e97d7559-5100-406b-a4ef-c5722ab93493">
+    <BuildDependency Project="Core.vcxproj" />
   </Project>
 </Solution>

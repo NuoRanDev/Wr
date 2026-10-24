@@ -6,12 +6,14 @@
 namespace wr
 {
 	// Result
-	enum ResultInfo :uint32_t
+	enum class WR_RESULT :uint32_t
 	{
-		WR_OK		= 0,
-		WR_WARNING,
-		WR_ERROR	= UINT32_MAX,
-		WR_EXIT		= INT32_MAX,
+		WR_OK = 0,
+		WR_WARNING = 1,
+		WR_SYSTEM_CALL_ERROR = 3,
+		WR_APP_CALL_ERROR = 4,
+		WR_ERROR = UINT32_MAX,
+		WR_EXIT = INT32_MAX,
 	};
 } // namespace wr is end
 

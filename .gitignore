@@ -12,3 +12,6 @@
 /.vscode/*
 /3rd/inc/*
 /3rd/lib/*
+/.vscode/
+/build/make_llvm_ir/bin/*
+/build/make_llvm_ir/obj/*

@@ -47,13 +47,13 @@
     <ClCompile Include="..\..\src\core\string\wrU8String.cpp">
       <Filter>core\string</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\test\coreTest.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\core\dynamic_array\wrPodDynamicArray.cpp">
       <Filter>core\dynamic_array</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\core\wrSegmentOperate.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\coreTest.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>

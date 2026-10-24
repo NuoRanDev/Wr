@@ -4,6 +4,7 @@
 #include <os/wrPath.hpp>
 #include <chrono>
 #include <format>
+#include <os/wrFileMmapViewer.hpp>
 
 int main()
 {
@@ -24,5 +25,16 @@ int main()
 	std::cout << std::format("path: {0}\n", str_list.at(2).c_str());
 	std::cout << std::format("size: {0}\n", fp.get_size());
 	std::cout << "create: " << ct << std::endl;
+
+	char png[4];
+	char* ppng = (char*)(&png);
+
+	wr::mmap_file_viewer vm;
+	vm.open_file(fp);
+	memcpy(ppng, (((char*)(vm.file_info.pfile_start)) + 1), 3);
+	ppng[3] = 0;
+	puts(ppng);
+	vm.close_file();
+
 	return 0;
 }

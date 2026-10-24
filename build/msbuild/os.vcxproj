@@ -21,14 +21,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\os\windows\wrWindowsMmap.cpp" />
     <ClCompile Include="..\..\src\os\windows\wrWinowsPath.cpp" />
-    <ClCompile Include="..\..\src\os\wrFileMmapViewer.cpp" />
-    <ClCompile Include="..\..\src\os\wrPath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\os\windows\wrWindowsMmap.hpp" />
+    <ClInclude Include="..\..\inc\os\windows\wrWinowsPath.hpp" />
     <ClInclude Include="..\..\inc\os\wrFileMmapViewer.hpp" />
+    <ClInclude Include="..\..\inc\os\wrOsInfo.hpp" />
     <ClInclude Include="..\..\inc\os\wrPath.hpp" />
-    <ClInclude Include="..\..\src\os\windows\wrWindowsMmap.hpp" />
-    <ClInclude Include="..\..\src\os\windows\wrWinowsPath.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -54,7 +53,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
