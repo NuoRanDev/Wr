@@ -12,14 +12,10 @@
   </Project>
   <Project Path="Base.vcxproj" Id="db64a60b-f37f-467a-9f15-55cb6f2a40fe" />
   <Project Path="Core.vcxproj" Id="cdff4d3e-c976-48a1-8762-4967ca950e0c">
-    <BuildDependency Project="os.vcxproj" />
-  </Project>
-  <Project Path="Dev.vcxproj" Id="7c2cf11e-7659-4f63-925b-3f9d3f1e9790">
     <BuildDependency Project="Base.vcxproj" />
   </Project>
-  <Project Path="os.vcxproj" Id="e1ec9bb7-cb2a-4539-b8e8-95c2bc54d91c">
-    <BuildDependency Project="Dev.vcxproj" />
-  </Project>
+  <Project Path="Dev.vcxproj" Id="7c2cf11e-7659-4f63-925b-3f9d3f1e9790" />
+  <Project Path="os.vcxproj" Id="e1ec9bb7-cb2a-4539-b8e8-95c2bc54d91c" />
   <Project Path="Test.vcxproj" Id="e97d7559-5100-406b-a4ef-c5722ab93493">
     <BuildDependency Project="Core.vcxproj" />
   </Project>

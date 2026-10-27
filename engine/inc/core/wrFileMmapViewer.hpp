@@ -4,8 +4,9 @@
 // base
 #include <wrType.hpp>
 #include <wrResult.hpp>
+// core
+#include <core/wrPath.hpp>
 // os
-#include <os/wrPath.hpp>
 #if defined(_WIN32)
 #include <os/windows/wrWindowsMmap.hpp>
 #endif // OS

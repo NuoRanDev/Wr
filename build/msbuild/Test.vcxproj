@@ -74,12 +74,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
-    <IncludePath>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
-    <IncludePath>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <AdditionalOptions>/utf-8 -mavx -mavx2 </AdditionalOptions>
@@ -154,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

@@ -1,10 +1,10 @@
 ﻿#include <core/wrDynamicArray.hpp>
 #include <iostream>
 #include <core/wrString.hpp>
-#include <os/wrPath.hpp>
+#include <core/wrPath.hpp>
 #include <chrono>
 #include <format>
-#include <os/wrFileMmapViewer.hpp>
+#include <core/wrFileMmapViewer.hpp>
 
 int main()
 {

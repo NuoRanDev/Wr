@@ -19,22 +19,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\core\dynamic_array\wrPodDynamicArray.hpp" />
-    <ClInclude Include="..\..\inc\core\string\wrStringRef.hpp" />
-    <ClInclude Include="..\..\inc\core\string\wrU16String.hpp" />
-    <ClInclude Include="..\..\inc\core\string\wrU8String.hpp" />
-    <ClInclude Include="..\..\inc\core\wrDynamicArray.hpp" />
-    <ClInclude Include="..\..\inc\core\wrPair.hpp" />
-    <ClInclude Include="..\..\inc\core\wrSegmentOperate.hpp" />
-    <ClInclude Include="..\..\inc\core\wrSegmentStruct.hpp" />
-    <ClInclude Include="..\..\inc\core\wrString.hpp" />
+    <ClCompile Include="..\..\engine\src\core\dynamic_array\wrPodDynamicArray.cpp" />
+    <ClCompile Include="..\..\engine\src\core\string\wrU16String.cpp" />
+    <ClCompile Include="..\..\engine\src\core\string\wrU8String.cpp" />
+    <ClCompile Include="..\..\engine\src\core\wrSegmentOperate.cpp" />
+    <ClCompile Include="..\..\engine\src\dev\avx\wrMemCmpAVX.cpp" />
+    <ClCompile Include="..\..\engine\src\dev\avx\wrMemCpyAVX.cpp" />
+    <ClCompile Include="..\..\engine\src\dev\avx\wrMemSetAVX.cpp" />
+    <ClCompile Include="..\..\engine\src\dev\wrMemory.cpp" />
+    <ClCompile Include="..\..\engine\src\os\windows\wrWindowsMmap.cpp" />
+    <ClCompile Include="..\..\engine\src\os\windows\wrWinowsPath.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\core\dynamic_array\wrPodDynamicArray.cpp" />
-    <ClCompile Include="..\..\src\core\string\wrU16String.cpp" />
-    <ClCompile Include="..\..\src\core\string\wrU8String.cpp" />
-    <ClCompile Include="..\..\src\core\wrSegmentOperate.cpp" />
-    <ClCompile Include="..\..\test\coreTest.cpp" />
+    <ClInclude Include="..\..\engine\inc\core\dynamic_array\wrPodDynamicArray.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\string\wrStringRef.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\string\wrU16String.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\string\wrU8String.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrDynamicArray.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrFileMmapViewer.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrPair.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrPath.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrSegmentOperate.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrSegmentStruct.hpp" />
+    <ClInclude Include="..\..\engine\inc\core\wrString.hpp" />
+    <ClInclude Include="..\..\engine\inc\os\windows\wrWindowsMmap.hpp" />
+    <ClInclude Include="..\..\engine\inc\os\windows\wrWinowsPath.hpp" />
+    <ClInclude Include="..\..\engine\inc\os\wrOsInfo.hpp" />
+    <ClInclude Include="..\..\engine\src\dev\avx\wrMemoryAVX.hpp" />
+    <ClInclude Include="..\..\engine\src\dev\wrMemory.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -89,13 +101,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
-    <IncludePath>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
     <TargetName>wrcore</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
-    <IncludePath>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -148,9 +160,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_AVX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <AdditionalOptions>/utf-8 -mavx -mavx2 </AdditionalOptions>
@@ -159,7 +171,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>os.lib;Base.lib;Dev.lib;Shlwapi.lib;Advapi32.lib;Pathcch.lib;mimalloc-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Base.lib;Shlwapi.lib;Advapi32.lib;Pathcch.lib;mimalloc-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\out\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -169,9 +181,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_AVX;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>
@@ -186,7 +198,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>os.lib;Base.lib;Dev.lib;Shlwapi.lib;Advapi32.lib;Pathcch.lib;mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Base.lib;Shlwapi.lib;Advapi32.lib;Pathcch.lib;mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\out\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <LinkStatus>false</LinkStatus>

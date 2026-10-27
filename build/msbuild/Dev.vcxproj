@@ -18,16 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\dev\avx\wrMemoryAVX.hpp" />
-    <ClInclude Include="..\..\src\dev\wrMemory.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\dev\avx\wrMemCmpAVX.cpp" />
-    <ClCompile Include="..\..\src\dev\avx\wrMemCpyAVX.cpp" />
-    <ClCompile Include="..\..\src\dev\avx\wrMemSetAVX.cpp" />
-    <ClCompile Include="..\..\src\dev\wrMemory.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -81,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
-    <IncludePath>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
-    <IncludePath>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -140,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>USE_AVX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <AdditionalOptions>/utf-8 -mavx -mavx2 </AdditionalOptions>
@@ -162,7 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>USE_AVX;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

@@ -1,0 +1,50 @@
+{
+    "PROJECT_NAME" : "wrcore",
+
+    "PROJECT_OUTPUT_DIR" : "../../out/app/",
+
+    "PROJECT_OPTIMIZATION_LEVEL" : "O3",
+
+    "PROJECT_SOURCE" : 
+    [
+            "../../engine/src/core/wrSegmentOperate.cpp",
+            "../../engine/src/core/string/wrU8String.cpp",
+            "../../engine/src/core/string/wrU16String.cpp",
+            "../../engine/src/core/dynamic_array/wrPodDynamicArray.cpp",
+            "../../engine/src/dev/avx/wrMemCmpAVX.cpp",
+            "../../engine/src/dev/avx/wrMemCpyAVX.cpp",
+            "../../engine/src/dev/avx/wrMemSetAVX.cpp",
+            "../../engine/src/dev/wrMemory.cpp",
+            "../../engine/src/os/wrAlloc.cpp",
+            "../../engine/src/os/wrLogOutpout.cpp",
+            "../../engine/src/os/windows/wrWindowsMmap.cpp",
+            "../../engine/src/os/windows/wrWinowsPath.cpp"
+    ],
+
+    "PROJECT_ADDITIONAL_INCLUDE_DIR" :
+    [
+            "../../engine/inc/",
+            "../../engine/src/",
+            "../../3rd/inc/"
+    ],
+    
+    "PROJECT_ADDITIONAL_MARCO" :
+    {
+        "cpu":
+        {
+            "X64":["USE_AVX"],
+            "ARM64":["USE_NEON"]
+        },
+        "os":
+        {
+            "WINDOWS":[],
+            "LINUX":[]
+        }
+    },
+
+    "PROJECT_ADDITIONAL_LIBS" :
+    {
+        "windows" : ["Shlwapi.lib", "Advapi32.lib", "Pathcch.lib", "mimalloc.lib"],
+        "linux": ["libmimalloc.a"]
+    }
+}

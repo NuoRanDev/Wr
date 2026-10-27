@@ -19,16 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\os\wrAlloc.cpp" />
-    <ClCompile Include="..\..\src\os\wrLogOutpout.cpp" />
+    <ClInclude Include="..\..\engine\inc\wrCompiler.hpp" />
+    <ClInclude Include="..\..\engine\inc\wrResult.hpp" />
+    <ClInclude Include="..\..\engine\inc\wrTemplate.hpp" />
+    <ClInclude Include="..\..\engine\inc\wrType.hpp" />
+    <ClInclude Include="..\..\engine\src\os\wrAlloc.hpp" />
+    <ClInclude Include="..\..\engine\src\os\wrLogOutput.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\wrCompiler.hpp" />
-    <ClInclude Include="..\..\inc\wrResult.hpp" />
-    <ClInclude Include="..\..\inc\wrTemplate.hpp" />
-    <ClInclude Include="..\..\inc\wrType.hpp" />
-    <ClInclude Include="..\..\src\os\wrAlloc.hpp" />
-    <ClInclude Include="..\..\src\os\wrLogOutput.hpp" />
+    <ClCompile Include="..\..\engine\src\os\wrAlloc.cpp" />
+    <ClCompile Include="..\..\engine\src\os\wrLogOutpout.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -83,12 +83,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
-    <IncludePath>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\;</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
-    <IncludePath>$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\src\;$(SolutionDir)..\..\3rd\inc\</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\3rd\inc\</IncludePath>
     <OutDir>$(SolutionDir)..\..\out\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)OBJ\$(ShortProjectName)\$(Platform)$(Configuration)\</IntDir>
     <GenerateManifest>false</GenerateManifest>
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <AdditionalOptions>/utf-8 -mavx -mavx2 </AdditionalOptions>
@@ -164,7 +164,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\src\;$(SolutionDir)..\..\inc\;$(SolutionDir)..\..\3rd\inc\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\engine\src\;$(SolutionDir)..\..\engine\inc\;$(SolutionDir)..\..\3rd\inc\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp23</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

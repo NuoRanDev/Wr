@@ -45,7 +45,7 @@ namespace wr
 		return avx::wr_memset(val, bytes, where);
 #elif defined(USE_NEON)
 #else // DEFAULT
-		return std::memcmp(buf1, buf2, cmp_size);
+		return std::memset(where, val, bytes);
 #endif // CPU platform
 	}
 } // namespace wr is end

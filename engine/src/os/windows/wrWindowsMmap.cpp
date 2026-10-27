@@ -14,7 +14,7 @@ namespace wr
 {
 	namespace windows
 	{
-		WR_RESULT os_mmap_open_file(mmap_file_info* mf, const os_string path)
+		WR_RESULT os_mmap_open_file(mmap_file_info* mf, const os_string path) noexcept
 		{
 			mf->file_size = os_get_file_size(path);
 			mf->c_dump_file_descriptor = CreateFileW(
@@ -51,7 +51,7 @@ namespace wr
 			return WR_RESULT::WR_OK;
 		}
 
-		WR_RESULT os_mmap_close_file(mmap_file_info* mf)
+		WR_RESULT os_mmap_close_file(mmap_file_info* mf) noexcept
 		{
 			if (mf->pfile_start != nullptr)
 				UnmapViewOfFile(mf->pfile_start);

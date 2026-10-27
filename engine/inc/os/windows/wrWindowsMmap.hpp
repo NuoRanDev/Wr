@@ -3,8 +3,9 @@
 
 // base
 #include <wrResult.hpp>
-// os
-#include <os/wrPath.hpp>
+#include <wrCompiler.hpp>
+// core
+#include <core/wrPath.hpp>
 // base
 #include <wrType.hpp>
 
@@ -22,9 +23,9 @@ namespace wr
 			size_t file_size;
 		};
 
-		c_extern exportfunc WR_RESULT os_mmap_open_file(mmap_file_info* mf, const os_string path);
+		c_extern exportfunc WR_RESULT os_mmap_open_file(mmap_file_info* mf, const os_string path) noexcept;
 
-		c_extern exportfunc WR_RESULT os_mmap_close_file(mmap_file_info* mf);
+		c_extern exportfunc WR_RESULT os_mmap_close_file(mmap_file_info* mf) noexcept;
 	} // namespace windows is end
 } // namespace wr is end
 
