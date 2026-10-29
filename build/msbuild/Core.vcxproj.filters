@@ -54,6 +54,12 @@
     <ClCompile Include="..\..\engine\src\os\windows\wrWinowsPath.cpp">
       <Filter>os\winows</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\engine\src\core\string\wrU8StringConvert.cpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\engine\inc\core\string\wrU8StringConvert.hpp">
+      <Filter>core\string</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\engine\inc\core\wrDynamicArray.hpp">

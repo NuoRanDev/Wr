@@ -17,6 +17,9 @@ namespace make_llvm_ir
         static string EXE_EXTENSION = "";
 
         static string PROJECT_ADDITIONAL_CMD = "";
+        static int cur_exit_code;
+        static bool enable_commandLine = true;
+        static string uni_additional_command = "";
 
         // source code info
         static ProjectInfo source_info = new ProjectInfo();
@@ -55,6 +58,10 @@ namespace make_llvm_ir
             Console.WriteLine("use clang make project");
             bool jump_link = false;
 
+            string additional_link_command = "";
+
+            string ll_file_cmd = "";
+
             string included = source_info.LoadIncluded();
             string defined = source_info.LoadDefined(OUTPUT_CPU_PLATFORM, OS_NAME);
 
@@ -73,7 +80,10 @@ namespace make_llvm_ir
             if (out_type == "EXE")
                 out_file = string.Format(EXE_EXTENSION, source_info.GetProjectName());
             else if (out_type == "DLL")
+            {
                 out_file = string.Format(DLL_EXTENSION, source_info.GetProjectName());
+                additional_link_command = "-shared";
+            }
             else if (out_type == "LIB" || out_type == "IR")
                 jump_link = true;
             else
@@ -81,16 +91,33 @@ namespace make_llvm_ir
                 Console.WriteLine("NO OUT FILE TYPE");
                 return false;
             }
+            
             List<string> source_list = source_info.GetSourceList();
             int src_num = source_list.Count + 1;
+            uni_additional_command = "-s -fno-rtti" + PROJECT_ADDITIONAL_CMD;
+
             Console.WriteLine($"The {src_num} files will be compiled");
-            Console.WriteLine("-------compiling stsrt-------");
+            Console.WriteLine("-------compiling start-------");
             for (int i = 0; i < source_list.Count; ++i)
             {
                 CompilerThread ct = new CompilerThread(i + 1, source_list[i], included, defined, PROJECT_OUT_PATH);
-                ct.DoCompile(PROJECT_ADDITIONAL_CMD, source_info.GetOptimizationLevel(), false);
+                var temp_ll = ct.DoCompile(ref cur_exit_code, uni_additional_command, source_info.GetCxxOptimizationLevel(), enable_commandLine);
+                if (cur_exit_code != 0) 
+                {
+                    Console.WriteLine($"Compiled ERROR , EXIT CODE = {cur_exit_code}");
+                    return false;
+                }
+                ll_file_cmd = ll_file_cmd + $" \"{temp_ll}\"";
             }
             Console.WriteLine("-------compiling finish-------");
+            if (jump_link) goto End;
+            LinkThread link = new LinkThread();
+            Console.WriteLine("-------link start-------");
+            Console.WriteLine($"make {out_file}");
+            link.Link(uni_additional_command, source_info.LoadLibs(OS_NAME), additional_link_command, source_info.GetLlvmIrOptimizationLevel(), ll_file_cmd,
+                Path.Join(PROJECT_OUT_PATH, out_file), enable_commandLine);
+            Console.WriteLine("-------link finish-------");
+        End:
             return true;
         }
         private static int Main(string[] args)

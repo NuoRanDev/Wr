@@ -3,7 +3,9 @@
 
     "PROJECT_OUTPUT_DIR" : "../../out/app/",
 
-    "PROJECT_OPTIMIZATION_LEVEL" : "O3",
+    "PROJECT_CXX_OPTIMIZATION_LEVEL" : "-Os",
+
+    "PROJECT_LLVM_IR_OPTIMIZATION_LEVEL" : "-Os",
 
     "PROJECT_SOURCE" : 
     [
@@ -44,7 +46,7 @@
 
     "PROJECT_ADDITIONAL_LIBS" :
     {
-        "windows" : ["Shlwapi.lib", "Advapi32.lib", "Pathcch.lib", "mimalloc.lib"],
-        "linux": ["libmimalloc.a"]
+        "WINDOWS" : ["Shlwapi.lib", "Advapi32.lib", "Pathcch.lib", "C:/Users/wunuo/Desktop/Wr/3rd/lib/mimalloc.lib"],
+        "LINUX": ["libmimalloc.a"]
     }
 }

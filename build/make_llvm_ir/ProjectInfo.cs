@@ -10,7 +10,8 @@ namespace make_llvm_ir
     {
         public string? PROJECT_NAME { get; set; }
         public string? PROJECT_OUTPUT_DIR { get; set; }
-        public string? PROJECT_OPTIMIZATION_LEVEL { get; set; }
+        public string? PROJECT_CXX_OPTIMIZATION_LEVEL { get; set; }
+        public string? PROJECT_LLVM_IR_OPTIMIZATION_LEVEL { get; set; }
         public List<string>? PROJECT_SOURCE { get; set; }
         public List<string>? PROJECT_ADDITIONAL_INCLUDE_DIR { get; set; }
         public Dictionary<string, Dictionary<string, List<string>>>? PROJECT_ADDITIONAL_MARCO { get; set; }
@@ -59,7 +60,17 @@ namespace make_llvm_ir
             }
             return out_cmd;
         }
-
+        public string LoadLibs(string OS_NAME)
+        {
+            List<string> lib_list = new List<string>();
+            lib_list.AddRange(json_info.PROJECT_ADDITIONAL_LIBS[OS_NAME]);
+            string out_cmd = "";
+            foreach (string marco in lib_list)
+            {
+                out_cmd += string.Format("-l\"{0}\" ", (marco));
+            }
+            return out_cmd;
+        }
         public List<string> GetSourceList() 
         {
             List<string> output = new List<string>();
@@ -74,6 +85,9 @@ namespace make_llvm_ir
 
         public string GetProjectOutPath() { return Path.Join(PROJECT_ROOT_PATH, json_info.PROJECT_OUTPUT_DIR); }
 
-        public string GetOptimizationLevel() { return json_info.PROJECT_OPTIMIZATION_LEVEL; }
+        public string GetCxxOptimizationLevel() { return json_info.PROJECT_CXX_OPTIMIZATION_LEVEL; }
+
+        public string GetLlvmIrOptimizationLevel() { return json_info.PROJECT_LLVM_IR_OPTIMIZATION_LEVEL; }
+
     }
 }

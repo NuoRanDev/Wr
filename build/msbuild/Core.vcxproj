@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\engine\inc\core\string\wrU8StringConvert.hpp" />
     <ClCompile Include="..\..\engine\src\core\dynamic_array\wrPodDynamicArray.cpp" />
     <ClCompile Include="..\..\engine\src\core\string\wrU16String.cpp" />
     <ClCompile Include="..\..\engine\src\core\string\wrU8String.cpp" />
+    <ClCompile Include="..\..\engine\src\core\string\wrU8StringConvert.cpp" />
     <ClCompile Include="..\..\engine\src\core\wrSegmentOperate.cpp" />
     <ClCompile Include="..\..\engine\src\dev\avx\wrMemCmpAVX.cpp" />
     <ClCompile Include="..\..\engine\src\dev\avx\wrMemCpyAVX.cpp" />
